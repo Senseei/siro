@@ -8,18 +8,18 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 @Embeddable
-public class PatientId {
-
+public class DoctorId {
+    
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "person_id", unique = true)
     private Person person;
-    private Long mr;
+    private Long crm;
 
-    public PatientId() {}
+    public DoctorId() {}
 
-    public PatientId(Person person, Long mr) {
+    public DoctorId(Person person, Long crm) {
         setPerson(person);
-        setMr(mr);
+        setCrm(crm);
     }
 
     public Person getPerson() {
@@ -30,12 +30,12 @@ public class PatientId {
         this.person = person;
     }
 
-    public Long getMr() {
-        return mr;
+    public Long getCrm() {
+        return crm;
     }
 
-    public void setMr(Long mr) {
-        this.mr = mr;
+    public void setCrm(Long crm) {
+        this.crm = crm;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class PatientId {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PatientId other = (PatientId) obj;
+		DoctorId other = (DoctorId) obj;
 		return Objects.equals(person, other.person);
 	}
 }

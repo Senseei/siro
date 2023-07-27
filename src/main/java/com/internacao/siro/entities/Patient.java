@@ -1,10 +1,13 @@
 package com.internacao.siro.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_patients")
@@ -13,9 +16,18 @@ public class Patient {
     @EmbeddedId
     private PatientId id = new PatientId();
 
+    @OneToMany(mappedBy = "id.patient")
+    private List<Relative> relatives;
+
     public Patient() {}
 
     public Patient(Person person, Long mr) {
+        id.setPerson(person);
+        id.setMr(mr);
+    }
+
+    public Patient(String name, LocalDate birthday, Long mr) {
+        Person person = new Person(name, birthday);
         id.setPerson(person);
         id.setMr(mr);
     }
@@ -34,6 +46,10 @@ public class Patient {
 
     public void setMr(Long mr) {
         id.setMr(mr);
+    }
+
+    public List<Relative> getRelatives() {
+        return relatives;
     }
 
     @Override

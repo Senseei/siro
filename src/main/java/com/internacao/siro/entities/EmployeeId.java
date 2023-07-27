@@ -2,14 +2,16 @@ package com.internacao.siro.entities;
 
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Embeddable
 public class EmployeeId {
-    @ManyToOne
-    @JoinColumn(name = "person_id")
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "person_id", unique = true)
     private Person person;
     private Long re;
 
@@ -38,7 +40,7 @@ public class EmployeeId {
 
     @Override
 	public int hashCode() {
-		return Objects.hash(person, re);
+		return Objects.hash(person);
 	}
 
 	@Override
@@ -50,6 +52,6 @@ public class EmployeeId {
 		if (getClass() != obj.getClass())
 			return false;
 		EmployeeId other = (EmployeeId) obj;
-		return Objects.equals(person, other.person) && Objects.equals(re, other.re);
+		return Objects.equals(person, other.person);
 	}
 }

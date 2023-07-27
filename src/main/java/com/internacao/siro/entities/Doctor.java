@@ -8,22 +8,23 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_employees")
-public class Employee {
+@Table(name = "tb_doctors")
+public class Doctor {
+
     @EmbeddedId
-    private EmployeeId id = new EmployeeId();
+    private DoctorId id = new DoctorId();
 
-    public Employee() {}
-
-    public Employee(Person person, Long re) {
+    public Doctor() {}
+    
+    public Doctor(Person person, Long crm) {
         id.setPerson(person);
-        id.setRe(re);
+        id.setCrm(crm);
     }
 
-    public Employee(String name, LocalDate birthday, Long re) {
+    public Doctor(String name, LocalDate birthday, Long crm) {
         Person person = new Person(name, birthday);
         id.setPerson(person);
-        id.setRe(re);
+        id.setCrm(crm);
     }
 
     public Person getPerson() {
@@ -34,12 +35,12 @@ public class Employee {
         id.setPerson(person);
     }
 
-    public Long getRe() {
-        return id.getRe();
+    public Long getCrm() {
+        return id.getCrm();
     }
 
-    public void setRe(Long re) {
-        id.setRe(re);
+    public void setCrm(Long crm) {
+        id.setCrm(crm);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class Employee {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Employee other = (Employee) obj;
+		Doctor other = (Doctor) obj;
 		return Objects.equals(id, other.id);
 	}
 }
