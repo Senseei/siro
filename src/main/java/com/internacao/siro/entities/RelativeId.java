@@ -5,7 +5,7 @@ import java.util.Objects;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Embeddable
@@ -15,7 +15,7 @@ public class RelativeId {
     @JoinColumn(name = "person_id")
     private Person person;
     
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
 

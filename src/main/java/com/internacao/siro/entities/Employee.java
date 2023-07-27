@@ -3,43 +3,59 @@ package com.internacao.siro.entities;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_employees")
 public class Employee {
-    @EmbeddedId
-    private EmployeeId id = new EmployeeId();
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "person_id")
+    private Person person;
+    private Long re;
 
     public Employee() {}
 
     public Employee(Person person, Long re) {
-        id.setPerson(person);
-        id.setRe(re);
+        setPerson(person);
+        setRe(re);
     }
 
     public Employee(String name, LocalDate birthday, Long re) {
         Person person = new Person(name, birthday);
-        id.setPerson(person);
-        id.setRe(re);
+        setPerson(person);
+        setRe(re);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Person getPerson() {
-        return id.getPerson();
+        return person;
     }
 
     public void setPerson(Person person) {
-        id.setPerson(person);
+        this.person = person;
     }
 
     public Long getRe() {
-        return id.getRe();
+        return re;
     }
 
     public void setRe(Long re) {
-        id.setRe(re);
+        this.re = re;
     }
 
     @Override

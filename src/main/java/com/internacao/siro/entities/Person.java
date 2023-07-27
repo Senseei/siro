@@ -2,14 +2,12 @@ package com.internacao.siro.entities;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,9 +21,6 @@ public class Person {
     private Long id;
     private String name;
     private LocalDate birthday;
-
-    @OneToMany(mappedBy = "id.person")
-    private List<Relative> relatives;
 
     public Person() {}
 
@@ -56,10 +51,6 @@ public class Person {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
-    }
-
-    public List<Relative> getRelatives() {
-        return relatives;
     }
 
     @Override
