@@ -1,31 +1,23 @@
 package com.internacao.siro.entities;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="tb_people")
 public class Person {
 
-    private static final DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private LocalDate birthday;
-
-    @OneToMany(mappedBy = "id.person")
-    private List<Relative> relatives;
 
     public Person() {}
 
@@ -50,16 +42,8 @@ public class Person {
         return birthday;
     }
 
-    public String getFormattedBirthday() {
-        return birthday.format(DATEFORMATTER);
-    }
-
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
-    }
-
-    public List<Relative> getRelatives() {
-        return relatives;
     }
 
     @Override

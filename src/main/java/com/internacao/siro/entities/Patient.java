@@ -1,7 +1,6 @@
 package com.internacao.siro.entities;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
@@ -10,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -26,9 +24,6 @@ public class Patient {
     @JoinColumn(name = "person_id", unique = true)
     private Person person;
     private Long mr;
-
-    @OneToMany(mappedBy = "id.patient")
-    private List<Relative> relatives;
 
     public Patient() {}
 
@@ -61,10 +56,6 @@ public class Patient {
 
     public void setMr(Long mr) {
         this.mr = mr;
-    }
-
-    public List<Relative> getRelatives() {
-        return relatives;
     }
 
     @Override
