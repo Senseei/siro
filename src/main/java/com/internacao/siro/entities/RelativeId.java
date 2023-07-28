@@ -2,16 +2,14 @@ package com.internacao.siro.entities;
 
 import java.util.Objects;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 
 @Embeddable
 public class RelativeId {
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
     

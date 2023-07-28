@@ -23,12 +23,13 @@ public class PatientDTO {
         mr = patient.getMr();
     }
 
-    public PatientDTO(PatientProjection patientProjection) {
-        if (patientProjection != null) {
-            personId = patientProjection.getPersonId();
-            patientName = patientProjection.getPatientName();
-            patientBirthday = patientProjection.getPatientBirthday();
-            mr = patientProjection.getMr();
+    public PatientDTO(PatientProjection projection) {
+        
+        if (projection != null) {
+            personId = projection.getPersonId();
+            patientName = projection.getName();
+            patientBirthday = projection.getBirthday();
+            mr = projection.getMr();
         }
     }
     

@@ -37,12 +37,7 @@ public class PatientService {
 
     @Transactional(readOnly = true)
     public PatientDTO findByMR(Long mr) {
-
         PatientProjection result = patientRepository.findByMR(mr);
-
-        if (result == null) {
-            return new PatientDTO();
-        }
         return new PatientDTO(result);
     }
 }
