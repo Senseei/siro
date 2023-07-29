@@ -13,3 +13,9 @@ INSERT INTO tb_people (name, birthday) values ('Jessica Martins', '1996-05-11');
 INSERT INTO tb_employees (person_id, re) values (4, 8607033);
 INSERT INTO tb_employees (person_id, re) values (5, 8607123);
 INSERT INTO tb_employees (person_id, re) values (6, 8605016);
+
+INSERT INTO tb_people (name, birthday) values ('Rafael Guimaraes', '1995-05-25');
+INSERT INTO tb_people (name, birthday) values ('Fernando Namar', '1980-07-13');
+
+INSERT INTO tb_doctors(person_id, crm) values (7, 66007);
+INSERT INTO tb_doctors(person_id, crm) values (8, 227024);
