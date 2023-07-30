@@ -6,8 +6,6 @@ import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -19,13 +17,11 @@ import jakarta.persistence.Table;
 public class Patient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long mr;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "person_id", unique = true)
     private Person person;
-    private Long mr;
 
     @OneToMany(mappedBy = "id.patient")
     private List<Relative> relatives;
@@ -41,10 +37,6 @@ public class Patient {
         Person person = new Person(name, birthday);
         setPerson(person);
         setMr(mr);
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public Person getPerson() {
@@ -65,7 +57,7 @@ public class Patient {
 
     @Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(mr);
 	}
 
 	@Override
@@ -77,6 +69,6 @@ public class Patient {
 		if (getClass() != obj.getClass())
 			return false;
 		Patient other = (Patient) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(mr, other.mr);
 	}
 }

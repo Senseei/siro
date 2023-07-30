@@ -24,7 +24,7 @@ public class Ocurrence {
     private Register register;
     
     @OneToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_re")
     private Employee employee;
     private String description;
 

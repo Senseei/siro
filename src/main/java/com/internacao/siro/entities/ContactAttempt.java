@@ -28,7 +28,7 @@ public class ContactAttempt {
     private Register register;
 
     @OneToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_re")
     private Employee employee;
     private String phoneNumber;
     private LocalDateTime attemptTime;

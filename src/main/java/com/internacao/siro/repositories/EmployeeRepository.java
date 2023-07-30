@@ -10,7 +10,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     
     @Query(nativeQuery = true, value = """
             SELECT tb_people.id AS personId, tb_people.name, tb_people.birthday,
-            tb_employees.re, tb_employees.id AS employeeId
+            tb_employees.re
             FROM tb_people
             INNER JOIN tb_employees ON tb_people.id = tb_employees.person_id
             WHERE tb_employees.person_id = :personId
@@ -19,7 +19,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Query(nativeQuery = true, value = """
             SELECT tb_people.id AS personId, tb_people.name, tb_people.birthday,
-            tb_employees.re, tb_employees.id AS employeeId
+            tb_employees.re
             FROM tb_people
             INNER JOIN tb_employees ON tb_people.id = tb_employees.person_id
             WHERE tb_employees.re = :re

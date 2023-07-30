@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 public interface DoctorProjection {
     Long getPersonId();
-    Long getDoctorId();
     String getName();
     LocalDate getBirthday();
     Long getCrm();

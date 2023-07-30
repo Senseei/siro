@@ -56,7 +56,7 @@ public class Register {
     private LocalDateTime certificateWithdrawal;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_re")
     private Employee attendant;
 
     public Long getId() {

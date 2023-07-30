@@ -5,8 +5,6 @@ import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -17,13 +15,11 @@ import jakarta.persistence.Table;
 public class Employee {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long re;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "person_id")
     private Person person;
-    private Long re;
 
     public Employee() {}
 
@@ -36,10 +32,6 @@ public class Employee {
         Person person = new Person(name, birthday);
         setPerson(person);
         setRe(re);
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public Person getPerson() {
@@ -60,7 +52,7 @@ public class Employee {
 
     @Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(re);
 	}
 
 	@Override
@@ -72,6 +64,6 @@ public class Employee {
 		if (getClass() != obj.getClass())
 			return false;
 		Employee other = (Employee) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(re, other.re);
 	}
 }

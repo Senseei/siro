@@ -29,9 +29,9 @@ public class PatientController {
         return patientDTO;
     }
 
-    @GetMapping("/personId")
-    public PatientDTO findByPersonId(@RequestParam Long personId) {
-        PatientDTO patientDTO = patientService.findByPersonId(personId);
+    @GetMapping("/id")
+    public PatientDTO findByPersonId(@RequestParam Long id) {
+        PatientDTO patientDTO = patientService.findByPersonId(id);
         return patientDTO;
     }
 }

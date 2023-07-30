@@ -28,8 +28,8 @@ public class DoctorController {
         return doctorService.findByCRM(crm);
     }
 
-    @GetMapping("/personId")
-    public DoctorDTO findByPersonId(@RequestParam Long personId) {
-        return doctorService.findByPersonId(personId);
+    @GetMapping("/id")
+    public DoctorDTO findByPersonId(@RequestParam Long id) {
+        return doctorService.findByPersonId(id);
     }
 }

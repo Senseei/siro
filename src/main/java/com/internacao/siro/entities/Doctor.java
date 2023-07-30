@@ -5,8 +5,6 @@ import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -17,13 +15,11 @@ import jakarta.persistence.Table;
 public class Doctor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long crm;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "person_id")
     private Person person;
-    private Long crm;
 
     public Doctor() {}
     
@@ -56,7 +52,7 @@ public class Doctor {
 
     @Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(crm);
 	}
 
 	@Override
@@ -68,6 +64,6 @@ public class Doctor {
 		if (getClass() != obj.getClass())
 			return false;
 		Doctor other = (Doctor) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(crm, other.crm);
 	}
 }

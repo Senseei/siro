@@ -23,9 +23,9 @@ public class EmployeeController {
         return employeeService.findAll();
     }
 
-    @GetMapping("/personId")
-    public EmployeeDTO findByPersonId(@RequestParam Long personId) {
-        return employeeService.findByPersonId(personId);
+    @GetMapping("/id")
+    public EmployeeDTO findByPersonId(@RequestParam Long id) {
+        return employeeService.findByPersonId(id);
     }
 
     @GetMapping("/re")
