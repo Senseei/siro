@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.internacao.siro.dto.EmployeeDTO;
 import com.internacao.siro.entities.Employee;
-import com.internacao.siro.projections.EmployeeProjection;
 import com.internacao.siro.repositories.EmployeeRepository;
 
 @Service
@@ -25,8 +24,14 @@ public class EmployeeService {
     }
 
     @Transactional(readOnly = true)
-    public EmployeeDTO findByRE(Long re) {
-        EmployeeProjection result = employeeRepository.findByRE(re);
+    public EmployeeDTO findById(Long id) {
+        Employee result = employeeRepository.findById(id).orElse(null);
+        return new EmployeeDTO(result);
+    }
+
+    @Transactional(readOnly = true)
+    public EmployeeDTO findByRe(Long re) {
+        Employee result = employeeRepository.findByRe(re);
         return new EmployeeDTO(result);
     }
 }

@@ -23,8 +23,13 @@ public class EmployeeController {
         return employeeService.findAll();
     }
 
-    @GetMapping("/search")
-    public EmployeeDTO findByRE(@RequestParam Long re) {
-        return employeeService.findByRE(re);
+    @GetMapping("/id")
+    public EmployeeDTO findByPersonId(@RequestParam Long id) {
+        return employeeService.findById(id);
+    }
+
+    @GetMapping("/re")
+    public EmployeeDTO findByRe(@RequestParam Long re) {
+        return employeeService.findByRe(re);
     }
 }

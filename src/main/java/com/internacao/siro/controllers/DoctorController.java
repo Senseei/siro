@@ -23,8 +23,13 @@ public class DoctorController {
         return doctorService.findAll();
     }
 
-    @GetMapping("/search")
-    public DoctorDTO findByCRM(@RequestParam Long crm) {
-        return doctorService.findByCRM(crm);
+    @GetMapping("/id")
+    public DoctorDTO findByPersonId(@RequestParam Long id) {
+        return doctorService.findById(id);
+    }
+
+    @GetMapping("/crm")
+    public DoctorDTO findByCrm(@RequestParam Long crm) {
+        return doctorService.findByCrm(crm);
     }
 }

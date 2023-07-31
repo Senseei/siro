@@ -3,7 +3,6 @@ package com.internacao.siro.dto;
 import java.time.LocalDate;
 
 import com.internacao.siro.entities.Doctor;
-import com.internacao.siro.projections.DoctorProjection;
 
 public class DoctorDTO {
     
@@ -20,15 +19,6 @@ public class DoctorDTO {
             name = doctor.getName();
             birthday = doctor.getBirthday();
             crm = doctor.getCrm();
-        }
-    }
-
-    public DoctorDTO(DoctorProjection projection) {
-        if (projection != null) {
-            id = projection.getId();
-            name = projection.getName();
-            birthday = projection.getBirthday();
-            crm = projection.getCrm();
         }
     }
 
