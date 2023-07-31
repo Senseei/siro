@@ -1,14 +1,12 @@
 C:\Users\Acer\OneDrive - Fatec Centro Paula Souza\Projects\siro\src\main\java\com\internacao\siro\services\EmployeeService.java
 C:\Users\Acer\OneDrive - Fatec Centro Paula Souza\Projects\siro\src\main\java\com\internacao\siro\services\PatientService.java
-C:\Users\Acer\OneDrive - Fatec Centro Paula Souza\Projects\siro\src\main\java\com\internacao\siro\entities\RelativeId.java
 C:\Users\Acer\OneDrive - Fatec Centro Paula Souza\Projects\siro\src\main\java\com\internacao\siro\dto\DoctorDTO.java
-C:\Users\Acer\OneDrive - Fatec Centro Paula Souza\Projects\siro\src\main\java\com\internacao\siro\entities\Relative.java
 C:\Users\Acer\OneDrive - Fatec Centro Paula Souza\Projects\siro\src\main\java\com\internacao\siro\controllers\PatientController.java
 C:\Users\Acer\OneDrive - Fatec Centro Paula Souza\Projects\siro\src\main\java\com\internacao\siro\entities\Clinic.java
-C:\Users\Acer\OneDrive - Fatec Centro Paula Souza\Projects\siro\src\main\java\com\internacao\siro\entities\Person.java
 C:\Users\Acer\OneDrive - Fatec Centro Paula Souza\Projects\siro\src\main\java\com\internacao\siro\services\DoctorService.java
 C:\Users\Acer\OneDrive - Fatec Centro Paula Souza\Projects\siro\src\main\java\com\internacao\siro\controllers\EmployeeController.java
 C:\Users\Acer\OneDrive - Fatec Centro Paula Souza\Projects\siro\src\main\java\com\internacao\siro\projections\PatientProjection.java
+C:\Users\Acer\OneDrive - Fatec Centro Paula Souza\Projects\siro\src\main\java\com\internacao\siro\base\Person.java
 C:\Users\Acer\OneDrive - Fatec Centro Paula Souza\Projects\siro\src\main\java\com\internacao\siro\dto\PatientDTO.java
 C:\Users\Acer\OneDrive - Fatec Centro Paula Souza\Projects\siro\src\main\java\com\internacao\siro\projections\EmployeeProjection.java
 C:\Users\Acer\OneDrive - Fatec Centro Paula Souza\Projects\siro\src\main\java\com\internacao\siro\repositories\EmployeeRepository.java

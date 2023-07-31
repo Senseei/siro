@@ -1,28 +1,23 @@
-package com.internacao.siro.entities;
+package com.internacao.siro.base;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Table;
 
-@Entity
+@MappedSuperclass
 @Table(name="tb_people")
-public class Person {
+public abstract class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private LocalDate birthday;
-
-    @OneToMany(mappedBy = "id.person")
-    private List<Relative> relatives;
 
     public Person() {}
 

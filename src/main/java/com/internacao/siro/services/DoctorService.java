@@ -25,12 +25,6 @@ public class DoctorService {
     }
 
     @Transactional(readOnly = true)
-    public DoctorDTO findByPersonId(Long personId) {
-        DoctorProjection result = doctorRepository.findByPersonId(personId);
-        return new DoctorDTO(result);
-    }
-
-    @Transactional(readOnly = true)
     public DoctorDTO findByCRM(Long crm) {
         DoctorProjection result = doctorRepository.findByCRM(crm);
         return new DoctorDTO(result);

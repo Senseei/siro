@@ -9,15 +9,7 @@ import com.internacao.siro.projections.PatientProjection;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
     @Query(nativeQuery = true, value = """
-            SELECT tb_people.id AS personId, tb_people.name AS name, tb_people.birthday AS birthday, tb_patients.mr,
-            FROM tb_people
-            INNER JOIN tb_patients ON tb_people.id = tb_patients.person_id
-            WHERE tb_patients.person_id = :personId
-            """)
-    PatientProjection findByPersonId(Long personId);
-
-    @Query(nativeQuery = true, value = """
-            SELECT tb_people.id AS personId, tb_people.name AS patientName, tb_people.birthday AS patientBirthday, tb_patients.mr,
+            SELECT tb_people.id, tb_people.name, tb_people.birthday, tb_patients.mr,
             FROM tb_people
             INNER JOIN tb_patients ON tb_people.id = tb_patients.person_id
             WHERE tb_patients.mr = :mr

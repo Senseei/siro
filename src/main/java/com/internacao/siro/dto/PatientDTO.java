@@ -3,46 +3,46 @@ package com.internacao.siro.dto;
 import java.time.LocalDate;
 
 import com.internacao.siro.entities.Patient;
-import com.internacao.siro.entities.Person;
 import com.internacao.siro.projections.PatientProjection;
 
 public class PatientDTO {
 
-    private Long personId;
-    private String patientName;
-    private LocalDate patientBirthday;
+    private Long id;
+    private String name;
+    private LocalDate birthday;
     private Long mr;
 
     public PatientDTO() {}
 
     public PatientDTO(Patient patient) {
-        Person personInfo = patient.getPerson();
-        personId = personInfo.getId();
-        patientName = personInfo.getName();
-        patientBirthday = personInfo.getBirthday();
-        mr = patient.getMr();
+        if (patient != null) {
+            id = patient.getId();
+            name = patient.getName();
+            birthday = patient.getBirthday();
+            mr = patient.getMr();
+        }
     }
 
     public PatientDTO(PatientProjection projection) {
         
         if (projection != null) {
-            personId = projection.getPersonId();
-            patientName = projection.getName();
-            patientBirthday = projection.getBirthday();
+            id = projection.getId();
+            name = projection.getName();
+            birthday = projection.getBirthday();
             mr = projection.getMr();
         }
     }
     
-    public Long getPersonId() {
-        return personId;
+    public Long getId() {
+        return id;
     }
 
-    public String getPatientName() {
-        return patientName;
+    public String getName() {
+        return name;
     }
 
-    public LocalDate getPatientBirthday() {
-        return patientBirthday;
+    public LocalDate getBirthday() {
+        return birthday;
     }
 
     public Long getMr() {

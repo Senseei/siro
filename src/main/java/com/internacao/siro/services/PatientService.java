@@ -25,17 +25,6 @@ public class PatientService {
     }
 
     @Transactional(readOnly = true)
-    public PatientDTO findByPersonId(Long personId) {
-
-        PatientProjection result = patientRepository.findByPersonId(personId);
-        
-        if (result == null) {
-            return new PatientDTO();
-        }
-        return new PatientDTO(result);
-    }
-
-    @Transactional(readOnly = true)
     public PatientDTO findByMR(Long mr) {
         PatientProjection result = patientRepository.findByMR(mr);
         return new PatientDTO(result);

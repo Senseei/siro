@@ -23,15 +23,9 @@ public class PatientController {
         return patientService.findAll();
     }
 
-    @GetMapping("/mr")
+    @GetMapping("/search")
     public PatientDTO findByMR(@RequestParam Long mr) {
         PatientDTO patientDTO = patientService.findByMR(mr);
-        return patientDTO;
-    }
-
-    @GetMapping("/id")
-    public PatientDTO findByPersonId(@RequestParam Long id) {
-        PatientDTO patientDTO = patientService.findByPersonId(id);
         return patientDTO;
     }
 }

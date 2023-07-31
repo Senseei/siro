@@ -25,12 +25,6 @@ public class EmployeeService {
     }
 
     @Transactional(readOnly = true)
-    public EmployeeDTO findByPersonId(Long personId) {
-        EmployeeProjection result = employeeRepository.findByPersonId(personId);
-        return new EmployeeDTO(result);
-    }
-
-    @Transactional(readOnly = true)
     public EmployeeDTO findByRE(Long re) {
         EmployeeProjection result = employeeRepository.findByRE(re);
         return new EmployeeDTO(result);

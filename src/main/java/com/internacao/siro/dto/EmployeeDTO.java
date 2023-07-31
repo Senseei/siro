@@ -3,12 +3,11 @@ package com.internacao.siro.dto;
 import java.time.LocalDate;
 
 import com.internacao.siro.entities.Employee;
-import com.internacao.siro.entities.Person;
 import com.internacao.siro.projections.EmployeeProjection;
 
 public class EmployeeDTO {
     
-    private Long personId;
+    private Long id;
     private String name;
     private LocalDate birthday;
     private Long re;
@@ -16,24 +15,26 @@ public class EmployeeDTO {
     public EmployeeDTO() {}
 
     public EmployeeDTO(Employee employee) {
-        Person personInfo = employee.getPerson();
-        personId = personInfo.getId();
-        name = personInfo.getName();
-        birthday = personInfo.getBirthday();
-        re = employee.getRe();
+        if (employee != null) {
+            id = employee.getId();
+            name = employee.getName();
+            birthday = employee.getBirthday();
+            re = employee.getRe();
+        }
+        
     }
 
     public EmployeeDTO(EmployeeProjection projection) {
         if (projection != null) {
-            personId = projection.getPersonId();
+            id = projection.getId();
             name = projection.getName();
             birthday = projection.getBirthday();
             re = projection.getRe();
         }
     }
 
-    public Long getPersonId() {
-        return personId;
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
