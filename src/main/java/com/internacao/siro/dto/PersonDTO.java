@@ -2,7 +2,7 @@ package com.internacao.siro.dto;
 
 import java.time.LocalDate;
 
-import com.internacao.siro.base.Person;
+import com.internacao.siro.entities.Person;
 
 public class PersonDTO {
 

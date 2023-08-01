@@ -1,17 +1,22 @@
-package com.internacao.siro.base;
+package com.internacao.siro.entities;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
-@MappedSuperclass
+@Entity
 @Table(name="tb_people")
-public abstract class Person {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "person_type")
+public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

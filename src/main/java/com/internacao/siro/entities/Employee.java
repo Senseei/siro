@@ -3,14 +3,10 @@ package com.internacao.siro.entities;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import com.internacao.siro.base.Person;
-
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_employees")
 @DiscriminatorValue("EMPLOYEE")
 public class Employee extends Person {
     
