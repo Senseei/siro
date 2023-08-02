@@ -27,4 +27,9 @@ public class RegisterController {
     public RegisterDTO findByPatientId(@RequestParam Long patientId) {
         return registerService.findByPatientId(patientId);
     }
+
+    @GetMapping(value = "/mr")
+    public RegisterDTO findByPatientMr(Long mr) {
+        return registerService.findByPatientMr(mr);
+    }
 }

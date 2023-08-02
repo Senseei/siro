@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.internacao.siro.entities.Register;
+import com.internacao.siro.projections.RelativeProjection;
 
 public class RegisterDTO {
     
@@ -14,6 +15,7 @@ public class RegisterDTO {
     private DoctorDTO doctor;
     private ClinicDTO clinic;
     private List<ContactAttemptDTO> contactAttempts;
+    private RelativeDTO relative;
     private LocalDateTime documentationWithdrawal;
     private EmployeeMinDTO attendant;
     private List<OccurrenceDTO> occurrences;
@@ -29,6 +31,22 @@ public class RegisterDTO {
             doctor = new DoctorDTO(register.getDoctor());
             clinic = new ClinicDTO(register.getClinic());
             contactAttempts = register.getContactAttempts().stream().map(x -> new ContactAttemptDTO(x)).toList();
+            documentationWithdrawal = register.getDocumentationWithdrawal();
+            attendant = new EmployeeMinDTO(register.getAttendant());
+            occurrences = register.getOccurrences().stream().map(x -> new OccurrenceDTO(x)).toList();
+        }
+    }
+
+    public RegisterDTO(Register register, RelativeProjection relativeProjection) {
+        if (register != null) {
+            id = register.getId();
+            patient = new PatientDTO(register.getPatient());
+            dateOfDeath = register.getDateOfDeath();
+            documentation = register.getDocumentation().stream().map(x -> new DocumentationDTO(x)).toList();
+            doctor = new DoctorDTO(register.getDoctor());
+            clinic = new ClinicDTO(register.getClinic());
+            contactAttempts = register.getContactAttempts().stream().map(x -> new ContactAttemptDTO(x)).toList();
+            relative = new RelativeDTO(relativeProjection);
             documentationWithdrawal = register.getDocumentationWithdrawal();
             attendant = new EmployeeMinDTO(register.getAttendant());
             occurrences = register.getOccurrences().stream().map(x -> new OccurrenceDTO(x)).toList();
@@ -73,5 +91,9 @@ public class RegisterDTO {
 
     public PatientDTO getPatient() {
         return patient;
+    }
+
+    public RelativeDTO getRelative() {
+        return relative;
     }
 }
