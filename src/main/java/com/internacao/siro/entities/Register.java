@@ -49,10 +49,6 @@ public class Register {
 
     @OneToMany(mappedBy = "register", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ocurrence> ocurrences = new ArrayList<>();
-
-    @ManyToOne
-    @JoinColumn(name = "relative_id")
-    private Person relative;
     private LocalDateTime certificateWithdrawal;
 
     @ManyToOne
@@ -101,14 +97,6 @@ public class Register {
 
     public void setClinic(Clinic clinic) {
         this.clinic = clinic;
-    }
-
-    public Person getRelative() {
-        return relative;
-    }
-
-    public void setRelative(Person relative) {
-        this.relative = relative;
     }
 
     public LocalDateTime getCertificateWithdrawal() {

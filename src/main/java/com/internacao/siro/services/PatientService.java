@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.internacao.siro.dto.PatientDTO;
 import com.internacao.siro.entities.Patient;
-import com.internacao.siro.projections.PatientProjection;
 import com.internacao.siro.repositories.PatientRepository;
 
 @Service
@@ -25,19 +24,14 @@ public class PatientService {
     }
 
     @Transactional(readOnly = true)
-    public PatientDTO findByPersonId(Long personId) {
-
-        PatientProjection result = patientRepository.findByPersonId(personId);
-        
-        if (result == null) {
-            return new PatientDTO();
-        }
+    public PatientDTO findById(Long id) {
+        Patient result = patientRepository.findById(id).orElse(null);
         return new PatientDTO(result);
     }
 
     @Transactional(readOnly = true)
-    public PatientDTO findByMR(Long mr) {
-        PatientProjection result = patientRepository.findByMR(mr);
+    public PatientDTO findByMr(Long mr) {
+        Patient result = patientRepository.findByMr(mr);
         return new PatientDTO(result);
     }
 }

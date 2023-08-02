@@ -3,43 +3,20 @@ package com.internacao.siro.entities;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_employees")
-public class Employee {
+@DiscriminatorValue("EMPLOYEE")
+public class Employee extends Person {
     
-    @Id
     private Long re;
-
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "person_id")
-    private Person person;
 
     public Employee() {}
 
-    public Employee(Person person, Long re) {
-        setPerson(person);
-        setRe(re);
-    }
-
     public Employee(String name, LocalDate birthday, Long re) {
-        Person person = new Person(name, birthday);
-        setPerson(person);
+        super(name, birthday);
         setRe(re);
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
     }
 
     public Long getRe() {

@@ -1,18 +1,21 @@
 package com.internacao.siro.entities;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="tb_people")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "person_type")
 public class Person {
 
     @Id
@@ -20,9 +23,6 @@ public class Person {
     private Long id;
     private String name;
     private LocalDate birthday;
-
-    @OneToMany(mappedBy = "id.person")
-    private List<Relative> relatives;
 
     public Person() {}
 

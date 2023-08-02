@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.internacao.siro.dto.DoctorDTO;
 import com.internacao.siro.entities.Doctor;
-import com.internacao.siro.projections.DoctorProjection;
 import com.internacao.siro.repositories.DoctorRepository;
 
 @Service
@@ -25,14 +24,14 @@ public class DoctorService {
     }
 
     @Transactional(readOnly = true)
-    public DoctorDTO findByPersonId(Long personId) {
-        DoctorProjection result = doctorRepository.findByPersonId(personId);
+    public DoctorDTO findById(Long id) {
+        Doctor result = doctorRepository.findById(id).orElse(null);
         return new DoctorDTO(result);
     }
 
     @Transactional(readOnly = true)
-    public DoctorDTO findByCRM(Long crm) {
-        DoctorProjection result = doctorRepository.findByCRM(crm);
+    public DoctorDTO findByCrm(Long crm) {
+        Doctor result = doctorRepository.findByCrm(crm);
         return new DoctorDTO(result);
     }
 

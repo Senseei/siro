@@ -13,9 +13,11 @@ public class PersonDTO {
     public PersonDTO() {}
 
     public PersonDTO(Person person) {
-        id = person.getId();
-        name = person.getName();
-        birthday = person.getBirthday();
+        if (person != null) {
+            id = person.getId();
+            name = person.getName();
+            birthday = person.getBirthday();
+        }
     }
 
     public LocalDate getBirthday() {

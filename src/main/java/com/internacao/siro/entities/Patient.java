@@ -1,50 +1,22 @@
 package com.internacao.siro.entities;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_patients")
-public class Patient {
+@DiscriminatorValue("PATIENT")
+public class Patient extends Person {
 
-    @Id
     private Long mr;
-
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "person_id", unique = true)
-    private Person person;
-
-    @OneToMany(mappedBy = "id.patient")
-    private List<Relative> relatives;
 
     public Patient() {}
 
-    public Patient(Person person, Long mr) {
-        setPerson(person);
-        setMr(mr);
-    }
-
     public Patient(String name, LocalDate birthday, Long mr) {
-        Person person = new Person(name, birthday);
-        setPerson(person);
+        super(name, birthday);
         setMr(mr);
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
     }
 
     public Long getMr() {
