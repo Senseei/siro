@@ -14,8 +14,18 @@ public class Doctor extends Person {
 
     public Doctor() {}
 
+	public Doctor(String name, Long crm) {
+        super(name);
+        setCrm(crm);
+    }
+
     public Doctor(String name, LocalDate birthday, Long crm) {
         super(name, birthday);
+        setCrm(crm);
+    }
+
+	public Doctor(String name, LocalDate birthday, String cpf, Long crm) {
+        super(name, birthday, cpf);
         setCrm(crm);
     }
 

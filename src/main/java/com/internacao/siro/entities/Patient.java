@@ -14,8 +14,18 @@ public class Patient extends Person {
 
     public Patient() {}
 
+	public Patient(String name, Long mr) {
+        super(name);
+        setMr(mr);
+    }
+
     public Patient(String name, LocalDate birthday, Long mr) {
         super(name, birthday);
+        setMr(mr);
+    }
+
+	public Patient(String name, LocalDate birthday, String cpf, Long mr) {
+        super(name, birthday, cpf);
         setMr(mr);
     }
 

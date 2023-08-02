@@ -14,8 +14,18 @@ public class Employee extends Person {
 
     public Employee() {}
 
+	public Employee(String name, Long re) {
+        super(name);
+        setRe(re);
+    }
+
     public Employee(String name, LocalDate birthday, Long re) {
         super(name, birthday);
+        setRe(re);
+    }
+
+	public Employee(String name, LocalDate birthday, String cpf, Long re) {
+        super(name, birthday, cpf);
         setRe(re);
     }
 

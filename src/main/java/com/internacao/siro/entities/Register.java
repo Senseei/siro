@@ -1,10 +1,11 @@
 package com.internacao.siro.entities;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import com.internacao.siro.util.GlobalVariables;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -20,9 +21,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tb_registers")
 public class Register {
-
-    private static final DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static final DateTimeFormatter TIMEFORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,13 +45,14 @@ public class Register {
     @OneToMany(mappedBy = "register", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ContactAttempt> contactAttempts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "register", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Ocurrence> ocurrences = new ArrayList<>();
-    private LocalDateTime certificateWithdrawal;
+    private LocalDateTime documentationWithdrawal;
 
     @ManyToOne
-    @JoinColumn(name = "employee_re")
+    @JoinColumn(name = "employee_id")
     private Employee attendant;
+
+    @OneToMany(mappedBy = "register", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Occurrence> occurrences = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -72,11 +71,11 @@ public class Register {
     }
 
     public String getFormattedDateOfDeath() {
-        return dateOfDeath.format(DATEFORMATTER);
+        return dateOfDeath.format(GlobalVariables.DATEFORMATTER);
     }
 
     public String getFormattedTimeOfDeath() {
-        return dateOfDeath.format(TIMEFORMATTER);
+        return dateOfDeath.format(GlobalVariables.TIMEFORMATTER);
     }
 
     public void setDateOfDeath(LocalDateTime dateOfDeath) {
@@ -99,12 +98,12 @@ public class Register {
         this.clinic = clinic;
     }
 
-    public LocalDateTime getCertificateWithdrawal() {
-        return certificateWithdrawal;
+    public LocalDateTime getDocumentationWithdrawal() {
+        return documentationWithdrawal;
     }
 
-    public void setCertificateWithdrawal(LocalDateTime certificateWithdrawal) {
-        this.certificateWithdrawal = certificateWithdrawal;
+    public void setDocumentationWithdrawal(LocalDateTime documentationWithdrawal) {
+        this.documentationWithdrawal = documentationWithdrawal;
     }
 
     public Employee getAttendant() {
@@ -119,12 +118,24 @@ public class Register {
         return contactAttempts;
     }
 
+    public void setContactAttempts(List<ContactAttempt> contactAttempts) {
+        this.contactAttempts = contactAttempts;
+    }
+
     public List<Documentation> getDocumentation() {
         return documentation;
     }
 
-    public List<Ocurrence> getOcurrences() {
-        return ocurrences;
+    public void setDocumentation(List<Documentation> documentation) {
+        this.documentation = documentation;
+    }
+
+    public List<Occurrence> getOccurrences() {
+        return occurrences;
+    }
+
+    public void setOccurrences(List<Occurrence> occurrences) {
+        this.occurrences = occurrences;
     }
 
     @Override

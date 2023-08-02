@@ -1,8 +1,9 @@
 package com.internacao.siro.entities;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+
+import com.internacao.siro.util.GlobalVariables;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,8 +17,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tb_contact_attempts")
 public class ContactAttempt {
-
-    private static final DateTimeFormatter DATETIMEFORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm");
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +27,7 @@ public class ContactAttempt {
     private Register register;
 
     @OneToOne
-    @JoinColumn(name = "employee_re")
+    @JoinColumn(name = "employee_id")
     private Employee employee;
     private String phoneNumber;
     private LocalDateTime attemptTime;
@@ -40,6 +39,13 @@ public class ContactAttempt {
         setRegister(register);
         setEmployee(employee);
         setReasonForNotCalling(reasonForNotCalling);
+    }
+
+    public ContactAttempt(Register register, Employee employee, String phoneNumber, LocalDateTime attempTime) {
+        setAttemptTime(attempTime);
+        setEmployee(employee);
+        setPhoneNumber(phoneNumber);
+        setRegister(register);
     }
 
     public ContactAttempt(Register register, Employee employee, String phoneNumber, LocalDateTime attemptTime, String reasonForNotCalling) {
@@ -83,7 +89,7 @@ public class ContactAttempt {
     }
 
     public String getFormattedAttemptTime() {
-        return attemptTime.format(DATETIMEFORMATTER);
+        return attemptTime.format(GlobalVariables.DATETIMEFORMATTER);
     }
 
     public void setAttemptTime(LocalDateTime attemptTime) {

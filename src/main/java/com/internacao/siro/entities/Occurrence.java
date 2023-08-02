@@ -8,12 +8,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_ocurrences")
-public class Ocurrence {
+@Table(name = "tb_occurrences")
+public class Occurrence {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,14 +22,14 @@ public class Ocurrence {
     @JoinColumn(name = "register_id")
     private Register register;
     
-    @OneToOne
-    @JoinColumn(name = "employee_re")
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
     private Employee employee;
     private String description;
 
-    public Ocurrence() {}
+    public Occurrence() {}
 
-    public Ocurrence(Register register, Employee employee, String description) {
+    public Occurrence(Register register, Employee employee, String description) {
         setRegister(register);
         setEmployee(employee);
         setDescription(description);
@@ -77,7 +76,7 @@ public class Ocurrence {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Ocurrence other = (Ocurrence) obj;
+        Occurrence other = (Occurrence) obj;
         return Objects.equals(id, other.id);
     }
 }

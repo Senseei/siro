@@ -3,6 +3,7 @@ package com.internacao.siro.entities;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,12 +24,27 @@ public class Person {
     private Long id;
     private String name;
     private LocalDate birthday;
+    @Column(unique = true)
+    private String cpf;
 
     public Person() {}
+
+    public Person(String name) {
+        setName(name);
+    }
 
     public Person(String name, LocalDate birthday) {
         setName(name);
         setBirthday(birthday);
+    }
+
+    public Person(String name, LocalDate birthday, String cpf) {
+        if (cpf == null || cpf.length() != 11) {
+            throw new IllegalArgumentException("CPF must have exactly 11 characters");
+        }
+        setName(name);
+        setBirthday(birthday);
+        setCpf(cpf);
     }
 
     public Long getId() {
@@ -49,6 +65,14 @@ public class Person {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     @Override
