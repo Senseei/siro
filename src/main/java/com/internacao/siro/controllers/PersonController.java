@@ -4,15 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.internacao.siro.dto.PersonDTO;
 import com.internacao.siro.services.PersonService;
 
 @RestController
-@RequestMapping(value = {"/people", "/people/"})
+@RequestMapping(value = "/people")
 public class PersonController {
     
     @Autowired
@@ -23,8 +23,8 @@ public class PersonController {
         return personService.findAll();
     }
 
-    @GetMapping("/id")
-    public PersonDTO findById(@RequestParam Long id) {
+    @GetMapping("/{id}")
+    public PersonDTO findById(@PathVariable Long id) {
         return personService.findById(id);
     }
 }

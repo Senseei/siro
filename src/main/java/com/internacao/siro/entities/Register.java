@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.internacao.siro.util.GlobalVariables;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -72,14 +70,6 @@ public class Register {
 
     public LocalDateTime getDateOfDeath() {
         return dateOfDeath;
-    }
-
-    public String getFormattedDateOfDeath() {
-        return dateOfDeath.format(GlobalVariables.DATEFORMATTER);
-    }
-
-    public String getFormattedTimeOfDeath() {
-        return dateOfDeath.format(GlobalVariables.TIMEFORMATTER);
     }
 
     public void setDateOfDeath(LocalDateTime dateOfDeath) {

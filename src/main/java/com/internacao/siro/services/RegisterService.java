@@ -29,6 +29,12 @@ public class RegisterService {
     }
 
     @Transactional(readOnly = true)
+    public RegisterDTO findById(Long id) {
+        Register result = registerRepository.findById(id).orElse(null);
+        return createRegisterDTO(result);
+    }
+
+    @Transactional(readOnly = true)
     public RegisterDTO findByPatientId(Long patientId) {
         Patient patient = patientRepository.findById(patientId).orElse(null);
         return createRegisterDTO(patient);
@@ -41,7 +47,7 @@ public class RegisterService {
     }
 
     private RegisterDTO createRegisterDTO(Register register) {
-        if (register.getRelative() != null) {
+        if (register != null && register.getRelative() != null) {
                 RelativeProjection relativeProjection = patientRepository.findRelativeById(
                     register.getRelative().getId(), register.getPatient().getId());
                 return new RegisterDTO(register, relativeProjection);

@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,7 +25,7 @@ public class ContactAttempt {
     @JoinColumn(name = "register_id")
     private Register register;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
     private String phoneNumber;
