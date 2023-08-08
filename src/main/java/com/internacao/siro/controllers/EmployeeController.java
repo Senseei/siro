@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.internacao.siro.dto.EmployeeDTO;
+import com.internacao.siro.dto.employee.EmployeeDTO;
 import com.internacao.siro.services.EmployeeService;
 
 @RestController

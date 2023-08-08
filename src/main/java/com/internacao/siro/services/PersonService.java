@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.internacao.siro.dto.DoctorDTO;
-import com.internacao.siro.dto.EmployeeDTO;
-import com.internacao.siro.dto.PatientDTO;
-import com.internacao.siro.dto.PersonDTO;
+import com.internacao.siro.dto.doctor.DoctorDTO;
+import com.internacao.siro.dto.employee.EmployeeDTO;
+import com.internacao.siro.dto.patient.PatientDTO;
+import com.internacao.siro.dto.person.PersonDTO;
 import com.internacao.siro.entities.Doctor;
 import com.internacao.siro.entities.Employee;
 import com.internacao.siro.entities.Patient;

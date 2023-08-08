@@ -1,18 +1,18 @@
-package com.internacao.siro.dto;
+package com.internacao.siro.dto.person;
 
 import java.time.LocalDate;
 
 import com.internacao.siro.entities.Person;
 
-public class PersonDTO {
+public class PersonMinDTO {
 
     private Long id;
     private String name;
     private LocalDate birthday;
 
-    public PersonDTO() {}
+    public PersonMinDTO() {}
 
-    public PersonDTO(Person person) {
+    public PersonMinDTO(Person person) {
         if (person != null) {
             id = person.getId();
             name = person.getName();

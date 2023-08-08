@@ -3,6 +3,8 @@ package com.internacao.siro.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.internacao.siro.dto.doctor.DoctorDTO;
+import com.internacao.siro.dto.patient.PatientDTO;
 import com.internacao.siro.entities.Register;
 import com.internacao.siro.projections.RelativeProjection;
 

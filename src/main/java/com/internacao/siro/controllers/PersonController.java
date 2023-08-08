@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.internacao.siro.dto.PersonDTO;
+import com.internacao.siro.dto.person.PersonDTO;
 import com.internacao.siro.services.PersonService;
 
 @RestController

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.internacao.siro.dto.PatientDTO;
+import com.internacao.siro.dto.patient.PatientDTO;
 import com.internacao.siro.entities.Patient;
 import com.internacao.siro.repositories.PatientRepository;
 

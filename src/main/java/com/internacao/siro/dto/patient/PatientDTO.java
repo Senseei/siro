@@ -1,5 +1,6 @@
-package com.internacao.siro.dto;
+package com.internacao.siro.dto.patient;
 
+import com.internacao.siro.dto.person.PersonDTO;
 import com.internacao.siro.entities.Patient;
 
 public class PatientDTO extends PersonDTO {

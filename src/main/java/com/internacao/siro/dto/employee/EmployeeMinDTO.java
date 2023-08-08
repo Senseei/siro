@@ -1,14 +1,15 @@
-package com.internacao.siro.dto;
+package com.internacao.siro.dto.employee;
 
+import com.internacao.siro.dto.person.PersonMinDTO;
 import com.internacao.siro.entities.Employee;
 
-public class EmployeeDTO extends PersonDTO {
+public class EmployeeMinDTO extends PersonMinDTO {
     
     private Long re;
 
-    public EmployeeDTO() {}
+    public EmployeeMinDTO() {}
 
-    public EmployeeDTO(Employee employee) {
+    public EmployeeMinDTO(Employee employee) {
         super(employee);
         if (employee != null) {
             re = employee.getRe();

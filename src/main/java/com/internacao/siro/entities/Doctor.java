@@ -3,6 +3,8 @@ package com.internacao.siro.entities;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.internacao.siro.dto.doctor.NewDoctorDTO;
+
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -27,6 +29,11 @@ public class Doctor extends Person {
 	public Doctor(String name, LocalDate birthday, String cpf, Long crm) {
         super(name, birthday, cpf);
         setCrm(crm);
+    }
+
+    public Doctor(NewDoctorDTO dto) {
+        super(dto.getName(), dto.getBirthday());
+        setCrm(dto.getCrm());
     }
 
     public Long getCrm() {
