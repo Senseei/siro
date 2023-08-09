@@ -1,10 +1,13 @@
 package com.internacao.siro.controllers;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +27,7 @@ public class RegisterController {
     @GetMapping
     public List<RegisterDTO> findAll(@RequestParam(required = false) Long patientId,
         @RequestParam(required = false) Long mr) {
-        Optional<RegisterDTO> dto = Optional.empty();
+        Optional<ResponseEntity<RegisterDTO>> dto = Optional.empty();
 
         if (patientId != null) {
             dto = Optional.of(registerService.findByPatientId(patientId));
@@ -32,11 +35,16 @@ public class RegisterController {
             dto = Optional.of(registerService.findByPatientMr(mr));
         }
     
-        return dto.map(x -> Collections.singletonList(x)).orElseGet(() -> registerService.findAll());
+        return dto.map(x -> {
+            if (x.getStatusCode() == HttpStatus.OK)
+                return Collections.singletonList(x.getBody());
+            else
+                return new ArrayList<RegisterDTO>();
+        }).orElseGet(() -> registerService.findAll());
     }
 
     @GetMapping("/{id}")
-    public RegisterDTO findById(@PathVariable Long id) {
+    public ResponseEntity<RegisterDTO> findById(@PathVariable Long id) {
         return registerService.findById(id);
     }
 }

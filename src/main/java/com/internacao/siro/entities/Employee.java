@@ -3,6 +3,9 @@ package com.internacao.siro.entities;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.internacao.siro.dto.employee.NewEmployeeDTO;
+import com.internacao.siro.dto.employee.UpdateEmployeeDTO;
+
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -29,12 +32,36 @@ public class Employee extends Person {
         setRe(re);
     }
 
+    public Employee(NewEmployeeDTO body) {
+        super(body.getName(), body.getBirthday(), body.getCpf());
+        re = body.getRe();
+    }
+
     public Long getRe() {
         return re;
     }
 
     public void setRe(Long re) {
         this.re = re;
+    }
+
+    public void updateEmployee(UpdateEmployeeDTO body) {
+        if (body.getName() != null)
+            setName(body.getName());
+        if (body.getBirthday() != null)
+            setBirthday(body.getBirthday());
+        if (body.getCpf() != null)
+            setCpf(body.getCpf());
+        if (body.getRe() != null)
+            re = body.getRe();
+    }
+
+    public void reverseDelete(NewEmployeeDTO body) {
+        setName(body.getName());
+        setBirthday(body.getBirthday());
+        setCpf(body.getCpf());
+        re = body.getRe();
+        setDeletedAt(null);
     }
 
     @Override

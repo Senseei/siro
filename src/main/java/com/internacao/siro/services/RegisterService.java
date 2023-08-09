@@ -1,8 +1,10 @@
 package com.internacao.siro.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,25 +31,36 @@ public class RegisterService {
     }
 
     @Transactional(readOnly = true)
-    public RegisterDTO findById(Long id) {
+    public ResponseEntity<RegisterDTO> findById(Long id) {
         Register result = registerRepository.findById(id).orElse(null);
-        return createRegisterDTO(result);
+        if (result == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(createRegisterDTO(result));
     }
 
     @Transactional(readOnly = true)
-    public RegisterDTO findByPatientId(Long patientId) {
+    public ResponseEntity<RegisterDTO> findByPatientId(Long patientId) {
         Patient patient = patientRepository.findById(patientId).orElse(null);
-        return createRegisterDTO(patient);
+        RegisterDTO register = createRegisterDTO(patient);
+        if (register == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(register);
     }
 
     @Transactional(readOnly = true)
-    public RegisterDTO findByPatientMr(Long mr) {
+    public ResponseEntity<RegisterDTO> findByPatientMr(Long mr) {
         Patient patient = patientRepository.findByMr(mr);
-        return createRegisterDTO(patient);
+        RegisterDTO register = createRegisterDTO(patient);
+        if (register == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(register);
     }
 
     private RegisterDTO createRegisterDTO(Register register) {
-        if (register != null && register.getRelative() != null) {
+        if (register.getRelative() != null) {
                 RelativeProjection relativeProjection = patientRepository.findRelativeById(
                     register.getRelative().getId(), register.getPatient().getId());
                 return new RegisterDTO(register, relativeProjection);
@@ -56,11 +69,14 @@ public class RegisterService {
     }
 
     private RegisterDTO createRegisterDTO(Patient patient) {
-        Register register = registerRepository.findByPatient(patient);
-        if (register != null && register.getRelative() != null) {
-            RelativeProjection relativeProjection = patientRepository.findRelativeById(register.getRelative().getId(), patient.getId());
+        Optional<Register> registerOpt = Optional.ofNullable(registerRepository.findByPatient(patient));
+
+        return registerOpt.map(register -> {
+            RelativeProjection relativeProjection = null;
+            if (register.getRelative() != null) {
+                relativeProjection = patientRepository.findRelativeById(register.getRelative().getId(), patient.getId());
+            }
             return new RegisterDTO(register, relativeProjection);
-        }
-        return new RegisterDTO(register);
+        }).orElse(null);
     }
 }

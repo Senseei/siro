@@ -41,7 +41,7 @@ public class Person {
     }
 
     public Person(String name, LocalDate birthday, String cpf) {
-        if (cpf == null || cpf.length() != 11) {
+        if (cpf != null && cpf.length() != 11) {
             throw new IllegalArgumentException("CPF must have exactly 11 characters");
         }
         this.name = name;

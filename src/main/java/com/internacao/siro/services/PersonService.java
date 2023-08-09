@@ -3,6 +3,7 @@ package com.internacao.siro.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,21 +31,24 @@ public class PersonService {
     }
 
     @Transactional(readOnly = true)
-    public PersonDTO findById(Long id) {
+    public ResponseEntity<PersonDTO> findById(Long id) {
         Person person = personRepository.findById(id).orElse(null);
+
+        if (person == null)
+            return ResponseEntity.notFound().build();
 
         if (person instanceof Doctor) {
             DoctorDTO dto = new DoctorDTO((Doctor) person);
-            return (PersonDTO) dto;
+            return ResponseEntity.ok((PersonDTO) dto);
         }
         else if (person instanceof Employee) {
             EmployeeDTO dto = new EmployeeDTO((Employee) person);
-            return (PersonDTO) dto;
+            return ResponseEntity.ok((PersonDTO) dto);
         }
         else if (person instanceof Patient) {
             PatientDTO dto = new PatientDTO((Patient) person);
-            return (PersonDTO) dto;
+            return ResponseEntity.ok((PersonDTO) dto);
         }
-        return new PersonDTO(person);
+        return ResponseEntity.ok(new PersonDTO(person));
     }
 }

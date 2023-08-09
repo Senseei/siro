@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,46 +29,54 @@ public class DoctorService {
     }
 
     @Transactional(readOnly = true)
-    public DoctorDTO findById(Long id) {
+    public ResponseEntity<DoctorDTO> findById(Long id) {
         Doctor result = doctorRepository.findByIdAndDeletedAtIsNull(id);
-        return new DoctorDTO(result);
+        if (result == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(new DoctorDTO(result));
     }
 
     @Transactional(readOnly = true)
-    public DoctorDTO findByCrm(Long crm) {
+    public ResponseEntity<DoctorDTO> findByCrm(Long crm) {
         Doctor result = doctorRepository.findByCrmAndDeletedAtIsNull(crm);
-        return new DoctorDTO(result);
+        if (result == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(new DoctorDTO(result));
     }
 
     @Transactional
-    public DoctorDTO createNewDoctor(NewDoctorDTO dto) {
-        Doctor exists = doctorRepository.findByCrm(dto.getCrm());
+    public ResponseEntity<DoctorDTO> createNewDoctor(NewDoctorDTO body) {
+        Doctor exists = doctorRepository.findByCrm(body.getCrm());
         if (exists != null && exists.getDeletedAt() != null) {
-            exists.reverseDelete(dto);
+            exists.reverseDelete(body);
             doctorRepository.save(exists);
-            return new DoctorDTO(exists);
+            return ResponseEntity.ok(new DoctorDTO(exists));
         }
-        Doctor newDoctor = new Doctor(dto);
+        else if (exists != null)
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
+        Doctor newDoctor = new Doctor(body);
         doctorRepository.save(newDoctor);
-        return new DoctorDTO(newDoctor);
+        return ResponseEntity.ok(new DoctorDTO(newDoctor));
     }
 
     @Transactional
-    public DoctorDTO updateDoctor(Long id, UpdateDoctorDTO body) {
+    public ResponseEntity<DoctorDTO> updateDoctor(Long id, UpdateDoctorDTO body) {
         Doctor doctor = doctorRepository.findByIdAndDeletedAtIsNull(id);
-        if (doctor != null) {
-            doctor.updateDoctor(body);
-            doctorRepository.save(doctor);
-        }
-        return new DoctorDTO(doctor);
+        if (doctor == null)
+            return ResponseEntity.notFound().build();
+            
+        doctor.updateDoctor(body);
+        doctorRepository.save(doctor);
+        return ResponseEntity.ok(new DoctorDTO(doctor));
     }
 
     @Transactional
     public ResponseEntity<String> deleteDoctor(Long id) {
         Doctor doctor = doctorRepository.findByIdAndDeletedAtIsNull(id);
-        if (doctor == null) {
+        if (doctor == null)
             return ResponseEntity.notFound().build();
-        }
+            
         doctor.setDeletedAt(LocalDateTime.now());
         return ResponseEntity.noContent().build();
     }

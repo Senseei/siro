@@ -34,9 +34,9 @@ public class Doctor extends Person {
         this.crm = crm;
     }
 
-    public Doctor(NewDoctorDTO dto) {
-        super(dto.getName(), dto.getBirthday());
-        this.crm = dto.getCrm();
+    public Doctor(NewDoctorDTO body) {
+        super(body.getName(), body.getBirthday(), body.getCpf());
+        crm = body.getCrm();
     }
 
     public Long getCrm() {
@@ -47,22 +47,22 @@ public class Doctor extends Person {
         this.crm = crm;
     }
 
-    public void updateDoctor(UpdateDoctorDTO dto) {
-        if (dto.getName() != null)
-            setName(dto.getName());
-        if (dto.getBirthday() != null)
-            setBirthday(dto.getBirthday());
-        if (dto.getCpf() != null)
-            setCpf(dto.getCpf());
-        if (dto.getCrm() != null)
-            crm = dto.getCrm();
+    public void updateDoctor(UpdateDoctorDTO body) {
+        if (body.getName() != null)
+            setName(body.getName());
+        if (body.getBirthday() != null)
+            setBirthday(body.getBirthday());
+        if (body.getCpf() != null)
+            setCpf(body.getCpf());
+        if (body.getCrm() != null)
+            crm = body.getCrm();
     }
 
-    public void reverseDelete(NewDoctorDTO dto) {
-        setName(dto.getName());
-        setBirthday(dto.getBirthday());
-        setCpf(dto.getCpf());
-        crm = dto.getCrm();
+    public void reverseDelete(NewDoctorDTO body) {
+        setName(body.getName());
+        setBirthday(body.getBirthday());
+        setCpf(body.getCpf());
+        crm = body.getCrm();
         setDeletedAt(null);
     }
 

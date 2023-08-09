@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,15 +24,14 @@ public class PatientController {
     @GetMapping
     public List<PatientDTO> findAll(@RequestParam(required = false) Long mr) {
         if (mr != null) {
-            PatientDTO dto = patientService.findByMr(mr);
+            PatientDTO dto = patientService.findByMr(mr).getBody();
             return Collections.singletonList(dto);
         }
         return patientService.findAll();
     }
 
     @GetMapping("/{id}")
-    public PatientDTO findByPersonId(@PathVariable Long id) {
-        PatientDTO patientDTO = patientService.findById(id);
-        return patientDTO;
+    public ResponseEntity<PatientDTO> findByPersonId(@PathVariable Long id) {
+        return patientService.findById(id);
     }
 }

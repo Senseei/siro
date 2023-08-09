@@ -1,5 +1,6 @@
 package com.internacao.siro.controllers;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,24 +31,26 @@ public class DoctorController {
     @GetMapping
     public List<DoctorDTO> findAll(@RequestParam(required = false) Long crm) {
         if (crm != null) {
-            DoctorDTO dto = doctorService.findByCrm(crm);
+            DoctorDTO dto = doctorService.findByCrm(crm).getBody();
+            if (dto == null)
+                return new ArrayList<DoctorDTO>();
             return Collections.singletonList(dto);
         }
         return doctorService.findAll();
     }
 
     @PostMapping
-    public DoctorDTO createNewDoctor(@RequestBody NewDoctorDTO dto) {
+    public ResponseEntity<DoctorDTO> createNewDoctor(@RequestBody NewDoctorDTO dto) {
         return doctorService.createNewDoctor(dto);
     }
 
     @GetMapping("/{id}")
-    public DoctorDTO findByPersonId(@PathVariable Long id) {
+    public ResponseEntity<DoctorDTO> findByPersonId(@PathVariable Long id) {
         return doctorService.findById(id);
     }
 
     @PutMapping("/{id}")
-    public DoctorDTO updateDoctor(@PathVariable Long id, @RequestBody UpdateDoctorDTO body) {
+    public ResponseEntity<DoctorDTO> updateDoctor(@PathVariable Long id, @RequestBody UpdateDoctorDTO body) {
         return doctorService.updateDoctor(id, body);
     }
 
