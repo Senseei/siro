@@ -3,7 +3,7 @@ package com.internacao.siro.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.internacao.siro.dto.doctor.DoctorDTO;
+import com.internacao.siro.dto.doctor.DoctorMinDTO;
 import com.internacao.siro.dto.patient.PatientDTO;
 import com.internacao.siro.entities.Register;
 import com.internacao.siro.projections.RelativeProjection;
@@ -14,7 +14,7 @@ public class RegisterDTO {
     private PatientDTO patient;
     private LocalDateTime dateOfDeath;
     private List<DocumentationDTO> documentation;
-    private DoctorDTO doctor;
+    private DoctorMinDTO doctor;
     private ClinicDTO clinic;
     private List<ContactAttemptDTO> contactAttempts;
     private RelativeDTO relative;
@@ -30,7 +30,7 @@ public class RegisterDTO {
             patient = new PatientDTO(register.getPatient());
             dateOfDeath = register.getDateOfDeath();
             documentation = register.getDocumentation().stream().map(x -> new DocumentationDTO(x)).toList();
-            doctor = new DoctorDTO(register.getDoctor());
+            doctor = new DoctorMinDTO(register.getDoctor());
             clinic = new ClinicDTO(register.getClinic());
             contactAttempts = register.getContactAttempts().stream().map(x -> new ContactAttemptDTO(x)).toList();
             documentationWithdrawal = register.getDocumentationWithdrawal();
@@ -45,7 +45,7 @@ public class RegisterDTO {
             patient = new PatientDTO(register.getPatient());
             dateOfDeath = register.getDateOfDeath();
             documentation = register.getDocumentation().stream().map(x -> new DocumentationDTO(x)).toList();
-            doctor = new DoctorDTO(register.getDoctor());
+            doctor = new DoctorMinDTO(register.getDoctor());
             clinic = new ClinicDTO(register.getClinic());
             contactAttempts = register.getContactAttempts().stream().map(x -> new ContactAttemptDTO(x)).toList();
             relative = new RelativeDTO(relativeProjection);
@@ -75,7 +75,7 @@ public class RegisterDTO {
         return dateOfDeath;
     }
 
-    public DoctorDTO getDoctor() {
+    public DoctorMinDTO getDoctor() {
         return doctor;
     }
 

@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import com.internacao.siro.dto.doctor.NewDoctorDTO;
+import com.internacao.siro.dto.doctor.UpdateDoctorDTO;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -12,28 +14,29 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue("DOCTOR")
 public class Doctor extends Person {
 
+    @Column(unique = true)
     private Long crm;
 
     public Doctor() {}
 
 	public Doctor(String name, Long crm) {
         super(name);
-        setCrm(crm);
+        this.crm = crm;
     }
 
     public Doctor(String name, LocalDate birthday, Long crm) {
         super(name, birthday);
-        setCrm(crm);
+        this.crm = crm;
     }
 
 	public Doctor(String name, LocalDate birthday, String cpf, Long crm) {
         super(name, birthday, cpf);
-        setCrm(crm);
+        this.crm = crm;
     }
 
     public Doctor(NewDoctorDTO dto) {
         super(dto.getName(), dto.getBirthday());
-        setCrm(dto.getCrm());
+        this.crm = dto.getCrm();
     }
 
     public Long getCrm() {
@@ -42,6 +45,17 @@ public class Doctor extends Person {
 
     public void setCrm(Long crm) {
         this.crm = crm;
+    }
+
+    public void updateDoctor(UpdateDoctorDTO dto) {
+        if (dto.getName() != null)
+            setName(dto.getName());
+        if (dto.getBirthday() != null)
+            setBirthday(dto.getBirthday());
+        if (dto.getCpf() != null)
+            setCpf(dto.getCpf());
+        if (dto.getCrm() != null)
+            crm = dto.getCrm();
     }
 
     @Override

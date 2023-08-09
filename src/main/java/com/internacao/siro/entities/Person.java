@@ -30,21 +30,21 @@ public class Person {
     public Person() {}
 
     public Person(String name) {
-        setName(name);
+        this.name = name;
     }
 
     public Person(String name, LocalDate birthday) {
-        setName(name);
-        setBirthday(birthday);
+        this.name = name;
+        this.birthday = birthday;
     }
 
     public Person(String name, LocalDate birthday, String cpf) {
         if (cpf == null || cpf.length() != 11) {
             throw new IllegalArgumentException("CPF must have exactly 11 characters");
         }
-        setName(name);
-        setBirthday(birthday);
-        setCpf(cpf);
+        this.name = name;
+        this.birthday = birthday;
+        this.cpf = cpf;
     }
 
     public Long getId() {
