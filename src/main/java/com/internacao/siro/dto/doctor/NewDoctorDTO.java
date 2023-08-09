@@ -6,13 +6,15 @@ public class NewDoctorDTO {
     
     private String name;
     private LocalDate birthday;
+    private String cpf;
     private Long crm;
 
     public NewDoctorDTO() {}
 
-    public NewDoctorDTO(String name, LocalDate birthday, Long crm) {
+    public NewDoctorDTO(String name, LocalDate birthday, String cpf, Long crm) {
         this.name = name;
         this.birthday = birthday;
+        this.cpf = cpf;
         this.crm = crm;
     }
 
@@ -22,6 +24,10 @@ public class NewDoctorDTO {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public String getCpf() {
+        return cpf;
     }
 
     public Long getCrm() {

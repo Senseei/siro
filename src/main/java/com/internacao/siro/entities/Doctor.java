@@ -58,6 +58,14 @@ public class Doctor extends Person {
             crm = dto.getCrm();
     }
 
+    public void reverseDelete(NewDoctorDTO dto) {
+        setName(dto.getName());
+        setBirthday(dto.getBirthday());
+        setCpf(dto.getCpf());
+        crm = dto.getCrm();
+        setDeletedAt(null);
+    }
+
     @Override
 	public int hashCode() {
 		return Objects.hash(crm);

@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,7 +47,12 @@ public class DoctorController {
     }
 
     @PutMapping("/{id}")
-    public DoctorDTO updateDoctorById(@PathVariable Long id, @RequestBody UpdateDoctorDTO body) {
-        return doctorService.updateDoctorById(id, body);
+    public DoctorDTO updateDoctor(@PathVariable Long id, @RequestBody UpdateDoctorDTO body) {
+        return doctorService.updateDoctor(id, body);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteDoctor(@PathVariable Long id) {
+        return doctorService.deleteDoctor(id);
     }
 }

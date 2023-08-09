@@ -1,6 +1,7 @@
 package com.internacao.siro.entities;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -26,6 +27,7 @@ public class Person {
     private LocalDate birthday;
     @Column(unique = true)
     private String cpf;
+    private LocalDateTime deletedAt;
 
     public Person() {}
 
@@ -73,6 +75,14 @@ public class Person {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     @Override
