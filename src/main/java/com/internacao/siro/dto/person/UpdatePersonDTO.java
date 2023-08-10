@@ -2,15 +2,15 @@ package com.internacao.siro.dto.person;
 
 import java.time.LocalDate;
 
-public class NewPersonDTO {
+public class UpdatePersonDTO {
     
     private String name;
     private LocalDate birthday;
     private String cpf;
 
-    public NewPersonDTO() {}
+    public UpdatePersonDTO() {}
 
-    public NewPersonDTO(String name, LocalDate birthday, String cpf) {
+    public UpdatePersonDTO(String name, LocalDate birthday, String cpf) {
         this.name = name;
         this.birthday = birthday;
         this.cpf = cpf;

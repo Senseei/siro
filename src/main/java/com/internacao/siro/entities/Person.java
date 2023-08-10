@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.internacao.siro.dto.person.NewPersonDTO;
+import com.internacao.siro.dto.person.UpdatePersonDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
@@ -49,6 +52,12 @@ public class Person {
         this.cpf = cpf;
     }
 
+    public Person(NewPersonDTO body) {
+        name = body.getName();
+        birthday = body.getBirthday();
+        cpf = body.getCpf();
+    }
+
     public Long getId() {
         return id;
     }
@@ -83,6 +92,22 @@ public class Person {
 
     public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public void updatePerson(UpdatePersonDTO body) {
+        if (body.getName() != null)
+            setName(body.getName());
+        if (body.getBirthday() != null)
+            setBirthday(body.getBirthday());
+        if (body.getCpf() != null)
+            setCpf(body.getCpf());
+    }
+
+    public void reverseDelete(NewPersonDTO body) {
+        setName(body.getName());
+        setBirthday(body.getBirthday());
+        setCpf(body.getCpf());
+        setDeletedAt(null);
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.internacao.siro.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.internacao.siro.dto.doctor.DoctorDTO;
 import com.internacao.siro.dto.employee.EmployeeDTO;
 import com.internacao.siro.dto.patient.PatientDTO;
+import com.internacao.siro.dto.person.NewPersonDTO;
 import com.internacao.siro.dto.person.PersonDTO;
+import com.internacao.siro.dto.person.UpdatePersonDTO;
 import com.internacao.siro.entities.Doctor;
 import com.internacao.siro.entities.Employee;
 import com.internacao.siro.entities.Patient;
@@ -25,14 +29,14 @@ public class PersonService {
 
     @Transactional(readOnly = true)
     public List<PersonDTO> findAll() {
-        List<Person> result = personRepository.findAll();
+        List<Person> result = personRepository.findByDeletedAtIsNull();
         List<PersonDTO> dto = result.stream().map(x -> new PersonDTO(x)).toList();
         return dto;
     }
 
     @Transactional(readOnly = true)
     public ResponseEntity<PersonDTO> findById(Long id) {
-        Person person = personRepository.findById(id).orElse(null);
+        Person person = personRepository.findByIdAndDeletedAtIsNull(id);
 
         if (person == null)
             return ResponseEntity.notFound().build();
@@ -50,5 +54,45 @@ public class PersonService {
             return ResponseEntity.ok((PersonDTO) dto);
         }
         return ResponseEntity.ok(new PersonDTO(person));
+    }
+
+    @Transactional
+    public ResponseEntity<PersonDTO> createNewPerson(NewPersonDTO body) {
+        Person exists = personRepository.findByCpf(body.getCpf());
+        if (exists != null && exists.getDeletedAt() != null) {
+            exists.reverseDelete(body);
+            personRepository.save(exists);
+            return ResponseEntity.ok(new PersonDTO(exists));
+        }
+        else if (exists != null)
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
+        Person newPerson = new Person(body);
+        personRepository.save(newPerson);
+        return ResponseEntity.ok(new PersonDTO(newPerson));
+    }
+
+    @Transactional
+    public ResponseEntity<PersonDTO> updatePerson(Long id, UpdatePersonDTO body) {
+        Person person = personRepository.findByIdAndDeletedAtIsNull(id);
+        
+        if (person == null)
+            return ResponseEntity.notFound().build();
+
+        person.updatePerson(body);
+        personRepository.save(person);
+        return ResponseEntity.ok(new PersonDTO(person));
+    }
+
+    @Transactional
+    public ResponseEntity<String> deletePerson(Long id) {
+        Person person = personRepository.findByIdAndDeletedAtIsNull(id);
+
+        if (person == null)
+            return ResponseEntity.notFound().build();
+
+        person.setDeletedAt(LocalDateTime.now());
+        personRepository.save(person);
+        return ResponseEntity.noContent().build();
     }
 }
