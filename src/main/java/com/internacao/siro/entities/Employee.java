@@ -33,7 +33,7 @@ public class Employee extends Person {
     }
 
     public Employee(NewEmployeeDTO body) {
-        super(body.getName(), body.getBirthday(), body.getCpf());
+        super(body);
         re = body.getRe();
     }
 
@@ -46,22 +46,14 @@ public class Employee extends Person {
     }
 
     public void updateEmployee(UpdateEmployeeDTO body) {
-        if (body.getName() != null)
-            setName(body.getName());
-        if (body.getBirthday() != null)
-            setBirthday(body.getBirthday());
-        if (body.getCpf() != null)
-            setCpf(body.getCpf());
+        updatePerson(body);
         if (body.getRe() != null)
             re = body.getRe();
     }
 
     public void reverseDelete(NewEmployeeDTO body) {
-        setName(body.getName());
-        setBirthday(body.getBirthday());
-        setCpf(body.getCpf());
+        super.reverseDelete(body);
         re = body.getRe();
-        setDeletedAt(null);
     }
 
     @Override

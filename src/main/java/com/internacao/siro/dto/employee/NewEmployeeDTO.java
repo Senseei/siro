@@ -2,44 +2,17 @@ package com.internacao.siro.dto.employee;
 
 import java.time.LocalDate;
 
-public class NewEmployeeDTO {
+import com.internacao.siro.dto.person.NewPersonDTO;
+
+public class NewEmployeeDTO extends NewPersonDTO {
     
-    private String name;
-    private LocalDate birthday;
-    private String cpf;
     private Long re;
 
     public NewEmployeeDTO() {}
 
     public NewEmployeeDTO(String name, LocalDate birthday, String cpf, Long re) {
-        this.name = name;
-        this.birthday = birthday;
-        this.cpf = cpf;
+        super(name, birthday, cpf);
         this.re = re;
-    }
-
-    public LocalDate getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Long getRe() {

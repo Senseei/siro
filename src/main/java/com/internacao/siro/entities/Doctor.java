@@ -48,22 +48,14 @@ public class Doctor extends Person {
     }
 
     public void updateDoctor(UpdateDoctorDTO body) {
-        if (body.getName() != null)
-            setName(body.getName());
-        if (body.getBirthday() != null)
-            setBirthday(body.getBirthday());
-        if (body.getCpf() != null)
-            setCpf(body.getCpf());
+        updatePerson(body);
         if (body.getCrm() != null)
             crm = body.getCrm();
     }
 
     public void reverseDelete(NewDoctorDTO body) {
-        setName(body.getName());
-        setBirthday(body.getBirthday());
-        setCpf(body.getCpf());
+        super.reverseDelete(body);
         crm = body.getCrm();
-        setDeletedAt(null);
     }
 
     @Override

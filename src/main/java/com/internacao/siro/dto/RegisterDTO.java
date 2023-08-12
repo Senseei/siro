@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.internacao.siro.dto.doctor.DoctorMinDTO;
+import com.internacao.siro.dto.employee.EmployeeMinDTO;
 import com.internacao.siro.dto.patient.PatientDTO;
 import com.internacao.siro.entities.Register;
 import com.internacao.siro.projections.RelativeProjection;

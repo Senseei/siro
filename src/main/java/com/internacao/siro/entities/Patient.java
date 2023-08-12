@@ -3,6 +3,9 @@ package com.internacao.siro.entities;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.internacao.siro.dto.patient.NewPatientDTO;
+import com.internacao.siro.dto.patient.UpdatePatientDTO;
+
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -16,17 +19,22 @@ public class Patient extends Person {
 
 	public Patient(String name, Long mr) {
         super(name);
-        setMr(mr);
+        this.mr = mr;
     }
 
     public Patient(String name, LocalDate birthday, Long mr) {
         super(name, birthday);
-        setMr(mr);
+        this.mr = mr;
     }
 
 	public Patient(String name, LocalDate birthday, String cpf, Long mr) {
         super(name, birthday, cpf);
-        setMr(mr);
+        this.mr = mr;
+    }
+
+    public Patient(NewPatientDTO body) {
+        super(body);
+        mr = body.getMr();
     }
 
     public Long getMr() {
@@ -35,6 +43,17 @@ public class Patient extends Person {
 
     public void setMr(Long mr) {
         this.mr = mr;
+    }
+
+    public void updatePatient(UpdatePatientDTO body) {
+        updatePerson(body);
+        if (body.getMr() != null)
+            mr = body.getMr();
+    }
+
+    public void reverseDelete(NewPatientDTO body) {
+        super.reverseDelete(body);
+        mr = body.getMr();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.internacao.siro.dto;
 
+import com.internacao.siro.dto.employee.EmployeeMinDTO;
 import com.internacao.siro.entities.Occurrence;
 
 public class OccurrenceDTO {

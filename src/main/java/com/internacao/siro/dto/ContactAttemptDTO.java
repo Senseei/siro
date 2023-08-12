@@ -2,6 +2,7 @@ package com.internacao.siro.dto;
 
 import java.time.LocalDateTime;
 
+import com.internacao.siro.dto.employee.EmployeeMinDTO;
 import com.internacao.siro.entities.ContactAttempt;
 
 public class ContactAttemptDTO {

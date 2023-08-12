@@ -58,14 +58,16 @@ public class PersonService {
 
     @Transactional
     public ResponseEntity<PersonDTO> createNewPerson(NewPersonDTO body) {
-        Person exists = personRepository.findByCpf(body.getCpf());
-        if (exists != null && exists.getDeletedAt() != null) {
-            exists.reverseDelete(body);
-            personRepository.save(exists);
-            return ResponseEntity.ok(new PersonDTO(exists));
+        if (body.getCpf() != null) {
+            Person exists = personRepository.findByCpf(body.getCpf());
+            if (exists != null && exists.getDeletedAt() != null) {
+                exists.reverseDelete(body);
+                personRepository.save(exists);
+                return ResponseEntity.ok(new PersonDTO(exists));
+            }
+            else if (exists != null)
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-        else if (exists != null)
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
         Person newPerson = new Person(body);
         personRepository.save(newPerson);
