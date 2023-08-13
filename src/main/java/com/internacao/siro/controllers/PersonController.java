@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +30,8 @@ public class PersonController {
     }
 
     @PostMapping
-    public ResponseEntity<PersonDTO> createNewPerson(@RequestBody NewPersonDTO body) {
-        return personService.createNewPerson(body);
+    public ResponseEntity<PersonDTO> create(@RequestBody NewPersonDTO body) {
+        return personService.create(body);
     }
 
     @GetMapping("/{id}")
@@ -41,12 +40,7 @@ public class PersonController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PersonDTO> updatePerson(@PathVariable Long id, @RequestBody UpdatePersonDTO body) {
-        return personService.updatePerson(id, body);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePerson(@PathVariable Long id) {
-        return personService.deletePerson(id);
+    public ResponseEntity<PersonDTO> update(@PathVariable Long id, @RequestBody UpdatePersonDTO body) {
+        return personService.update(id, body);
     }
 }

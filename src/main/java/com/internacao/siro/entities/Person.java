@@ -1,7 +1,6 @@
 package com.internacao.siro.entities;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 import com.internacao.siro.dto.person.NewPersonDTO;
@@ -30,7 +29,6 @@ public class Person {
     private LocalDate birthday;
     @Column(unique = true)
     private String cpf;
-    private LocalDateTime deletedAt;
 
     public Person() {}
 
@@ -86,28 +84,13 @@ public class Person {
         this.cpf = cpf;
     }
 
-    public LocalDateTime getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(LocalDateTime deletedAt) {
-        this.deletedAt = deletedAt;
-    }
-
-    public void updatePerson(UpdatePersonDTO body) {
+    public void update(UpdatePersonDTO body) {
         if (body.getName() != null)
             setName(body.getName());
         if (body.getBirthday() != null)
             setBirthday(body.getBirthday());
         if (body.getCpf() != null)
             setCpf(body.getCpf());
-    }
-
-    public void reverseDelete(NewPersonDTO body) {
-        setName(body.getName());
-        setBirthday(body.getBirthday());
-        setCpf(body.getCpf());
-        setDeletedAt(null);
     }
 
     @Override

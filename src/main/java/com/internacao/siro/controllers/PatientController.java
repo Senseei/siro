@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,8 +39,8 @@ public class PatientController {
     }
 
     @PostMapping
-    public ResponseEntity<PatientDTO> createNewPatient(@RequestBody NewPatientDTO body) {
-        return patientService.createNewPatient(body);
+    public ResponseEntity<PatientDTO> create(@RequestBody NewPatientDTO body) {
+        return patientService.create(body);
     }
 
     @GetMapping("/{id}")
@@ -50,12 +49,7 @@ public class PatientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PatientDTO> updatePatient(@PathVariable Long id, @RequestBody UpdatePatientDTO body) {
-        return patientService.updatePatient(id, body);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePatient(@PathVariable Long id) {
-        return patientService.deletePatient(id);
+    public ResponseEntity<PatientDTO> update(@PathVariable Long id, @RequestBody UpdatePatientDTO body) {
+        return patientService.update(id, body);
     }
 }

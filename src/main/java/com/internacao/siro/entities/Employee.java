@@ -45,15 +45,10 @@ public class Employee extends Person {
         this.re = re;
     }
 
-    public void updateEmployee(UpdateEmployeeDTO body) {
-        updatePerson(body);
+    public void update(UpdateEmployeeDTO body) {
+        super.update(body);
         if (body.getRe() != null)
             re = body.getRe();
-    }
-
-    public void reverseDelete(NewEmployeeDTO body) {
-        super.reverseDelete(body);
-        re = body.getRe();
     }
 
     @Override

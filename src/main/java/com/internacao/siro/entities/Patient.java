@@ -45,17 +45,12 @@ public class Patient extends Person {
         this.mr = mr;
     }
 
-    public void updatePatient(UpdatePatientDTO body) {
-        updatePerson(body);
+    public void update(UpdatePatientDTO body) {
+        super.update(body);
         if (body.getMr() != null)
             mr = body.getMr();
     }
-
-    public void reverseDelete(NewPatientDTO body) {
-        super.reverseDelete(body);
-        mr = body.getMr();
-    }
-
+    
     @Override
 	public int hashCode() {
 		return Objects.hash(mr);

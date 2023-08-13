@@ -1,6 +1,5 @@
 package com.internacao.siro.services;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +28,14 @@ public class PersonService {
 
     @Transactional(readOnly = true)
     public List<PersonDTO> findAll() {
-        List<Person> result = personRepository.findByDeletedAtIsNull();
+        List<Person> result = personRepository.findAll();
         List<PersonDTO> dto = result.stream().map(x -> new PersonDTO(x)).toList();
         return dto;
     }
 
     @Transactional(readOnly = true)
     public ResponseEntity<PersonDTO> findById(Long id) {
-        Person person = personRepository.findByIdAndDeletedAtIsNull(id);
+        Person person = personRepository.findById(id).orElse(null);
 
         if (person == null)
             return ResponseEntity.notFound().build();
@@ -57,15 +56,11 @@ public class PersonService {
     }
 
     @Transactional
-    public ResponseEntity<PersonDTO> createNewPerson(NewPersonDTO body) {
+    public ResponseEntity<PersonDTO> create(NewPersonDTO body) {
         if (body.getCpf() != null) {
             Person exists = personRepository.findByCpf(body.getCpf());
-            if (exists != null && exists.getDeletedAt() != null) {
-                exists.reverseDelete(body);
-                personRepository.save(exists);
-                return ResponseEntity.ok(new PersonDTO(exists));
-            }
-            else if (exists != null)
+
+            if (exists != null)
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
@@ -75,26 +70,14 @@ public class PersonService {
     }
 
     @Transactional
-    public ResponseEntity<PersonDTO> updatePerson(Long id, UpdatePersonDTO body) {
-        Person person = personRepository.findByIdAndDeletedAtIsNull(id);
+    public ResponseEntity<PersonDTO> update(Long id, UpdatePersonDTO body) {
+        Person person = personRepository.findById(id).orElse(null);
         
         if (person == null)
             return ResponseEntity.notFound().build();
 
-        person.updatePerson(body);
+        person.update(body);
         personRepository.save(person);
         return ResponseEntity.ok(new PersonDTO(person));
-    }
-
-    @Transactional
-    public ResponseEntity<String> deletePerson(Long id) {
-        Person person = personRepository.findByIdAndDeletedAtIsNull(id);
-
-        if (person == null)
-            return ResponseEntity.notFound().build();
-
-        person.setDeletedAt(LocalDateTime.now());
-        personRepository.save(person);
-        return ResponseEntity.noContent().build();
     }
 }

@@ -47,15 +47,10 @@ public class Doctor extends Person {
         this.crm = crm;
     }
 
-    public void updateDoctor(UpdateDoctorDTO body) {
-        updatePerson(body);
+    public void update(UpdateDoctorDTO body) {
+        super.update(body);
         if (body.getCrm() != null)
             crm = body.getCrm();
-    }
-
-    public void reverseDelete(NewDoctorDTO body) {
-        super.reverseDelete(body);
-        crm = body.getCrm();
     }
 
     @Override

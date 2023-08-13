@@ -1,6 +1,5 @@
 package com.internacao.siro.services;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +22,14 @@ public class EmployeeService {
 
     @Transactional(readOnly = true)
     public List<EmployeeDTO> findAll() {
-        List<Employee> result = employeeRepository.findByDeletedAtIsNull();
+        List<Employee> result = employeeRepository.findAll();
         List<EmployeeDTO> dto = result.stream().map(x -> new EmployeeDTO(x)).toList();
         return dto;
     }
 
     @Transactional(readOnly = true)
     public ResponseEntity<EmployeeDTO> findById(Long id) {
-        Employee result = employeeRepository.findByIdAndDeletedAtIsNull(id);
+        Employee result = employeeRepository.findById(id).orElse(null);
         if (result == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(new EmployeeDTO(result));
@@ -38,21 +37,16 @@ public class EmployeeService {
 
     @Transactional(readOnly = true)
     public ResponseEntity<EmployeeDTO> findByRe(Long re) {
-        Employee result = employeeRepository.findByReAndDeletedAtIsNull(re);
+        Employee result = employeeRepository.findByRe(re);
         if (result == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(new EmployeeDTO(result));
     }
 
     @Transactional
-    public ResponseEntity<EmployeeDTO> createNewEmployee(NewEmployeeDTO body) {
+    public ResponseEntity<EmployeeDTO> create(NewEmployeeDTO body) {
         Employee exists = employeeRepository.findByRe(body.getRe());
-        if (exists != null && exists.getDeletedAt() != null) {
-            exists.reverseDelete(body);
-            employeeRepository.save(exists);
-            return ResponseEntity.ok(new EmployeeDTO(exists));
-        }
-        else if (exists != null)
+        if (exists != null)
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
         Employee newEmployee = new Employee(body);
@@ -61,23 +55,13 @@ public class EmployeeService {
     }
 
     @Transactional
-    public ResponseEntity<EmployeeDTO> updateEmployee(Long id, UpdateEmployeeDTO body) {
-        Employee employee = employeeRepository.findByIdAndDeletedAtIsNull(id);
+    public ResponseEntity<EmployeeDTO> update(Long id, UpdateEmployeeDTO body) {
+        Employee employee = employeeRepository.findById(id).orElse(null);
         if (employee == null)
             return ResponseEntity.notFound().build();
 
-        employee.updateEmployee(body);
+        employee.update(body);
         employeeRepository.save(employee);
         return ResponseEntity.ok(new EmployeeDTO(employee));
-    }
-
-    @Transactional
-    public ResponseEntity<String> deleteEmployee(Long id) {
-        Employee employee = employeeRepository.findByIdAndDeletedAtIsNull(id);
-        if (employee == null)
-            return ResponseEntity.notFound().build();
-            
-        employee.setDeletedAt(LocalDateTime.now());
-        return ResponseEntity.noContent().build();
     }
 }
