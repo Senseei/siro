@@ -10,11 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.internacao.siro.dto.RegisterDTO;
+import com.internacao.siro.dto.register.NewRegisterDTO;
+import com.internacao.siro.dto.register.RegisterDTO;
 import com.internacao.siro.services.RegisterService;
 
 @RestController
@@ -41,6 +44,11 @@ public class RegisterController {
             else
                 return new ArrayList<RegisterDTO>();
         }).orElseGet(() -> registerService.findAll());
+    }
+
+    @PostMapping
+    public ResponseEntity<RegisterDTO> create(@RequestBody NewRegisterDTO body) {
+        return registerService.create(body);
     }
 
     @GetMapping("/{id}")

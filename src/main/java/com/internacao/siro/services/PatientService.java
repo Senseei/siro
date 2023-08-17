@@ -47,8 +47,7 @@ public class PatientService {
 
     @Transactional
     public ResponseEntity<PatientDTO> create(NewPatientDTO body) {
-        Patient exists = patientRepository.findByMr(body.getMr());
-        if (exists != null)
+        if (patientRepository.existsByMr(body.getMr()))
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
         Patient newPatient = new Patient(body);

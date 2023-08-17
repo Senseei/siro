@@ -3,6 +3,7 @@ package com.internacao.siro.entities;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.internacao.siro.dto.employee.EmployeeDTO;
 import com.internacao.siro.dto.employee.NewEmployeeDTO;
 import com.internacao.siro.dto.employee.UpdateEmployeeDTO;
 
@@ -35,6 +36,11 @@ public class Employee extends Person {
     public Employee(NewEmployeeDTO body) {
         super(body);
         re = body.getRe();
+    }
+
+    public Employee(EmployeeDTO dto) {
+        super(dto);
+        re = dto.getRe();
     }
 
     public Long getRe() {

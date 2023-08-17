@@ -1,4 +1,4 @@
-package com.internacao.siro.dto;
+package com.internacao.siro.dto.documentation;
 
 import com.internacao.siro.entities.Documentation;
 

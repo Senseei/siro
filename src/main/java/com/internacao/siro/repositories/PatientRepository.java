@@ -16,4 +16,5 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
             """)
     RelativeProjection findRelativeById(Long relativeId, Long patientId);
     Patient findByMr(Long mr);
+    Boolean existsByMr(Long mr);
 }

@@ -45,8 +45,7 @@ public class EmployeeService {
 
     @Transactional
     public ResponseEntity<EmployeeDTO> create(NewEmployeeDTO body) {
-        Employee exists = employeeRepository.findByRe(body.getRe());
-        if (exists != null)
+        if (employeeRepository.exexistsByRe(body.getRe()))
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
         Employee newEmployee = new Employee(body);

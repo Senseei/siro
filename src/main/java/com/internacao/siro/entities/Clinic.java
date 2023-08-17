@@ -2,6 +2,8 @@ package com.internacao.siro.entities;
 
 import java.util.Objects;
 
+import com.internacao.siro.dto.ClinicDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +23,11 @@ public class Clinic {
 
     public Clinic(String name) {
         setName(name);
+    }
+
+    public Clinic(ClinicDTO dto) {
+        id = dto.getId();
+        name = dto.getName();
     }
 
     public Long getId() {

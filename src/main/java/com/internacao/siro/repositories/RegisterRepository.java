@@ -8,4 +8,6 @@ import com.internacao.siro.entities.Register;
 public interface RegisterRepository extends JpaRepository<Register, Long> {
     
     Register findByPatient(Patient patient);
+    Register findByPatientId(Long id);
+    Boolean existsByPatientId(Long id);
 }

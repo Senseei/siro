@@ -7,4 +7,5 @@ import com.internacao.siro.entities.Employee;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Employee findByRe(Long re);
+    Boolean exexistsByRe(Long re);
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import com.internacao.siro.dto.person.NewPersonDTO;
+import com.internacao.siro.dto.person.PersonDTO;
 import com.internacao.siro.dto.person.UpdatePersonDTO;
 
 import jakarta.persistence.Column;
@@ -54,6 +55,13 @@ public class Person {
         name = body.getName();
         birthday = body.getBirthday();
         cpf = body.getCpf();
+    }
+
+    public Person(PersonDTO dto) {
+        id = dto.getId();
+        name = dto.getName();
+        birthday = dto.getBirthday();
+        cpf = dto.getCpf();
     }
 
     public Long getId() {

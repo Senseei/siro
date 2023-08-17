@@ -11,9 +11,11 @@ public class EmployeeMinDTO {
     public EmployeeMinDTO() {}
 
     public EmployeeMinDTO(Employee employee) {
-        id = employee.getId();
-        name = employee.getName();
-        re = employee.getRe();
+        if (employee != null) {
+            id = employee.getId();
+            name = employee.getName();
+            re = employee.getRe();
+        }
     }
 
     public Long getId() {

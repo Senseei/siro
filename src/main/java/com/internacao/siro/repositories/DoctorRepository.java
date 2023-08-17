@@ -8,4 +8,5 @@ import com.internacao.siro.entities.Doctor;
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     
     Doctor findByCrm(Long crm);
+    Boolean exexistsByCrm(Long crm);
 }

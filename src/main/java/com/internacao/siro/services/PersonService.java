@@ -58,9 +58,7 @@ public class PersonService {
     @Transactional
     public ResponseEntity<PersonDTO> create(NewPersonDTO body) {
         if (body.getCpf() != null) {
-            Person exists = personRepository.findByCpf(body.getCpf());
-
-            if (exists != null)
+            if (personRepository.existsByCpf(body.getCpf()))
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 

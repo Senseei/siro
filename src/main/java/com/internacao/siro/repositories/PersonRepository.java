@@ -8,4 +8,5 @@ import com.internacao.siro.entities.Person;
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
     Person findByCpf(String cpf);
+    Boolean existsByCpf(String cpf);
 }

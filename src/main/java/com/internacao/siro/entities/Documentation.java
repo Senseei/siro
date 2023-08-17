@@ -2,6 +2,8 @@ package com.internacao.siro.entities;
 
 import java.util.Objects;
 
+import com.internacao.siro.dto.documentation.DocumentationDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,11 @@ public class Documentation {
     private String doc;
 
     public Documentation() {}
+
+    public Documentation(DocumentationDTO dto) {
+        id = dto.getId();
+        doc = dto.getDoc();
+    }
 
     public Long getId() {
         return id;
