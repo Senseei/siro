@@ -11,9 +11,13 @@ public class PatientDTO extends PersonDTO {
 
     public PatientDTO(Patient patient) {
         super(patient);
-        if (patient != null) {
-            mr = patient.getMr();
-        }
+        mr = patient.getMr();
+    }
+
+    public static PatientDTO of(Patient patient) {
+        if (patient == null)
+            return null;
+        return new PatientDTO(patient);
     }
 
     public Long getMr() {

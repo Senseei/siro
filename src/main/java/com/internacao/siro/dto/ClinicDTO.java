@@ -14,6 +14,12 @@ public class ClinicDTO {
         name = clinic.getName();
     }
 
+    public static ClinicDTO of(Clinic clinic) {
+        if (clinic == null)
+            return null;
+        return new ClinicDTO(clinic);
+    }
+
     public Long getId() {
         return id;
     }

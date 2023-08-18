@@ -11,11 +11,15 @@ public class DoctorMinDTO {
     public DoctorMinDTO() {}
 
     public DoctorMinDTO(Doctor doctor) {
-        if (doctor != null) {
-            id = doctor.getId();
-            name = doctor.getName();
-            crm = doctor.getCrm();
-        }
+        id = doctor.getId();
+        name = doctor.getName();
+        crm = doctor.getCrm();
+    }
+
+    public static DoctorMinDTO of(Doctor doctor) {
+        if (doctor == null)
+            return null;
+        return new DoctorMinDTO(doctor);
     }
 
     public Long getId() {

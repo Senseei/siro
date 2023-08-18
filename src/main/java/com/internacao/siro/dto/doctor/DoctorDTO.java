@@ -11,9 +11,13 @@ public class DoctorDTO extends PersonDTO {
 
     public DoctorDTO(Doctor doctor) {
         super(doctor);
-        if (doctor != null) {
-            crm = doctor.getCrm();
-        }
+        crm = doctor.getCrm();
+    }
+
+    public static DoctorDTO of(Doctor doctor) {
+        if (doctor == null)
+            return null;
+        return new DoctorDTO(doctor);
     }
 
     public Long getCrm() {

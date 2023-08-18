@@ -23,7 +23,7 @@ public class EmployeeService {
     @Transactional(readOnly = true)
     public List<EmployeeDTO> findAll() {
         List<Employee> result = employeeRepository.findAll();
-        List<EmployeeDTO> dto = result.stream().map(x -> new EmployeeDTO(x)).toList();
+        List<EmployeeDTO> dto = result.stream().map(x -> EmployeeDTO.of(x)).toList();
         return dto;
     }
 
@@ -32,7 +32,7 @@ public class EmployeeService {
         Employee result = employeeRepository.findById(id).orElse(null);
         if (result == null)
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(new EmployeeDTO(result));
+        return ResponseEntity.ok(EmployeeDTO.of(result));
     }
 
     @Transactional(readOnly = true)
@@ -40,17 +40,17 @@ public class EmployeeService {
         Employee result = employeeRepository.findByRe(re);
         if (result == null)
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(new EmployeeDTO(result));
+        return ResponseEntity.ok(EmployeeDTO.of(result));
     }
 
     @Transactional
     public ResponseEntity<EmployeeDTO> create(NewEmployeeDTO body) {
-        if (employeeRepository.exexistsByRe(body.getRe()))
+        if (employeeRepository.existsByRe(body.getRe()))
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
         Employee newEmployee = new Employee(body);
         employeeRepository.save(newEmployee);
-        return ResponseEntity.ok(new EmployeeDTO(newEmployee));
+        return ResponseEntity.ok(EmployeeDTO.of(newEmployee));
     }
 
     @Transactional
@@ -61,6 +61,6 @@ public class EmployeeService {
 
         employee.update(body);
         employeeRepository.save(employee);
-        return ResponseEntity.ok(new EmployeeDTO(employee));
+        return ResponseEntity.ok(EmployeeDTO.of(employee));
     }
 }

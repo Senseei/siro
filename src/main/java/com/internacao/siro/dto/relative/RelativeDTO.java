@@ -1,4 +1,4 @@
-package com.internacao.siro.dto;
+package com.internacao.siro.dto.relative;
 
 import java.time.LocalDate;
 
@@ -14,12 +14,16 @@ public class RelativeDTO {
     public RelativeDTO() {}
 
     public RelativeDTO(RelativeProjection projection) {
-        if (projection != null) {
-            id = projection.getId();
-            name = projection.getName();
-            birthday = projection.getBirthday();
-            relationship = projection.getRelationship();
-        }
+        id = projection.getId();
+        name = projection.getName();
+        birthday = projection.getBirthday();
+        relationship = projection.getRelationship();
+    }
+
+    public static RelativeDTO of(RelativeProjection projection) {
+        if (projection == null)
+            return null;
+        return new RelativeDTO(projection);
     }
 
     public Long getId() {

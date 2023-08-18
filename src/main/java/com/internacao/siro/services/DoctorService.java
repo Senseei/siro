@@ -23,7 +23,7 @@ public class DoctorService {
     @Transactional(readOnly = true)
     public List<DoctorDTO> findAll() {
         List<Doctor> result = doctorRepository.findAll();
-        List<DoctorDTO> dto = result.stream().map(x -> new DoctorDTO(x)).toList();
+        List<DoctorDTO> dto = result.stream().map(x -> DoctorDTO.of(x)).toList();
         return dto;
     }
 
@@ -32,7 +32,7 @@ public class DoctorService {
         Doctor result = doctorRepository.findById(id).orElse(null);
         if (result == null)
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(new DoctorDTO(result));
+        return ResponseEntity.ok(DoctorDTO.of(result));
     }
 
     @Transactional(readOnly = true)
@@ -40,17 +40,17 @@ public class DoctorService {
         Doctor result = doctorRepository.findByCrm(crm);
         if (result == null)
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(new DoctorDTO(result));
+        return ResponseEntity.ok(DoctorDTO.of(result));
     }
 
     @Transactional
     public ResponseEntity<DoctorDTO> create(NewDoctorDTO body) {
-        if (doctorRepository.exexistsByCrm(body.getCrm()))
+        if (doctorRepository.existsByCrm(body.getCrm()))
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
         Doctor newDoctor = new Doctor(body);
         doctorRepository.save(newDoctor);
-        return ResponseEntity.ok(new DoctorDTO(newDoctor));
+        return ResponseEntity.ok(DoctorDTO.of(newDoctor));
     }
 
     @Transactional
@@ -61,6 +61,6 @@ public class DoctorService {
             
         doctor.update(body);
         doctorRepository.save(doctor);
-        return ResponseEntity.ok(new DoctorDTO(doctor));
+        return ResponseEntity.ok(DoctorDTO.of(doctor));
     }
 }

@@ -11,10 +11,13 @@ public class EmployeeDTO extends PersonDTO {
 
     public EmployeeDTO(Employee employee) {
         super(employee);
-        if (employee != null) {
-            re = employee.getRe();
-        }
-        
+        re = employee.getRe();
+    }
+
+    public static EmployeeDTO of(Employee employee) {
+        if (employee == null)
+            return null;
+        return new EmployeeDTO(employee);
     }
 
     public Long getRe() {

@@ -14,12 +14,16 @@ public class PersonDTO {
     public PersonDTO() {}
 
     public PersonDTO(Person person) {
-        if (person != null) {
-            id = person.getId();
-            name = person.getName();
-            birthday = person.getBirthday();
-            cpf = person.getCpf();
-        }
+        id = person.getId();
+        name = person.getName();
+        birthday = person.getBirthday();
+        cpf = person.getCpf();
+    }
+
+    public static PersonDTO of(Person person) {
+        if (person == null)
+            return null;
+        return new PersonDTO(person);
     }
 
     public LocalDate getBirthday() {

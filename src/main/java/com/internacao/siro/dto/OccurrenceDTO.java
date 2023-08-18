@@ -16,6 +16,12 @@ public class OccurrenceDTO {
         employee = new EmployeeMinDTO(occurrence.getEmployee());
         description = occurrence.getDescription();
     }
+
+    public static OccurrenceDTO of(Occurrence occurrence) {
+        if (occurrence == null)
+            return null;
+        return new OccurrenceDTO(occurrence);
+    }
     
     public String getDescription() {
         return description;

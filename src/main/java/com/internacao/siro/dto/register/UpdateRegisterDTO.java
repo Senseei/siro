@@ -2,26 +2,28 @@ package com.internacao.siro.dto.register;
 
 import java.time.LocalDateTime;
 
+import com.internacao.siro.dto.relative.UpdateRelativeDTO;
+
 public class UpdateRegisterDTO {
     
     private Long patientId;
     private LocalDateTime dateOfDeath;
     private Long doctorId;
     private Long clinicId;
-    private Long relativeId;
+    private UpdateRelativeDTO relative;
     private LocalDateTime documentationWithdrawal;
     private Long employeeId;
 
     public UpdateRegisterDTO() {}
 
     public UpdateRegisterDTO(Long patiendId, LocalDateTime dateOfDeath, Long doctorId,
-        Long clinicId, Long relativeId, LocalDateTime documentationWithdrawal,
+        Long clinicId, UpdateRelativeDTO relative, LocalDateTime documentationWithdrawal,
         Long employeeId) {
             this.patientId = patiendId;
             this.dateOfDeath = dateOfDeath;
             this.doctorId = doctorId;
             this.clinicId = clinicId;
-            this.relativeId = relativeId;
+            this.relative = relative;
             this.documentationWithdrawal = documentationWithdrawal;
             this.employeeId = employeeId;
         }
@@ -74,11 +76,11 @@ public class UpdateRegisterDTO {
         this.patientId = patientId;
     }
 
-    public Long getRelativeId() {
-        return relativeId;
+    public UpdateRelativeDTO getRelative() {
+        return relative;
     }
 
-    public void setRelativeId(Long relativeId) {
-        this.relativeId = relativeId;
+    public void setRelative(UpdateRelativeDTO relative) {
+        this.relative = relative;
     }
 }

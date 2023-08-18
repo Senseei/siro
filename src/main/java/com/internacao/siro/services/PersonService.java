@@ -29,7 +29,7 @@ public class PersonService {
     @Transactional(readOnly = true)
     public List<PersonDTO> findAll() {
         List<Person> result = personRepository.findAll();
-        List<PersonDTO> dto = result.stream().map(x -> new PersonDTO(x)).toList();
+        List<PersonDTO> dto = result.stream().map(x -> PersonDTO.of(x)).toList();
         return dto;
     }
 
@@ -41,18 +41,18 @@ public class PersonService {
             return ResponseEntity.notFound().build();
 
         if (person instanceof Doctor) {
-            DoctorDTO dto = new DoctorDTO((Doctor) person);
+            DoctorDTO dto = DoctorDTO.of((Doctor) person);
             return ResponseEntity.ok((PersonDTO) dto);
         }
         else if (person instanceof Employee) {
-            EmployeeDTO dto = new EmployeeDTO((Employee) person);
+            EmployeeDTO dto = EmployeeDTO.of((Employee) person);
             return ResponseEntity.ok((PersonDTO) dto);
         }
         else if (person instanceof Patient) {
-            PatientDTO dto = new PatientDTO((Patient) person);
+            PatientDTO dto = PatientDTO.of((Patient) person);
             return ResponseEntity.ok((PersonDTO) dto);
         }
-        return ResponseEntity.ok(new PersonDTO(person));
+        return ResponseEntity.ok(PersonDTO.of(person));
     }
 
     @Transactional
@@ -64,7 +64,7 @@ public class PersonService {
 
         Person newPerson = new Person(body);
         personRepository.save(newPerson);
-        return ResponseEntity.ok(new PersonDTO(newPerson));
+        return ResponseEntity.ok(PersonDTO.of(newPerson));
     }
 
     @Transactional
@@ -76,6 +76,6 @@ public class PersonService {
 
         person.update(body);
         personRepository.save(person);
-        return ResponseEntity.ok(new PersonDTO(person));
+        return ResponseEntity.ok(PersonDTO.of(person));
     }
 }

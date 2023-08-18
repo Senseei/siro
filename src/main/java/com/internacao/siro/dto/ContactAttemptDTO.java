@@ -23,6 +23,12 @@ public class ContactAttemptDTO {
         reasonForNotCalling = contactAttempt.getReasonForNotCalling();
     }
 
+    public static ContactAttemptDTO of(ContactAttempt contactAttempt) {
+        if (contactAttempt == null)
+            return null;
+        return new ContactAttemptDTO(contactAttempt);
+    }
+
     public LocalDateTime getAttemptTime() {
         return attemptTime;
     }

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.internacao.siro.dto.register.NewRegisterDTO;
 import com.internacao.siro.dto.register.RegisterDTO;
-import com.internacao.siro.services.RegisterService;
+import com.internacao.siro.dto.register.UpdateRegisterDTO;
+import com.internacao.siro.services.register.RegisterService;
 
 @RestController
 @RequestMapping("/registers")
@@ -54,5 +56,10 @@ public class RegisterController {
     @GetMapping("/{id}")
     public ResponseEntity<RegisterDTO> findById(@PathVariable Long id) {
         return registerService.findById(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<RegisterDTO> update(@PathVariable Long id, @RequestBody UpdateRegisterDTO body) {
+        return registerService.update(id, body);
     }
 }

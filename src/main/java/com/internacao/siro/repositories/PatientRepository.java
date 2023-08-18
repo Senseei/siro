@@ -1,6 +1,7 @@
 package com.internacao.siro.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import com.internacao.siro.entities.Patient;
@@ -15,6 +16,21 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
             WHERE tb_relatives.relative_id = :relativeId AND tb_relatives.patient_id = :patientId
             """)
     RelativeProjection findRelativeById(Long relativeId, Long patientId);
+
+    @Modifying
+    @Query(nativeQuery = true, value = """
+            DELETE FROM tb_relatives
+            WHERE relative_id = :relativeId AND patient_id = :patientId
+            """)
+    void deleteRelative(Long relativeId, Long patientId);
+
+    @Modifying
+    @Query(nativeQuery = true, value = """
+            INSERT INTO tb_relatives (relative_id, patient_id, relationship)
+            VALUES (:relativeId, :patientId, :relationship)
+            """)
+    void addRelative(Long relativeId, Long patientId, String relationship);
+
     Patient findByMr(Long mr);
     Boolean existsByMr(Long mr);
 }

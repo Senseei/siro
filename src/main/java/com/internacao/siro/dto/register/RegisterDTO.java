@@ -6,11 +6,11 @@ import java.util.List;
 import com.internacao.siro.dto.ClinicDTO;
 import com.internacao.siro.dto.ContactAttemptDTO;
 import com.internacao.siro.dto.OccurrenceDTO;
-import com.internacao.siro.dto.RelativeDTO;
 import com.internacao.siro.dto.doctor.DoctorMinDTO;
 import com.internacao.siro.dto.documentation.DocumentationDTO;
 import com.internacao.siro.dto.employee.EmployeeMinDTO;
 import com.internacao.siro.dto.patient.PatientDTO;
+import com.internacao.siro.dto.relative.RelativeDTO;
 import com.internacao.siro.entities.Register;
 import com.internacao.siro.projections.RelativeProjection;
 
@@ -31,34 +31,42 @@ public class RegisterDTO {
     public RegisterDTO() {}
 
     public RegisterDTO(Register register) {
-        if (register != null) {
-            id = register.getId();
-            patient = new PatientDTO(register.getPatient());
-            dateOfDeath = register.getDateOfDeath();
-            documentation = register.getDocumentation().stream().map(x -> new DocumentationDTO(x)).toList();
-            doctor = new DoctorMinDTO(register.getDoctor());
-            clinic = new ClinicDTO(register.getClinic());
-            contactAttempts = register.getContactAttempts().stream().map(x -> new ContactAttemptDTO(x)).toList();
-            documentationWithdrawal = register.getDocumentationWithdrawal();
-            attendant = new EmployeeMinDTO(register.getAttendant());
-            occurrences = register.getOccurrences().stream().map(x -> new OccurrenceDTO(x)).toList();
-        }
+        id = register.getId();
+        patient = PatientDTO.of(register.getPatient());
+        dateOfDeath = register.getDateOfDeath();
+        documentation = register.getDocumentation().stream().map(x -> DocumentationDTO.of(x)).toList();
+        doctor = DoctorMinDTO.of(register.getDoctor());
+        clinic = ClinicDTO.of(register.getClinic());
+        contactAttempts = register.getContactAttempts().stream().map(x -> ContactAttemptDTO.of(x)).toList();
+        documentationWithdrawal = register.getDocumentationWithdrawal();
+        attendant = EmployeeMinDTO.of(register.getAttendant());
+        occurrences = register.getOccurrences().stream().map(x -> OccurrenceDTO.of(x)).toList();
     }
 
     public RegisterDTO(Register register, RelativeProjection relativeProjection) {
-        if (register != null) {
-            id = register.getId();
-            patient = new PatientDTO(register.getPatient());
-            dateOfDeath = register.getDateOfDeath();
-            documentation = register.getDocumentation().stream().map(x -> new DocumentationDTO(x)).toList();
-            doctor = new DoctorMinDTO(register.getDoctor());
-            clinic = new ClinicDTO(register.getClinic());
-            contactAttempts = register.getContactAttempts().stream().map(x -> new ContactAttemptDTO(x)).toList();
-            relative = new RelativeDTO(relativeProjection);
-            documentationWithdrawal = register.getDocumentationWithdrawal();
-            attendant = new EmployeeMinDTO(register.getAttendant());
-            occurrences = register.getOccurrences().stream().map(x -> new OccurrenceDTO(x)).toList();
-        }
+        id = register.getId();
+        patient = PatientDTO.of(register.getPatient());
+        dateOfDeath = register.getDateOfDeath();
+        documentation = register.getDocumentation().stream().map(x -> DocumentationDTO.of(x)).toList();
+        doctor = DoctorMinDTO.of(register.getDoctor());
+        clinic = ClinicDTO.of(register.getClinic());
+        contactAttempts = register.getContactAttempts().stream().map(x -> ContactAttemptDTO.of(x)).toList();
+        relative = RelativeDTO.of(relativeProjection);
+        documentationWithdrawal = register.getDocumentationWithdrawal();
+        attendant = EmployeeMinDTO.of(register.getAttendant());
+        occurrences = register.getOccurrences().stream().map(x -> OccurrenceDTO.of(x)).toList();
+    }
+
+    public static RegisterDTO of(Register register) {
+        if (register == null)
+            return null;
+        return new RegisterDTO(register);
+    }
+
+    public static RegisterDTO of(Register register, RelativeProjection relativeProjection) {
+        if (register == null)
+            return null;
+        return new RegisterDTO(register, relativeProjection);
     }
 
     public EmployeeMinDTO getAttendant() {

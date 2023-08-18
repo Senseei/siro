@@ -11,6 +11,7 @@ import com.internacao.siro.dto.patient.PatientDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,7 +34,7 @@ public class Register {
     private Patient patient;
     private LocalDateTime dateOfDeath;
 
-    @OneToMany(mappedBy = "register", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "register", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Documentation> documentation = new ArrayList<>();
 
     @ManyToOne
@@ -44,7 +45,7 @@ public class Register {
     @JoinColumn(name = "clinic_id")
     private Clinic clinic;
 
-    @OneToMany(mappedBy = "register", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "register", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ContactAttempt> contactAttempts = new ArrayList<>();
 
     @ManyToOne
@@ -57,7 +58,7 @@ public class Register {
     @JoinColumn(name = "employee_id")
     private Employee attendant;
 
-    @OneToMany(mappedBy = "register", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "register", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Occurrence> occurrences = new ArrayList<>();
 
     public Register() {}
@@ -158,6 +159,24 @@ public class Register {
 
     public void setOccurrences(List<Occurrence> occurrences) {
         this.occurrences = occurrences;
+    }
+
+    public void update(Patient patient, LocalDateTime dateOfDeath, Doctor doctor, Clinic clinic, Person relative,
+        LocalDateTime documentationWithdrawal, Employee attendant) {
+        if (patient != null)
+            this.patient = patient;
+        if (dateOfDeath != null)
+            this.dateOfDeath = dateOfDeath;
+        if (doctor != null)
+            this.doctor = doctor;
+        if (clinic != null)
+            this.clinic = clinic;
+        if (relative != null)
+            this.relative = relative;
+        if (documentationWithdrawal != null)
+            this.documentationWithdrawal = documentationWithdrawal;
+        if (attendant != null)
+            this.attendant = attendant;
     }
 
     @Override

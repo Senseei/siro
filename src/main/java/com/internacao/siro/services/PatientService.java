@@ -23,7 +23,7 @@ public class PatientService {
     @Transactional(readOnly = true)
     public List<PatientDTO> findAll() {
         List<Patient> result = patientRepository.findAll();
-        List<PatientDTO> dto = result.stream().map(x -> new PatientDTO(x)).toList();
+        List<PatientDTO> dto = result.stream().map(x -> PatientDTO.of(x)).toList();
         return dto;
     }
 
@@ -33,7 +33,7 @@ public class PatientService {
         if (result == null)
             return ResponseEntity.notFound().build();
             
-        return ResponseEntity.ok(new PatientDTO(result));
+        return ResponseEntity.ok(PatientDTO.of(result));
     }
 
     @Transactional(readOnly = true)
@@ -42,7 +42,7 @@ public class PatientService {
         if (result == null)
             return ResponseEntity.notFound().build();
             
-        return ResponseEntity.ok(new PatientDTO(result));
+        return ResponseEntity.ok(PatientDTO.of(result));
     }
 
     @Transactional
@@ -52,7 +52,7 @@ public class PatientService {
 
         Patient newPatient = new Patient(body);
         patientRepository.save(newPatient);
-        return ResponseEntity.ok(new PatientDTO(newPatient));
+        return ResponseEntity.ok(PatientDTO.of(newPatient));
     }
 
     @Transactional
@@ -63,6 +63,6 @@ public class PatientService {
 
         patient.update(body);
         patientRepository.save(patient);
-        return ResponseEntity.ok(new PatientDTO(patient));
+        return ResponseEntity.ok(PatientDTO.of(patient));
     }
 }

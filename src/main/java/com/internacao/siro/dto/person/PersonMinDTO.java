@@ -13,11 +13,15 @@ public class PersonMinDTO {
     public PersonMinDTO() {}
 
     public PersonMinDTO(Person person) {
-        if (person != null) {
-            id = person.getId();
-            name = person.getName();
-            birthday = person.getBirthday();
-        }
+        id = person.getId();
+        name = person.getName();
+        birthday = person.getBirthday();
+    }
+
+    public static PersonMinDTO of(Person person) {
+        if (person == null)
+            return null;
+        return new PersonMinDTO(person);
     }
 
     public LocalDate getBirthday() {

@@ -11,9 +11,13 @@ public class PatientMinDTO extends PersonMinDTO {
 
     public PatientMinDTO(Patient patient) {
         super(patient);
-        if (patient != null) {
-            mr = patient.getMr();
-        }
+        mr = patient.getMr();
+    }
+
+    public static PatientMinDTO of(Patient patient) {
+        if (patient == null)
+            return null;
+        return new PatientMinDTO(patient);
     }
 
     public Long getMr() {

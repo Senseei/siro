@@ -14,6 +14,12 @@ public class DocumentationDTO {
         doc = documentation.getDoc();
     }
 
+    public static DocumentationDTO of(Documentation documentation) {
+        if (documentation == null)
+            return null;
+        return new DocumentationDTO(documentation);
+    }
+
     public String getDoc() {
         return doc;
     }

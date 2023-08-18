@@ -11,11 +11,15 @@ public class EmployeeMinDTO {
     public EmployeeMinDTO() {}
 
     public EmployeeMinDTO(Employee employee) {
-        if (employee != null) {
-            id = employee.getId();
-            name = employee.getName();
-            re = employee.getRe();
-        }
+        id = employee.getId();
+        name = employee.getName();
+        re = employee.getRe();
+    }
+
+    public static EmployeeMinDTO of(Employee employee) {
+        if (employee == null)
+            return null;
+        return new EmployeeMinDTO(employee);
     }
 
     public Long getId() {
