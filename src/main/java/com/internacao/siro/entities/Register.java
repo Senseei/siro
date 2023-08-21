@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.internacao.siro.dto.ClinicDTO;
+import com.internacao.siro.dto.clinic.ClinicDTO;
 import com.internacao.siro.dto.doctor.DoctorDTO;
 import com.internacao.siro.dto.patient.PatientDTO;
 

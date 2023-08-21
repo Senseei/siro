@@ -1,4 +1,4 @@
-package com.internacao.siro.dto;
+package com.internacao.siro.dto.clinic;
 
 import com.internacao.siro.entities.Clinic;
 
