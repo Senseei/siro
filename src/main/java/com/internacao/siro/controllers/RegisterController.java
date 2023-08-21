@@ -22,7 +22,7 @@ import com.internacao.siro.dto.documentation.NewDocumentationDTO;
 import com.internacao.siro.dto.register.NewRegisterDTO;
 import com.internacao.siro.dto.register.RegisterDTO;
 import com.internacao.siro.dto.register.UpdateRegisterDTO;
-import com.internacao.siro.services.DocumentationService;
+import com.internacao.siro.services.documentation.DocumentationService;
 import com.internacao.siro.services.register.RegisterService;
 
 @RestController

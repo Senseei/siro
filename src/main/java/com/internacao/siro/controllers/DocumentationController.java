@@ -18,7 +18,7 @@ import com.internacao.siro.dto.documentation.CancelDocumentationDTO;
 import com.internacao.siro.dto.documentation.DocumentationDTO;
 import com.internacao.siro.dto.documentation.NewDocumentationDTO;
 import com.internacao.siro.dto.documentation.UpdateDocumentationDTO;
-import com.internacao.siro.services.DocumentationService;
+import com.internacao.siro.services.documentation.DocumentationService;
 
 @RestController
 @RequestMapping("/documentation")

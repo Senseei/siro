@@ -1,4 +1,4 @@
-package com.internacao.siro.services;
+package com.internacao.siro.services.documentation;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,13 +16,9 @@ import com.internacao.siro.entities.Doctor;
 import com.internacao.siro.entities.Documentation;
 import com.internacao.siro.entities.Employee;
 import com.internacao.siro.entities.Occurrence;
-import com.internacao.siro.entities.Patient;
 import com.internacao.siro.entities.Register;
-import com.internacao.siro.repositories.DoctorRepository;
 import com.internacao.siro.repositories.DocumentationRepository;
-import com.internacao.siro.repositories.EmployeeRepository;
 import com.internacao.siro.repositories.OccurrenceRepository;
-import com.internacao.siro.repositories.PatientRepository;
 import com.internacao.siro.repositories.RegisterRepository;
 
 import jakarta.persistence.EntityManager;
@@ -36,15 +32,11 @@ public class DocumentationService {
     EntityManager entityManager;
 
     @Autowired
+    DocumentationUtil documentationUtil;
+    @Autowired
     DocumentationRepository documentationRepository;
     @Autowired
     RegisterRepository registerRepository;
-    @Autowired
-    PatientRepository patientRepository;
-    @Autowired
-    EmployeeRepository employeeRepository;
-    @Autowired
-    DoctorRepository doctorRepository;
     @Autowired
     OccurrenceRepository occurrenceRepository;
 
@@ -69,7 +61,7 @@ public class DocumentationService {
 
     @Transactional(readOnly = true)
     public List<DocumentationDTO> findByPatientMr(Long mr) {
-        Register register = checkForRegisterByMr(mr);
+        Register register = documentationUtil.checkForRegisterByMr(mr);
 
         List<Documentation> docs = register.getDocumentation();
         return docs.stream().map(x -> DocumentationDTO.of(x)).toList();
@@ -95,10 +87,8 @@ public class DocumentationService {
         Documentation documentation = documentationRepository.findById(id).orElse(null);
         if (documentation == null)
             return ResponseEntity.notFound().build();
-        if (body.getEmployeeId() == null || body.getCause() == null)
-            return ResponseEntity.badRequest().body("Body and its properties cannot be null");
-        if (!employeeRepository.existsById(body.getEmployeeId()))
-            throw new EntityNotFoundException("The employee with the given Id does not exist");
+            
+        documentationUtil.validateJSON(body);
 
         Register register = entityManager.getReference(Register.class, documentation.getRegister().getId());
         Employee employee = entityManager.getReference(Employee.class, body.getEmployeeId());
@@ -120,10 +110,8 @@ public class DocumentationService {
 
         if (register == null)
             throw new EntityNotFoundException("The register with the given Id does not exist");
-        if (body == null || body.getDoc() == null || body.getDoctorId() == null)
-            throw new IllegalArgumentException("body and its field cannot be null");
-        if (!doctorRepository.existsById(body.getDoctorId()))
-            throw new EntityNotFoundException("The doctor with the given Id does not exist");
+
+        documentationUtil.validateJSON(body);
 
         Doctor doctor = entityManager.getReference(Doctor.class, body.getDoctorId());
         
@@ -136,11 +124,9 @@ public class DocumentationService {
 
     @Transactional
     public ResponseEntity<DocumentationDTO> appendToRegisterByPatientMr(NewDocumentationDTO body, Long mr) {
-        Register register = checkForRegisterByMr(mr);
-        if (body.getDoc() == null)
-            throw new IllegalArgumentException("doc number cannot be null");
-        if (body.getDoctorId() == null || !doctorRepository.existsById(body.getDoctorId()))
-            throw new EntityNotFoundException("The doctor with the given Id does not exist");
+        Register register = documentationUtil.checkForRegisterByMr(mr);
+
+        documentationUtil.validateJSON(body);
 
         Doctor doctor = entityManager.getReference(Doctor.class, body.getDoctorId());
         
@@ -149,17 +135,5 @@ public class DocumentationService {
         documentationRepository.save(documentation);
 
         return ResponseEntity.ok(DocumentationDTO.of(documentation));
-    }
-
-    public Register checkForRegisterByMr(Long mr) {
-        Patient patient = patientRepository.findByMr(mr);
-        if (patient == null)
-            throw new EntityNotFoundException("The patient with the given medical record does not exist");
-
-        Register register = registerRepository.findByPatient(patient);
-        if (register == null)
-            throw new EntityNotFoundException("There is no register with this patient yet");
-
-        return register;
     }
 }
