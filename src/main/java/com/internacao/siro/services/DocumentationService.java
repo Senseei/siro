@@ -1,5 +1,6 @@
 package com.internacao.siro.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,13 @@ import com.internacao.siro.dto.documentation.CancelDocumentationDTO;
 import com.internacao.siro.dto.documentation.DocumentationDTO;
 import com.internacao.siro.dto.documentation.NewDocumentationDTO;
 import com.internacao.siro.dto.documentation.UpdateDocumentationDTO;
+import com.internacao.siro.entities.Doctor;
 import com.internacao.siro.entities.Documentation;
 import com.internacao.siro.entities.Employee;
 import com.internacao.siro.entities.Occurrence;
 import com.internacao.siro.entities.Patient;
 import com.internacao.siro.entities.Register;
+import com.internacao.siro.repositories.DoctorRepository;
 import com.internacao.siro.repositories.DocumentationRepository;
 import com.internacao.siro.repositories.EmployeeRepository;
 import com.internacao.siro.repositories.OccurrenceRepository;
@@ -40,6 +43,8 @@ public class DocumentationService {
     PatientRepository patientRepository;
     @Autowired
     EmployeeRepository employeeRepository;
+    @Autowired
+    DoctorRepository doctorRepository;
     @Autowired
     OccurrenceRepository occurrenceRepository;
 
@@ -75,8 +80,12 @@ public class DocumentationService {
         Documentation documentation = documentationRepository.findById(id).orElse(null);
         if (documentation == null)
             return ResponseEntity.notFound().build();
+
+        Doctor doctor = null;
+        if (body.getDoctorId() != null)
+            doctor = entityManager.getReference(Doctor.class, body.getDoctorId());
         
-        documentation.update(body);
+        documentation.update(body.getDoc(), doctor);
         documentationRepository.save(documentation);
         return ResponseEntity.ok(DocumentationDTO.of(documentation));
     }
@@ -97,9 +106,11 @@ public class DocumentationService {
 
         documentation.cancel();
         Occurrence occurrence = new Occurrence(register, employee, body.getCause());
-
         occurrenceRepository.save(occurrence);
         documentationRepository.save(documentation);
+
+        occurrenceRepository.createDocumentationOccurrence(documentation.getId(), occurrence.getId(), LocalDateTime.now());
+
         return ResponseEntity.noContent().build();
     }
 
@@ -109,10 +120,14 @@ public class DocumentationService {
 
         if (register == null)
             throw new EntityNotFoundException("The register with the given Id does not exist");
-        if (body == null || body.getDoc() == null)
+        if (body == null || body.getDoc() == null || body.getDoctorId() == null)
             throw new IllegalArgumentException("body and its field cannot be null");
+        if (!doctorRepository.existsById(body.getDoctorId()))
+            throw new EntityNotFoundException("The doctor with the given Id does not exist");
+
+        Doctor doctor = entityManager.getReference(Doctor.class, body.getDoctorId());
         
-        Documentation documentation = new Documentation(body);
+        Documentation documentation = new Documentation(body.getDoc(), doctor);
         documentation.setRegister(register);
         documentationRepository.save(documentation);
 
@@ -122,8 +137,14 @@ public class DocumentationService {
     @Transactional
     public ResponseEntity<DocumentationDTO> appendToRegisterByPatientMr(NewDocumentationDTO body, Long mr) {
         Register register = checkForRegisterByMr(mr);
+        if (body.getDoc() == null)
+            throw new IllegalArgumentException("doc number cannot be null");
+        if (body.getDoctorId() == null || !doctorRepository.existsById(body.getDoctorId()))
+            throw new EntityNotFoundException("The doctor with the given Id does not exist");
 
-        Documentation documentation = new Documentation(body);
+        Doctor doctor = entityManager.getReference(Doctor.class, body.getDoctorId());
+        
+        Documentation documentation = new Documentation(body.getDoc(), doctor);
         documentation.setRegister(register);
         documentationRepository.save(documentation);
 

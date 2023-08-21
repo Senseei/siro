@@ -5,10 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.internacao.siro.dto.clinic.ClinicDTO;
-import com.internacao.siro.dto.doctor.DoctorDTO;
-import com.internacao.siro.dto.patient.PatientDTO;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -68,13 +64,6 @@ public class Register {
         this.dateOfDeath = dateOfDeath;
         this.doctor = doctor;
         this.clinic = clinic;
-    }
-
-    public Register(PatientDTO patient, LocalDateTime dateOfDeath, DoctorDTO doctor, ClinicDTO clinic) {
-        this.patient = new Patient(patient);
-        this.dateOfDeath = dateOfDeath;
-        this.doctor = new Doctor(doctor);
-        this.clinic = new Clinic(clinic);
     }
 
     public Long getId() {

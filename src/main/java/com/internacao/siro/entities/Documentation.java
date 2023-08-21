@@ -3,8 +3,6 @@ package com.internacao.siro.entities;
 import java.util.Objects;
 
 import com.internacao.siro.dto.documentation.DocumentationDTO;
-import com.internacao.siro.dto.documentation.NewDocumentationDTO;
-import com.internacao.siro.dto.documentation.UpdateDocumentationDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,6 +24,10 @@ public class Documentation {
     @JoinColumn(name = "register_id")
     private Register register;
     private String doc;
+
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
     private boolean canceled;
 
     public Documentation() {}
@@ -36,13 +38,16 @@ public class Documentation {
         canceled = dto.isCanceled();
     }
 
-    public Documentation(NewDocumentationDTO body) {
-        doc = body.getDoc();
+    public Documentation(String doc, Doctor doctor) {
+        this.doc = doc;
+        this.doctor = doctor;
     }
 
-    public void update(UpdateDocumentationDTO body) {
-        if (body.getDoc() != null)
-            doc = body.getDoc();
+    public void update(String doc, Doctor doctor) {
+        if (doc != null)
+            this.doc = doc;
+        if (doctor != null)
+            this.doctor = doctor;
     }
 
     public boolean isCanceled() {
@@ -51,6 +56,14 @@ public class Documentation {
 
     public void cancel() {
         canceled = true;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
     public Long getId() {

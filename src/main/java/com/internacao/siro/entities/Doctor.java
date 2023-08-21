@@ -3,7 +3,6 @@ package com.internacao.siro.entities;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import com.internacao.siro.dto.doctor.DoctorDTO;
 import com.internacao.siro.dto.doctor.NewDoctorDTO;
 import com.internacao.siro.dto.doctor.UpdateDoctorDTO;
 
@@ -12,7 +11,7 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("DOCTOR")
+@DiscriminatorValue("Doctor")
 public class Doctor extends Person {
 
     @Column(unique = true)
@@ -38,11 +37,6 @@ public class Doctor extends Person {
     public Doctor(NewDoctorDTO body) {
         super(body.getName(), body.getBirthday(), body.getCpf());
         crm = body.getCrm();
-    }
-
-    public Doctor(DoctorDTO dto) {
-        super(dto);
-        crm = dto.getCrm();
     }
 
     public Long getCrm() {

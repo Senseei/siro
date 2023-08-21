@@ -4,14 +4,13 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import com.internacao.siro.dto.patient.NewPatientDTO;
-import com.internacao.siro.dto.patient.PatientDTO;
 import com.internacao.siro.dto.patient.UpdatePatientDTO;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("PATIENT")
+@DiscriminatorValue("Patient")
 public class Patient extends Person {
 
     private Long mr;
@@ -36,11 +35,6 @@ public class Patient extends Person {
     public Patient(NewPatientDTO body) {
         super(body);
         mr = body.getMr();
-    }
-
-    public Patient(PatientDTO dto) {
-        super(dto);
-        mr = dto.getMr();
     }
 
     public Long getMr() {
