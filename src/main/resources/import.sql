@@ -16,7 +16,7 @@ INSERT INTO tb_clinics (name) values ('P.S. Emergencia');
 INSERT INTO tb_registers (patient_id, date_of_death, doctor_id, clinic_id, relative_id, documentation_withdrawal, employee_id) values (3, '2023-08-02 12:50:00', 1, 1, 2, '2023-08-02 16:50:00', 4);
 
 /* DOCUMENTATION */
-INSERT INTO tb_documentation (register_id, doc) values (1, 'IML/SVO');
+INSERT INTO tb_documentation (register_id, doc, canceled) values (1, 'IML/SVO', 'FALSE');
 
 /* OCCURRENCES */
 INSERT INTO tb_occurrences (register_id, employee_id, description) values (1, 4, 'Test description');

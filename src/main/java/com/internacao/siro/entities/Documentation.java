@@ -3,6 +3,7 @@ package com.internacao.siro.entities;
 import java.util.Objects;
 
 import com.internacao.siro.dto.documentation.DocumentationDTO;
+import com.internacao.siro.dto.documentation.NewDocumentationDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,12 +25,22 @@ public class Documentation {
     @JoinColumn(name = "register_id")
     private Register register;
     private String doc;
+    private boolean canceled;
 
     public Documentation() {}
 
     public Documentation(DocumentationDTO dto) {
         id = dto.getId();
         doc = dto.getDoc();
+        canceled = dto.isCanceled();
+    }
+
+    public Documentation(NewDocumentationDTO body) {
+        doc = body.getDoc();
+    }
+
+    public boolean isCanceled() {
+        return canceled;
     }
 
     public Long getId() {

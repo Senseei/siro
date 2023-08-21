@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.internacao.siro.dto.documentation.DocumentationDTO;
+import com.internacao.siro.dto.documentation.NewDocumentationDTO;
 import com.internacao.siro.dto.register.NewRegisterDTO;
 import com.internacao.siro.dto.register.RegisterDTO;
 import com.internacao.siro.dto.register.UpdateRegisterDTO;
+import com.internacao.siro.services.DocumentationService;
 import com.internacao.siro.services.register.RegisterService;
 
 @RestController
@@ -28,6 +31,9 @@ public class RegisterController {
 
     @Autowired
     RegisterService registerService;
+    @Autowired
+    DocumentationService documentationService;
+
 
     @GetMapping
     public List<RegisterDTO> findAll(@RequestParam(required = false) Long patientId,
@@ -61,5 +67,15 @@ public class RegisterController {
     @PutMapping("/{id}")
     public ResponseEntity<RegisterDTO> update(@PathVariable Long id, @RequestBody UpdateRegisterDTO body) {
         return registerService.update(id, body);
+    }
+
+    @GetMapping("/{id}/documentation")
+    public List<DocumentationDTO> documentation(@PathVariable Long id) {
+        return documentationService.findByRegister(id);
+    }
+
+    @PostMapping("/{id}/documentation")
+    public ResponseEntity<DocumentationDTO> addDocumentation(@RequestBody NewDocumentationDTO body, @PathVariable Long id) {
+        return documentationService.createByRegisterId(body, id);
     }
 }
