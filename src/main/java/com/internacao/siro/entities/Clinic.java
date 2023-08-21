@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import com.internacao.siro.dto.clinic.ClinicDTO;
 import com.internacao.siro.dto.clinic.NewClinicDTO;
+import com.internacao.siro.dto.clinic.UpdateClinicDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +34,11 @@ public class Clinic {
 
     public Clinic(NewClinicDTO body) {
         name = body.getName();
+    }
+
+    public void update(UpdateClinicDTO body) {
+        if (body.getName() != null)
+            name = body.getName();
     }
 
     public Long getId() {

@@ -7,26 +7,41 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.internacao.siro.dto.documentation.CancelDocumentationDTO;
 import com.internacao.siro.dto.documentation.DocumentationDTO;
 import com.internacao.siro.dto.documentation.NewDocumentationDTO;
+import com.internacao.siro.dto.documentation.UpdateDocumentationDTO;
 import com.internacao.siro.entities.Documentation;
+import com.internacao.siro.entities.Employee;
+import com.internacao.siro.entities.Occurrence;
 import com.internacao.siro.entities.Patient;
 import com.internacao.siro.entities.Register;
 import com.internacao.siro.repositories.DocumentationRepository;
+import com.internacao.siro.repositories.EmployeeRepository;
+import com.internacao.siro.repositories.OccurrenceRepository;
 import com.internacao.siro.repositories.PatientRepository;
 import com.internacao.siro.repositories.RegisterRepository;
 
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 
 @Service
 public class DocumentationService {
     
+    @PersistenceContext
+    EntityManager entityManager;
+
     @Autowired
     DocumentationRepository documentationRepository;
     @Autowired
     RegisterRepository registerRepository;
     @Autowired
     PatientRepository patientRepository;
+    @Autowired
+    EmployeeRepository employeeRepository;
+    @Autowired
+    OccurrenceRepository occurrenceRepository;
 
 
     @Transactional(readOnly = true)
@@ -56,7 +71,40 @@ public class DocumentationService {
     }
 
     @Transactional
-    public ResponseEntity<DocumentationDTO> createByRegisterId(NewDocumentationDTO body, Long registerId) {
+    public ResponseEntity<DocumentationDTO> update(UpdateDocumentationDTO body, Long id) {
+        Documentation documentation = documentationRepository.findById(id).orElse(null);
+        if (documentation == null)
+            return ResponseEntity.notFound().build();
+        
+        documentation.update(body);
+        documentationRepository.save(documentation);
+        return ResponseEntity.ok(DocumentationDTO.of(documentation));
+    }
+
+    @Transactional
+    public ResponseEntity<String> cancel(CancelDocumentationDTO body, Long id) {
+        Documentation documentation = documentationRepository.findById(id).orElse(null);
+        if (documentation == null)
+            return ResponseEntity.notFound().build();
+        if (body.getEmployeeId() == null || body.getCause() == null)
+            return ResponseEntity.badRequest().body("Body and its properties cannot be null");
+        if (!employeeRepository.existsById(body.getEmployeeId()))
+            throw new EntityNotFoundException("The employee with the given Id does not exist");
+
+        Register register = entityManager.getReference(Register.class, documentation.getRegister().getId());
+        Employee employee = entityManager.getReference(Employee.class, body.getEmployeeId());
+
+
+        documentation.cancel();
+        Occurrence occurrence = new Occurrence(register, employee, body.getCause());
+
+        occurrenceRepository.save(occurrence);
+        documentationRepository.save(documentation);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Transactional
+    public ResponseEntity<DocumentationDTO> appendToRegisterById(NewDocumentationDTO body, Long registerId) {
         Register register = registerRepository.findById(registerId).orElse(null);
 
         if (register == null)
@@ -72,7 +120,7 @@ public class DocumentationService {
     }
 
     @Transactional
-    public ResponseEntity<DocumentationDTO> createByPatientMr(NewDocumentationDTO body, Long mr) {
+    public ResponseEntity<DocumentationDTO> appendToRegisterByPatientMr(NewDocumentationDTO body, Long mr) {
         Register register = checkForRegisterByMr(mr);
 
         Documentation documentation = new Documentation(body);

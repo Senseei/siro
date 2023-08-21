@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.internacao.siro.dto.clinic.ClinicDTO;
 import com.internacao.siro.dto.clinic.NewClinicDTO;
+import com.internacao.siro.dto.clinic.UpdateClinicDTO;
 import com.internacao.siro.entities.Clinic;
 import com.internacao.siro.repositories.ClinicRepository;
 
@@ -43,7 +44,7 @@ public class ClinicService {
 
     @Transactional
     public ResponseEntity<ClinicDTO> create(NewClinicDTO body) {
-        if (body == null || body.getName() == null)
+        if (body.getName() == null)
             throw new IllegalArgumentException("Body and its name cannot be null");
         if (clinicRepository.existsByName(body.getName()))
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -51,6 +52,17 @@ public class ClinicService {
         Clinic clinic = new Clinic(body);
         clinicRepository.save(clinic);
 
+        return ResponseEntity.ok(ClinicDTO.of(clinic));
+    }
+
+    @Transactional
+    public ResponseEntity<ClinicDTO> update(UpdateClinicDTO body, Long id) {
+        Clinic clinic = clinicRepository.findById(id).orElse(null);
+        if (clinic == null)
+            return ResponseEntity.notFound().build();
+
+        clinic.update(body);
+        clinicRepository.save(clinic);
         return ResponseEntity.ok(ClinicDTO.of(clinic));
     }
 }

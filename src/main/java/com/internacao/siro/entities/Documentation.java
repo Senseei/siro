@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import com.internacao.siro.dto.documentation.DocumentationDTO;
 import com.internacao.siro.dto.documentation.NewDocumentationDTO;
+import com.internacao.siro.dto.documentation.UpdateDocumentationDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,8 +40,17 @@ public class Documentation {
         doc = body.getDoc();
     }
 
+    public void update(UpdateDocumentationDTO body) {
+        if (body.getDoc() != null)
+            doc = body.getDoc();
+    }
+
     public boolean isCanceled() {
         return canceled;
+    }
+
+    public void cancel() {
+        canceled = true;
     }
 
     public Long getId() {

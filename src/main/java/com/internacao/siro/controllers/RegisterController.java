@@ -76,6 +76,6 @@ public class RegisterController {
 
     @PostMapping("/{id}/documentation")
     public ResponseEntity<DocumentationDTO> addDocumentation(@RequestBody NewDocumentationDTO body, @PathVariable Long id) {
-        return documentationService.createByRegisterId(body, id);
+        return documentationService.appendToRegisterById(body, id);
     }
 }
