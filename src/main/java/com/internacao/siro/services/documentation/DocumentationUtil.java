@@ -11,11 +11,12 @@ import com.internacao.siro.exception.InvalidJsonFormatException;
 import com.internacao.siro.repositories.DoctorRepository;
 import com.internacao.siro.repositories.PatientRepository;
 import com.internacao.siro.repositories.RegisterRepository;
+import com.internacao.siro.services.register.RegisterUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Component
-public class DocumentationUtil {
+public class DocumentationUtil extends RegisterUtil {
 
     @Autowired
     PatientRepository patientRepository;
@@ -36,19 +37,15 @@ public class DocumentationUtil {
         return register;
     }
 
-    public void validateJSON(CancelDocumentationDTO body) {
+    public void validateJson(CancelDocumentationDTO body) {
         if (body.getCause() == null)
             throw new InvalidJsonFormatException("Cause cannot be null");
-        if (body.getEmployeeId() == null)
-            throw new InvalidJsonFormatException("Employee Id cannot be null");
+        validateJsonEntityField(body.getEmployeeId(), employeeRepository, "Employee");
     }
 
-    public void validateJSON(NewDocumentationDTO body) {
+    public void validateJson(NewDocumentationDTO body) {
         if (body.getDoc() == null)
             throw new InvalidJsonFormatException("Doc number cannot be null");
-        if (body.getDoctorId() == null)
-            throw new InvalidJsonFormatException("Doctor Id cannot be null");
-        if (!doctorRepository.existsById(body.getDoctorId()))
-            throw new EntityNotFoundException("The doctor with the given Id does not exist");
+        validateEntityExistence(body.getDoctorId(), doctorRepository, "Doctor");
     }
 }

@@ -8,15 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.internacao.siro.dto.doctor.DoctorDTO;
-import com.internacao.siro.dto.employee.EmployeeDTO;
-import com.internacao.siro.dto.patient.PatientDTO;
 import com.internacao.siro.dto.person.NewPersonDTO;
 import com.internacao.siro.dto.person.PersonDTO;
 import com.internacao.siro.dto.person.UpdatePersonDTO;
-import com.internacao.siro.entities.Doctor;
-import com.internacao.siro.entities.Employee;
-import com.internacao.siro.entities.Patient;
 import com.internacao.siro.entities.Person;
 import com.internacao.siro.repositories.PersonRepository;
 
@@ -39,20 +33,7 @@ public class PersonService {
 
         if (person == null)
             return ResponseEntity.notFound().build();
-
-        if (person instanceof Doctor) {
-            DoctorDTO dto = DoctorDTO.of((Doctor) person);
-            return ResponseEntity.ok((PersonDTO) dto);
-        }
-        else if (person instanceof Employee) {
-            EmployeeDTO dto = EmployeeDTO.of((Employee) person);
-            return ResponseEntity.ok((PersonDTO) dto);
-        }
-        else if (person instanceof Patient) {
-            PatientDTO dto = PatientDTO.of((Patient) person);
-            return ResponseEntity.ok((PersonDTO) dto);
-        }
-        return ResponseEntity.ok(PersonDTO.of(person));
+        return ResponseEntity.ok(Person.toDTO(person));
     }
 
     @Transactional

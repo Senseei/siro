@@ -2,8 +2,6 @@ package com.internacao.siro.services.register;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 import com.internacao.siro.dto.register.NewRegisterDTO;
@@ -16,30 +14,12 @@ import com.internacao.siro.entities.Patient;
 import com.internacao.siro.entities.Person;
 import com.internacao.siro.entities.Register;
 import com.internacao.siro.projections.RelativeProjection;
-import com.internacao.siro.repositories.ClinicRepository;
-import com.internacao.siro.repositories.DoctorRepository;
-import com.internacao.siro.repositories.EmployeeRepository;
-import com.internacao.siro.repositories.PatientRepository;
-import com.internacao.siro.repositories.PersonRepository;
-import com.internacao.siro.repositories.RegisterRepository;
+import com.internacao.siro.util.Util;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Component
-public class RegisterUtil {
-    
-    @Autowired
-    RegisterRepository registerRepository;
-    @Autowired
-    PersonRepository personRepository;
-    @Autowired
-    EmployeeRepository employeeRepository;
-    @Autowired
-    PatientRepository patientRepository;
-    @Autowired
-    DoctorRepository doctorRepository;
-    @Autowired
-    ClinicRepository clinicRepository;
+public class RegisterUtil extends Util {
 
     public RegisterDTO createRegisterDTO(Register register) {
         if (register.getRelative() != null) {
@@ -50,7 +30,7 @@ public class RegisterUtil {
             return RegisterDTO.of(register);
     }
 
-    public RegisterDTO createRegisterDTO(Patient patient) {
+    RegisterDTO createRegisterDTO(Patient patient) {
         Optional<Register> registerOpt = Optional.ofNullable(registerRepository.findByPatient(patient));
 
         return registerOpt.map(register -> {
@@ -62,9 +42,9 @@ public class RegisterUtil {
         }).orElse(null);
     }
 
-    public void updateDTOToEntity(Register register, UpdateRegisterDTO body) {
+    void updateDTOToEntity(Register register, UpdateRegisterDTO body) {
 
-        checkUpdateRegisterDTO(body);
+        validateJson(body);
 
         Patient patient = null;
 
@@ -90,7 +70,7 @@ public class RegisterUtil {
         register.update(patient, body.getDateOfDeath(), doctor, clinic, relative, body.getDocumentationWithdrawal(), attendant);
     }
 
-    private void checkUpdateRegisterDTO(UpdateRegisterDTO body) {
+    void validateJson(UpdateRegisterDTO body) {
 
         validateEntityExistence(body.getPatientId(), patientRepository, "patient");
         validateEntityExistence(body.getDoctorId(), doctorRepository, "doctor");
@@ -100,21 +80,17 @@ public class RegisterUtil {
             validateEntityExistence(body.getRelative().getId(), personRepository, "relative");
     }
 
-    public void checkNewRegisterBody(NewRegisterDTO body) {
-        checkNewRegisterBody(body.getClinicId(), clinicRepository, "Clinic");
-        checkNewRegisterBody(body.getDoctorId(), doctorRepository, "Doctor");
-        checkNewRegisterBody(body.getPatientId(), patientRepository, "Patient");
+    void validateJson(NewRegisterDTO body) {
+        validateJsonEntityField(body.getClinicId(), clinicRepository, "Clinic");
+        validateJsonEntityField(body.getDoctorId(), doctorRepository, "Doctor");
+        validateJsonEntityField(body.getPatientId(), patientRepository, "Patient");
     }
 
-    public void checkNewRegisterBody(Long entityId, JpaRepository<?, Long> repository, String entityName) {
-        if (entityId == null)
-            throw new IllegalArgumentException(entityName + " Id cannot be null");
-        validateEntityExistence(entityId, repository, entityName);
-    }
-
-    private void validateEntityExistence(Long entityId, JpaRepository<?, Long> repository, String entityName) {
-        if (entityId != null && !repository.existsById(entityId)) {
-            throw new EntityNotFoundException("The " + entityName + " with the given Id doesn't exist");
-        }
+    public Register checkIfRegisterExists(Long id) {
+        Register register = registerRepository.findById(id).orElse(null);
+        
+        if (register == null)
+            throw new EntityNotFoundException("The register with the given Id does not exist");
+        return register;
     }
 }

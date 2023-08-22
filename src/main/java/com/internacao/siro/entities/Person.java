@@ -3,7 +3,11 @@ package com.internacao.siro.entities;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.internacao.siro.dto.doctor.DoctorDTO;
+import com.internacao.siro.dto.employee.EmployeeDTO;
+import com.internacao.siro.dto.patient.PatientDTO;
 import com.internacao.siro.dto.person.NewPersonDTO;
+import com.internacao.siro.dto.person.PersonDTO;
 import com.internacao.siro.dto.person.UpdatePersonDTO;
 
 import jakarta.persistence.Column;
@@ -42,9 +46,8 @@ public class Person {
     }
 
     public Person(String name, LocalDate birthday, String cpf) {
-        if (cpf != null && cpf.length() != 11) {
+        if (cpf != null && cpf.length() != 11)
             throw new IllegalArgumentException("CPF must have exactly 11 characters");
-        }
         this.name = name;
         this.birthday = birthday;
         this.cpf = cpf;
@@ -54,6 +57,16 @@ public class Person {
         name = body.getName();
         birthday = body.getBirthday();
         cpf = body.getCpf();
+    }
+
+    public static PersonDTO toDTO (Person person) {
+        if (person instanceof Doctor)
+            return DoctorDTO.of((Doctor) person);
+        if (person instanceof Employee)
+            return EmployeeDTO.of((Employee) person);
+        if (person instanceof Patient)
+            return PatientDTO.of((Patient) person);
+        return PersonDTO.of(person);
     }
 
     public Long getId() {

@@ -13,7 +13,7 @@ public class OccurrenceDTO {
 
     public OccurrenceDTO(Occurrence occurrence) {
         id = occurrence.getId();
-        employee = new EmployeeMinDTO(occurrence.getEmployee());
+        employee = EmployeeMinDTO.of(occurrence.getEmployee());
         description = occurrence.getDescription();
     }
 

@@ -50,10 +50,7 @@ public class DocumentationService {
 
     @Transactional(readOnly = true)
     public List<DocumentationDTO> findByRegister(Long registerId) {
-        Register register = registerRepository.findById(registerId).orElse(null);
-        
-        if (register == null)
-            throw new EntityNotFoundException("The register with the given Id does not exist");
+        Register register = documentationUtil.checkIfRegisterExists(registerId);
 
         List<Documentation> docs = register.getDocumentation();
         return docs.stream().map(x -> DocumentationDTO.of(x)).toList();
@@ -88,7 +85,7 @@ public class DocumentationService {
         if (documentation == null)
             return ResponseEntity.notFound().build();
             
-        documentationUtil.validateJSON(body);
+        documentationUtil.validateJson(body);
 
         Register register = entityManager.getReference(Register.class, documentation.getRegister().getId());
         Employee employee = entityManager.getReference(Employee.class, body.getEmployeeId());
@@ -111,7 +108,7 @@ public class DocumentationService {
         if (register == null)
             throw new EntityNotFoundException("The register with the given Id does not exist");
 
-        documentationUtil.validateJSON(body);
+        documentationUtil.validateJson(body);
 
         Doctor doctor = entityManager.getReference(Doctor.class, body.getDoctorId());
         
@@ -126,7 +123,7 @@ public class DocumentationService {
     public ResponseEntity<DocumentationDTO> appendToRegisterByPatientMr(NewDocumentationDTO body, Long mr) {
         Register register = documentationUtil.checkForRegisterByMr(mr);
 
-        documentationUtil.validateJSON(body);
+        documentationUtil.validateJson(body);
 
         Doctor doctor = entityManager.getReference(Doctor.class, body.getDoctorId());
         

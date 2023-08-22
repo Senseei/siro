@@ -1,5 +1,7 @@
 package com.internacao.siro.entities;
 
+import java.util.Objects;
+
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -36,5 +38,22 @@ public class DocumentationOccurrenceId {
 
     public void setOccurrence(Occurrence occurrence) {
         this.occurrence = occurrence;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(documentation, occurrence);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        DocumentationOccurrenceId other = (DocumentationOccurrenceId) obj;
+        return Objects.equals(documentation, other.documentation) && Objects.equals(occurrence, other.occurrence);
     }
 }

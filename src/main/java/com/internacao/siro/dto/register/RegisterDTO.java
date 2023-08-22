@@ -3,15 +3,16 @@ package com.internacao.siro.dto.register;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.internacao.siro.dto.ContactAttemptDTO;
 import com.internacao.siro.dto.OccurrenceDTO;
 import com.internacao.siro.dto.clinic.ClinicDTO;
+import com.internacao.siro.dto.contactAttempt.ContactAttemptDTO;
 import com.internacao.siro.dto.doctor.DoctorMinDTO;
 import com.internacao.siro.dto.documentation.DocumentationDTO;
 import com.internacao.siro.dto.employee.EmployeeMinDTO;
 import com.internacao.siro.dto.patient.PatientDTO;
 import com.internacao.siro.dto.relative.RelativeDTO;
 import com.internacao.siro.entities.Register;
+import com.internacao.siro.entities.contactAttempt.ContactAttempt;
 import com.internacao.siro.projections.RelativeProjection;
 
 public class RegisterDTO {
@@ -37,7 +38,7 @@ public class RegisterDTO {
         documentation = register.getDocumentation().stream().map(x -> DocumentationDTO.of(x)).toList();
         doctor = DoctorMinDTO.of(register.getDoctor());
         clinic = ClinicDTO.of(register.getClinic());
-        contactAttempts = register.getContactAttempts().stream().map(x -> ContactAttemptDTO.of(x)).toList();
+        contactAttempts = register.getContactAttempts().stream().map(x -> ContactAttempt.toDTO(x)).toList();
         documentationWithdrawal = register.getDocumentationWithdrawal();
         attendant = EmployeeMinDTO.of(register.getAttendant());
         occurrences = register.getOccurrences().stream().map(x -> OccurrenceDTO.of(x)).toList();
@@ -50,7 +51,7 @@ public class RegisterDTO {
         documentation = register.getDocumentation().stream().map(x -> DocumentationDTO.of(x)).toList();
         doctor = DoctorMinDTO.of(register.getDoctor());
         clinic = ClinicDTO.of(register.getClinic());
-        contactAttempts = register.getContactAttempts().stream().map(x -> ContactAttemptDTO.of(x)).toList();
+        contactAttempts = register.getContactAttempts().stream().map(x -> ContactAttempt.toDTO(x)).toList();
         relative = RelativeDTO.of(relativeProjection);
         documentationWithdrawal = register.getDocumentationWithdrawal();
         attendant = EmployeeMinDTO.of(register.getAttendant());

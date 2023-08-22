@@ -22,5 +22,3 @@ INSERT INTO tb_documentation (register_id, doc, doctor_id, canceled) values (1, 
 INSERT INTO tb_occurrences (register_id, employee_id, description) values (1, 4, 'Test description');
 
 /* CONTACT ATTEMPTS */
-INSERT INTO tb_contact_attempts (register_id, employee_id, phone_number, attempt_time, reason_for_not_calling) values (1, 4, '+5511912345678', '2023-08-02 13:00:00', 'Caixa postal');
-INSERT INTO tb_contact_attempts (register_id, employee_id, phone_number, attempt_time, reason_for_not_calling) values (1, 4, '+5511911112222', '2023-08-02 13:10:00', 'So chama');

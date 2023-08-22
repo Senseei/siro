@@ -74,7 +74,7 @@ public class RegisterService {
     @Transactional
     public ResponseEntity<RegisterDTO> create(NewRegisterDTO body) {
 
-        registerUtil.checkNewRegisterBody(body);
+        registerUtil.validateJson(body);
 
         if (registerRepository.existsByPatientId(body.getPatientId()))
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -90,6 +90,7 @@ public class RegisterService {
 
     @Transactional
     public ResponseEntity<RegisterDTO> update(Long id, UpdateRegisterDTO body) {
+        
         Register register = registerRepository.findById(id).orElse(null);
         if (register == null)
             return ResponseEntity.notFound().build();

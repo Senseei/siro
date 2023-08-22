@@ -1,9 +1,9 @@
-package com.internacao.siro.dto;
+package com.internacao.siro.dto.contactAttempt;
 
 import java.time.LocalDateTime;
 
 import com.internacao.siro.dto.employee.EmployeeMinDTO;
-import com.internacao.siro.entities.ContactAttempt;
+import com.internacao.siro.entities.contactAttempt.ContactAttempt;
 
 public class ContactAttemptDTO {
     
@@ -11,16 +11,14 @@ public class ContactAttemptDTO {
     private EmployeeMinDTO employee;
     private String phoneNumber;
     private LocalDateTime attemptTime;
-    private String reasonForNotCalling;
 
     public ContactAttemptDTO() {}
 
     public ContactAttemptDTO(ContactAttempt contactAttempt) {
         id = contactAttempt.getId();
-        employee = new EmployeeMinDTO(contactAttempt.getEmployee());
+        employee = EmployeeMinDTO.of(contactAttempt.getEmployee());
         phoneNumber = contactAttempt.getPhoneNumber();
         attemptTime = contactAttempt.getAttemptTime();
-        reasonForNotCalling = contactAttempt.getReasonForNotCalling();
     }
 
     public static ContactAttemptDTO of(ContactAttempt contactAttempt) {
@@ -43,9 +41,5 @@ public class ContactAttemptDTO {
 
     public String getPhoneNumber() {
         return phoneNumber;
-    }
-
-    public String getReasonForNotCalling() {
-        return reasonForNotCalling;
     }
 }
