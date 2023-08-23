@@ -11,6 +11,7 @@ import com.internacao.siro.repositories.EmployeeRepository;
 import com.internacao.siro.repositories.PatientRepository;
 import com.internacao.siro.repositories.PersonRepository;
 import com.internacao.siro.repositories.RegisterRepository;
+import com.internacao.siro.repositories.RelativeRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -29,6 +30,8 @@ public class Util {
     protected DoctorRepository doctorRepository;
     @Autowired
     protected ClinicRepository clinicRepository;
+    @Autowired
+    protected RelativeRepository relativeRepository;
 
     protected void validateJsonEntityField(Long entityId, JpaRepository<?, Long> repository, String entityName) {
         if (entityId == null)

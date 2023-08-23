@@ -38,37 +38,35 @@ public class RegisterService {
     @Transactional(readOnly = true)
     public List<RegisterDTO> findAll() {
         List<Register> result = registerRepository.findAll();
-        List<RegisterDTO> dto = result.stream().map(x -> registerUtil.createRegisterDTO(x)).toList();
-        return dto;
+
+        return result.stream().map(x -> registerUtil.createRegisterDTO(x)).toList();
     }
 
     @Transactional(readOnly = true)
     public ResponseEntity<RegisterDTO> findById(Long id) {
-        Register result = registerRepository.findById(id).orElse(null);
-        if (result == null)
+        Register register = registerRepository.findById(id).orElse(null);
+        if (register == null)
             return ResponseEntity.notFound().build();
 
-        return ResponseEntity.ok(registerUtil.createRegisterDTO(result));
+        return ResponseEntity.ok(registerUtil.createRegisterDTO(register));
     }
 
     @Transactional(readOnly = true)
     public ResponseEntity<RegisterDTO> findByPatientId(Long patientId) {
-        Patient patient = patientRepository.findById(patientId).orElse(null);
-        RegisterDTO register = registerUtil.createRegisterDTO(patient);
+        Register register = registerUtil.checkIfRegisterExistsByPatientId(patientId);
         if (register == null)
             return ResponseEntity.notFound().build();
 
-        return ResponseEntity.ok(register);
+        return ResponseEntity.ok(registerUtil.createRegisterDTO(register));
     }
 
     @Transactional(readOnly = true)
     public ResponseEntity<RegisterDTO> findByPatientMr(Long mr) {
-        Patient patient = patientRepository.findByMr(mr);
-        RegisterDTO register = registerUtil.createRegisterDTO(patient);
+        Register register = registerUtil.checkIfRegisterExistsByMr(mr);
         if (register == null)
             return ResponseEntity.notFound().build();
 
-        return ResponseEntity.ok(register);
+        return ResponseEntity.ok(registerUtil.createRegisterDTO(register));
     }
 
     @Transactional

@@ -23,8 +23,7 @@ public class DoctorService {
     @Transactional(readOnly = true)
     public List<DoctorDTO> findAll() {
         List<Doctor> result = doctorRepository.findAll();
-        List<DoctorDTO> dto = result.stream().map(x -> DoctorDTO.of(x)).toList();
-        return dto;
+        return result.stream().map(x -> DoctorDTO.of(x)).toList();
     }
 
     @Transactional(readOnly = true)

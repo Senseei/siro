@@ -1,7 +1,5 @@
 package com.internacao.siro.services.register;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Component;
 
 import com.internacao.siro.dto.register.NewRegisterDTO;
@@ -13,7 +11,8 @@ import com.internacao.siro.entities.Employee;
 import com.internacao.siro.entities.Patient;
 import com.internacao.siro.entities.Person;
 import com.internacao.siro.entities.Register;
-import com.internacao.siro.projections.RelativeProjection;
+import com.internacao.siro.entities.Relative;
+import com.internacao.siro.entities.RelativeId;
 import com.internacao.siro.util.Util;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -21,57 +20,41 @@ import jakarta.persistence.EntityNotFoundException;
 @Component
 public class RegisterUtil extends Util {
 
-    public RegisterDTO createRegisterDTO(Register register) {
-        if (register.getRelative() != null) {
-                RelativeProjection relativeProjection = patientRepository.findRelativeById(
-                    register.getRelative().getId(), register.getPatient().getId());
-                return RegisterDTO.of(register, relativeProjection);
-            }
-            return RegisterDTO.of(register);
-    }
-
-    RegisterDTO createRegisterDTO(Patient patient) {
-        Optional<Register> registerOpt = Optional.ofNullable(registerRepository.findByPatient(patient));
-
-        return registerOpt.map(register -> {
-            RelativeProjection relativeProjection = null;
-            if (register.getRelative() != null) {
-                relativeProjection = patientRepository.findRelativeById(register.getRelative().getId(), patient.getId());
-            }
-            return RegisterDTO.of(register, relativeProjection);
-        }).orElse(null);
+    RegisterDTO createRegisterDTO(Register register) {
+        Relative relative = relativeRepository.findById(new RelativeId(register.getRelative(), register.getPatient())).orElse(null);
+        return RegisterDTO.of(register, relative);
     }
 
     void updateDTOToEntity(Register register, UpdateRegisterDTO body) {
 
         validateJson(body);
 
-        Patient patient = null;
-
-        if (body.getPatientId() != null && register.getRelative() != null) {
-            patientRepository.deleteRelative(register.getRelative().getId(), register.getPatient().getId());
-            register.setRelative(null);
-            patient = patientRepository.findById(body.getPatientId()).orElse(null);
-        }
-        else if (body.getPatientId() != null)
-            patient = patientRepository.findById(body.getPatientId()).orElse(null);
-
+        Patient patient = setPatient(register, body);
         Doctor doctor = body.getDoctorId() != null ? doctorRepository.findById(body.getDoctorId()).orElse(null) : null;
         Clinic clinic = body.getClinicId() != null ? clinicRepository.findById(body.getClinicId()).orElse(null) : null;
-
-        Person relative = null;
-        if (body.getRelative() != null) {
-            relative = personRepository.findById(body.getRelative().getId()).orElse(null);
-            Long patientId = register.getPatient().getId();
-            if (body.getPatientId() != null)
-                patientId = body.getPatientId();
-                
-            patientRepository.addRelative(body.getRelative().getId(), patientId, body.getRelative().getRelationship());
-        }
-
+        Person relative = setRelative(register, body);
         Employee attendant = body.getEmployeeId() != null ? employeeRepository.findById(body.getEmployeeId()).orElse(null) : null;
 
         register.update(patient, body.getDateOfDeath(), doctor, clinic, relative, body.getDocumentationWithdrawal(), attendant);
+    }
+
+    private Patient setPatient(Register register, UpdateRegisterDTO body) {
+        if (body.getPatientId() == null) {
+            return null;
+        }
+        register.setRelative(null);
+        return patientRepository.findById(body.getPatientId()).orElse(null);
+    }
+
+    private Person setRelative(Register register, UpdateRegisterDTO body) {
+        if (body.getRelative() == null) {
+            return null;
+        }
+        Person relative = personRepository.findById(body.getRelative().getId()).orElse(null);
+        Patient patient = body.getPatientId() == null ? register.getPatient() : patientRepository.findById(body.getPatientId()).orElse(null);
+        Relative relativeEntity = new Relative(relative, patient, body.getRelative().getRelationship());
+        relativeRepository.save(relativeEntity);
+        return relative;
     }
 
     void validateJson(UpdateRegisterDTO body) {
@@ -95,6 +78,18 @@ public class RegisterUtil extends Util {
         
         if (register == null)
             throw new EntityNotFoundException("The register with the given Id does not exist");
+        return register;
+    }
+
+    public Register checkIfRegisterExistsByPatientId(Long id) {
+        Patient patient = patientRepository.findById(id).orElse(null);
+        if (patient == null)
+            throw new EntityNotFoundException("The patient with the given Id does not exist");
+
+        Register register = registerRepository.findByPatient(patient);
+        if (register == null)
+            throw new EntityNotFoundException("There is no register with this patient yet");
+
         return register;
     }
 

@@ -2,7 +2,7 @@ package com.internacao.siro.dto.relative;
 
 import java.time.LocalDate;
 
-import com.internacao.siro.projections.RelativeProjection;
+import com.internacao.siro.entities.Relative;
 
 public class RelativeDTO {
     
@@ -13,17 +13,17 @@ public class RelativeDTO {
 
     public RelativeDTO() {}
 
-    public RelativeDTO(RelativeProjection projection) {
-        id = projection.getId();
-        name = projection.getName();
-        birthday = projection.getBirthday();
-        relationship = projection.getRelationship();
+    public RelativeDTO(Relative relative) {
+        id = relative.getRelative().getId();
+        name = relative.getRelative().getName();
+        birthday = relative.getRelative().getBirthday();
+        relationship = relative.getRelationship();
     }
 
-    public static RelativeDTO of(RelativeProjection projection) {
-        if (projection == null)
+    public static RelativeDTO of(Relative relative) {
+        if (relative == null)
             return null;
-        return new RelativeDTO(projection);
+        return new RelativeDTO(relative);
     }
 
     public Long getId() {

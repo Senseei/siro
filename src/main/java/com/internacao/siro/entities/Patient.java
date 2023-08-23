@@ -1,19 +1,26 @@
 package com.internacao.siro.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import com.internacao.siro.dto.patient.NewPatientDTO;
 import com.internacao.siro.dto.patient.UpdatePatientDTO;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 
 @Entity
 @DiscriminatorValue("Patient")
 public class Patient extends Person {
 
     private Long mr;
+
+    @OneToMany(mappedBy = "id.patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Relative> relatives = new ArrayList<>();
 
     public Patient() {}
 

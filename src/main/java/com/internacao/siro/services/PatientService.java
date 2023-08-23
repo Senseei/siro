@@ -11,20 +11,26 @@ import org.springframework.transaction.annotation.Transactional;
 import com.internacao.siro.dto.patient.NewPatientDTO;
 import com.internacao.siro.dto.patient.PatientDTO;
 import com.internacao.siro.dto.patient.UpdatePatientDTO;
+import com.internacao.siro.dto.relative.RelativeDTO;
 import com.internacao.siro.entities.Patient;
+import com.internacao.siro.entities.Relative;
 import com.internacao.siro.repositories.PatientRepository;
+import com.internacao.siro.repositories.RelativeRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class PatientService {
     
     @Autowired
     PatientRepository patientRepository;
+    @Autowired
+    RelativeRepository relativeRepository;
 
     @Transactional(readOnly = true)
     public List<PatientDTO> findAll() {
         List<Patient> result = patientRepository.findAll();
-        List<PatientDTO> dto = result.stream().map(x -> PatientDTO.of(x)).toList();
-        return dto;
+        return result.stream().map(x -> PatientDTO.of(x)).toList();
     }
 
     @Transactional(readOnly = true)
@@ -43,6 +49,16 @@ public class PatientService {
             return ResponseEntity.notFound().build();
             
         return ResponseEntity.ok(PatientDTO.of(result));
+    }
+
+    @Transactional(readOnly = true)
+    public List<RelativeDTO> relatives(Long id) {
+        Patient patient = patientRepository.findById(id).orElse(null);
+        if (patient == null)
+            throw new EntityNotFoundException("The patient with the given Id does not exist");
+
+        List<Relative> result = relativeRepository.findByPatient(patient);
+        return result.stream().map(x -> RelativeDTO.of(x)).toList();
     }
 
     @Transactional

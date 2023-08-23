@@ -12,8 +12,8 @@ import com.internacao.siro.dto.occurrence.OccurrenceDTO;
 import com.internacao.siro.dto.patient.PatientDTO;
 import com.internacao.siro.dto.relative.RelativeDTO;
 import com.internacao.siro.entities.Register;
+import com.internacao.siro.entities.Relative;
 import com.internacao.siro.entities.contactAttempt.ContactAttempt;
-import com.internacao.siro.projections.RelativeProjection;
 
 public class RegisterDTO {
     
@@ -44,7 +44,7 @@ public class RegisterDTO {
         occurrences = register.getOccurrences().stream().map(x -> OccurrenceDTO.of(x)).toList();
     }
 
-    public RegisterDTO(Register register, RelativeProjection relativeProjection) {
+    public RegisterDTO(Register register, Relative relative) {
         id = register.getId();
         patient = PatientDTO.of(register.getPatient());
         dateOfDeath = register.getDateOfDeath();
@@ -52,7 +52,7 @@ public class RegisterDTO {
         doctor = DoctorMinDTO.of(register.getDoctor());
         clinic = ClinicDTO.of(register.getClinic());
         contactAttempts = register.getContactAttempts().stream().map(x -> ContactAttempt.toDTO(x)).toList();
-        relative = RelativeDTO.of(relativeProjection);
+        this.relative = RelativeDTO.of(relative);
         documentationWithdrawal = register.getDocumentationWithdrawal();
         attendant = EmployeeMinDTO.of(register.getAttendant());
         occurrences = register.getOccurrences().stream().map(x -> OccurrenceDTO.of(x)).toList();
@@ -64,10 +64,10 @@ public class RegisterDTO {
         return new RegisterDTO(register);
     }
 
-    public static RegisterDTO of(Register register, RelativeProjection relativeProjection) {
+    public static RegisterDTO of(Register register, Relative relative) {
         if (register == null)
             return null;
-        return new RegisterDTO(register, relativeProjection);
+        return new RegisterDTO(register, relative);
     }
 
     public EmployeeMinDTO getAttendant() {

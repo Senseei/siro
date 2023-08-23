@@ -23,8 +23,7 @@ public class EmployeeService {
     @Transactional(readOnly = true)
     public List<EmployeeDTO> findAll() {
         List<Employee> result = employeeRepository.findAll();
-        List<EmployeeDTO> dto = result.stream().map(x -> EmployeeDTO.of(x)).toList();
-        return dto;
+        return result.stream().map(x -> EmployeeDTO.of(x)).toList();
     }
 
     @Transactional(readOnly = true)

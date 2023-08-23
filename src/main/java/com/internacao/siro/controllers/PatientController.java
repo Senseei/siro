@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.internacao.siro.dto.patient.NewPatientDTO;
 import com.internacao.siro.dto.patient.PatientDTO;
 import com.internacao.siro.dto.patient.UpdatePatientDTO;
+import com.internacao.siro.dto.relative.RelativeDTO;
 import com.internacao.siro.services.PatientService;
 
 @RestController
@@ -51,5 +52,10 @@ public class PatientController {
     @PutMapping("/{id}")
     public ResponseEntity<PatientDTO> update(@PathVariable Long id, @RequestBody UpdatePatientDTO body) {
         return patientService.update(id, body);
+    }
+
+    @GetMapping("/{id}/relatives")
+    public List<RelativeDTO> relatives(@PathVariable Long id) {
+        return patientService.relatives(id);
     }
 }
