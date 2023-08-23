@@ -38,11 +38,23 @@ public class ContactAttemptService {
     }
 
     @Transactional(readOnly = true)
+    public ResponseEntity<ContactAttemptDTO> findById(Long id) {
+        ContactAttempt attempt = contactAttemptRepository.findById(id).orElse(null);
+        if (attempt == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(ContactAttempt.toDTO(attempt));
+    }
+
+    @Transactional(readOnly = true)
     public List<ContactAttemptDTO> findByRegister(Long registerId) {
         Register register = contactAttemptUtil.checkIfRegisterExists(registerId);
+        return register.getContactAttempts().stream().map(x -> ContactAttempt.toDTO(x)).toList();
+    }
 
-        List<ContactAttempt> attempts = register.getContactAttempts();
-        return attempts.stream().map(x -> ContactAttempt.toDTO(x)).toList();
+    @Transactional(readOnly = true)
+    public List<ContactAttemptDTO> findByPatientMr(Long mr) {
+        Register register = contactAttemptUtil.checkIfRegisterExistsByMr(mr);
+        return register.getContactAttempts().stream().map(x -> ContactAttempt.toDTO(x)).toList();
     }
 
     @Transactional
@@ -55,7 +67,6 @@ public class ContactAttemptService {
 
         SuccessContactAttempt attempt = new SuccessContactAttempt(register, employee, body.getPhoneNumber(), body.getAttemptTime(),
             body.getPersonWhoAnswered(), body.getRelationship());
-        attempt.setRegister(register);
         contactAttemptRepository.save(attempt);
         return ResponseEntity.ok(ContactAttempt.toDTO(attempt));
     }
@@ -70,7 +81,6 @@ public class ContactAttemptService {
 
         UnsuccessContactAttempt attempt = new UnsuccessContactAttempt(register, employee, body.getPhoneNumber(), body.getAttemptTime(),
             body.getReasonForNotCalling());
-        attempt.setRegister(register);
         contactAttemptRepository.save(attempt);
         return ResponseEntity.ok(ContactAttempt.toDTO(attempt));
 

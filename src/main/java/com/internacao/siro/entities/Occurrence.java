@@ -30,9 +30,9 @@ public class Occurrence {
     public Occurrence() {}
 
     public Occurrence(Register register, Employee employee, String description) {
-        setRegister(register);
-        setEmployee(employee);
-        setDescription(description);
+        this.register = register;
+        this.employee = employee;
+        this.description = description;
     }
 
     public Long getId() {

@@ -1,4 +1,4 @@
-package com.internacao.siro.dto;
+package com.internacao.siro.dto.occurrence;
 
 import com.internacao.siro.dto.employee.EmployeeMinDTO;
 import com.internacao.siro.entities.Occurrence;

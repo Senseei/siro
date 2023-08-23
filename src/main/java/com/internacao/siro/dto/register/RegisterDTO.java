@@ -3,12 +3,12 @@ package com.internacao.siro.dto.register;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.internacao.siro.dto.OccurrenceDTO;
 import com.internacao.siro.dto.clinic.ClinicDTO;
 import com.internacao.siro.dto.contactAttempt.ContactAttemptDTO;
 import com.internacao.siro.dto.doctor.DoctorMinDTO;
 import com.internacao.siro.dto.documentation.DocumentationDTO;
 import com.internacao.siro.dto.employee.EmployeeMinDTO;
+import com.internacao.siro.dto.occurrence.OccurrenceDTO;
 import com.internacao.siro.dto.patient.PatientDTO;
 import com.internacao.siro.dto.relative.RelativeDTO;
 import com.internacao.siro.entities.Register;

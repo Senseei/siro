@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.internacao.siro.dto.documentation.CancelDocumentationDTO;
 import com.internacao.siro.dto.documentation.DocumentationDTO;
-import com.internacao.siro.dto.documentation.NewDocumentationDTO;
 import com.internacao.siro.dto.documentation.UpdateDocumentationDTO;
 import com.internacao.siro.services.documentation.DocumentationService;
 
@@ -29,16 +27,14 @@ public class DocumentationController {
     
     @GetMapping
     public List<DocumentationDTO> findAll(@RequestParam(required = false) Long mr) {
-        if (mr != null) {
-            List<DocumentationDTO> docs = documentationService.findByPatientMr(mr);
-            return docs;
-        }
+        if (mr != null)
+            return documentationService.findByPatientMr(mr);
         return documentationService.findAll();
     }
 
-    @PostMapping
-    public ResponseEntity<DocumentationDTO> addToRegisterByPatientMr(NewDocumentationDTO body, @RequestParam(required = true) Long mr) {
-        return documentationService.appendToRegisterByPatientMr(body, mr);
+    @GetMapping("/{id}")
+    public ResponseEntity<DocumentationDTO> findById(@PathVariable Long id) {
+        return documentationService.findById(id);
     }
 
     @PutMapping("/{id}")

@@ -22,7 +22,6 @@ import com.internacao.siro.repositories.OccurrenceRepository;
 import com.internacao.siro.repositories.RegisterRepository;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 
 @Service
@@ -44,24 +43,27 @@ public class DocumentationService {
     @Transactional(readOnly = true)
     public List<DocumentationDTO> findAll() {
         List<Documentation> result = documentationRepository.findAll();
-        List<DocumentationDTO> dto = result.stream().map(x -> new DocumentationDTO(x)).toList();
-        return dto;
+        return result.stream().map(x -> new DocumentationDTO(x)).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity<DocumentationDTO> findById(Long id) {
+        Documentation doc = documentationRepository.findById(id).orElse(null);
+        if (doc == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(DocumentationDTO.of(doc));
     }
 
     @Transactional(readOnly = true)
     public List<DocumentationDTO> findByRegister(Long registerId) {
-        Register register = documentationUtil.checkIfRegisterExists(registerId);
-
-        List<Documentation> docs = register.getDocumentation();
-        return docs.stream().map(x -> DocumentationDTO.of(x)).toList();
+        Register register = documentationUtil.checkIfRegisterExists(registerId);;
+        return register.getDocumentation().stream().map(x -> DocumentationDTO.of(x)).toList();
     }
 
     @Transactional(readOnly = true)
     public List<DocumentationDTO> findByPatientMr(Long mr) {
-        Register register = documentationUtil.checkForRegisterByMr(mr);
-
-        List<Documentation> docs = register.getDocumentation();
-        return docs.stream().map(x -> DocumentationDTO.of(x)).toList();
+        Register register = documentationUtil.checkIfRegisterExistsByMr(mr);
+        return register.getDocumentation().stream().map(x -> DocumentationDTO.of(x)).toList();
     }
 
     @Transactional
@@ -103,32 +105,22 @@ public class DocumentationService {
 
     @Transactional
     public ResponseEntity<DocumentationDTO> appendToRegisterById(NewDocumentationDTO body, Long registerId) {
-        Register register = registerRepository.findById(registerId).orElse(null);
-
-        if (register == null)
-            throw new EntityNotFoundException("The register with the given Id does not exist");
-
-        documentationUtil.validateJson(body);
-
-        Doctor doctor = entityManager.getReference(Doctor.class, body.getDoctorId());
-        
-        Documentation documentation = new Documentation(body.getDoc(), doctor);
-        documentation.setRegister(register);
-        documentationRepository.save(documentation);
-
-        return ResponseEntity.ok(DocumentationDTO.of(documentation));
+        Register register = documentationUtil.checkIfRegisterExists(registerId);
+        return create(body, register);
     }
 
     @Transactional
     public ResponseEntity<DocumentationDTO> appendToRegisterByPatientMr(NewDocumentationDTO body, Long mr) {
-        Register register = documentationUtil.checkForRegisterByMr(mr);
+        Register register = documentationUtil.checkIfRegisterExistsByMr(mr);
+        return create(body, register);
+    }
 
+    ResponseEntity<DocumentationDTO> create(NewDocumentationDTO body, Register register) {
         documentationUtil.validateJson(body);
 
         Doctor doctor = entityManager.getReference(Doctor.class, body.getDoctorId());
         
-        Documentation documentation = new Documentation(body.getDoc(), doctor);
-        documentation.setRegister(register);
+        Documentation documentation = new Documentation(register, body.getDoc(), doctor);
         documentationRepository.save(documentation);
 
         return ResponseEntity.ok(DocumentationDTO.of(documentation));

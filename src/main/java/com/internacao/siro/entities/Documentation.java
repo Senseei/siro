@@ -43,6 +43,12 @@ public class Documentation {
         this.doctor = doctor;
     }
 
+    public Documentation(Register register, String doc, Doctor doctor) {
+        this.register = register;
+        this.doc = doc;
+        this.doctor = doctor;
+    }
+
     public void update(String doc, Doctor doctor) {
         if (doc != null)
             this.doc = doc;

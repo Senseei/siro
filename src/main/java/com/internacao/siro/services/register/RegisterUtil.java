@@ -62,7 +62,11 @@ public class RegisterUtil extends Util {
         Person relative = null;
         if (body.getRelative() != null) {
             relative = personRepository.findById(body.getRelative().getId()).orElse(null);
-            patientRepository.addRelative(body.getRelative().getId(), body.getPatientId(), body.getRelative().getRelationship());
+            Long patientId = register.getPatient().getId();
+            if (body.getPatientId() != null)
+                patientId = body.getPatientId();
+                
+            patientRepository.addRelative(body.getRelative().getId(), patientId, body.getRelative().getRelationship());
         }
 
         Employee attendant = body.getEmployeeId() != null ? employeeRepository.findById(body.getEmployeeId()).orElse(null) : null;
@@ -91,6 +95,18 @@ public class RegisterUtil extends Util {
         
         if (register == null)
             throw new EntityNotFoundException("The register with the given Id does not exist");
+        return register;
+    }
+
+    public Register checkIfRegisterExistsByMr(Long mr) {
+        Patient patient = patientRepository.findByMr(mr);
+        if (patient == null)
+            throw new EntityNotFoundException("The patient with the given medical record does not exist");
+
+        Register register = registerRepository.findByPatient(patient);
+        if (register == null)
+            throw new EntityNotFoundException("There is no register with this patient yet");
+
         return register;
     }
 }

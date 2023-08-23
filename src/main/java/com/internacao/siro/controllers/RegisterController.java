@@ -22,11 +22,14 @@ import com.internacao.siro.dto.contactAttempt.NewSuccessContactAttemptDTO;
 import com.internacao.siro.dto.contactAttempt.NewUnsuccessContactAttemptDTO;
 import com.internacao.siro.dto.documentation.DocumentationDTO;
 import com.internacao.siro.dto.documentation.NewDocumentationDTO;
+import com.internacao.siro.dto.occurrence.NewOccurrenceDTO;
+import com.internacao.siro.dto.occurrence.OccurrenceDTO;
 import com.internacao.siro.dto.register.NewRegisterDTO;
 import com.internacao.siro.dto.register.RegisterDTO;
 import com.internacao.siro.dto.register.UpdateRegisterDTO;
 import com.internacao.siro.services.contacctAttempt.ContactAttemptService;
 import com.internacao.siro.services.documentation.DocumentationService;
+import com.internacao.siro.services.occurrence.OccurrenceService;
 import com.internacao.siro.services.register.RegisterService;
 
 @RestController
@@ -39,6 +42,8 @@ public class RegisterController {
     DocumentationService documentationService;
     @Autowired
     ContactAttemptService contactAttemptService;
+    @Autowired
+    OccurrenceService occurrenceService;
 
 
     @GetMapping
@@ -98,5 +103,15 @@ public class RegisterController {
     @PostMapping("/{id}/contactattempts/unsuccess")
     public ResponseEntity<ContactAttemptDTO> addUnsuccessContactAttempt(@RequestBody NewUnsuccessContactAttemptDTO body, @PathVariable Long id) {
         return contactAttemptService.create(body, id);
+    }
+
+    @GetMapping("/{id}/occurrences")
+    public List<OccurrenceDTO> occurrences(@PathVariable Long id) {
+        return occurrenceService.findByRegister(id);
+    }
+
+    @PostMapping("/{id}/occurrences")
+    public ResponseEntity<OccurrenceDTO> addOccurrence(@RequestBody NewOccurrenceDTO body, @PathVariable Long id) {
+        return occurrenceService.addToRegisterById(body, id);
     }
 }
