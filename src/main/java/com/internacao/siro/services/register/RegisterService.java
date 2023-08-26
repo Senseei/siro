@@ -17,6 +17,7 @@ import com.internacao.siro.entities.Patient;
 import com.internacao.siro.entities.Register;
 import com.internacao.siro.repositories.PatientRepository;
 import com.internacao.siro.repositories.RegisterRepository;
+import com.internacao.siro.util.Json;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -29,6 +30,8 @@ public class RegisterService {
 
     @Autowired
     RegisterUtil registerUtil;
+    @Autowired
+    Json json;
     @Autowired
     RegisterRepository registerRepository;
     @Autowired
@@ -72,7 +75,7 @@ public class RegisterService {
     @Transactional
     public ResponseEntity<RegisterDTO> create(NewRegisterDTO body) {
 
-        registerUtil.validateJson(body);
+        json.validate(body);
 
         if (registerRepository.existsByPatientId(body.getPatientId()))
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
