@@ -13,8 +13,8 @@ import com.internacao.siro.entities.Person;
 import com.internacao.siro.entities.Register;
 import com.internacao.siro.entities.Relative;
 import com.internacao.siro.entities.RelativeId;
-import com.internacao.siro.util.Json;
 import com.internacao.siro.util.Repositories;
+import com.internacao.siro.validators.json.RegisterJson;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -24,7 +24,7 @@ public class RegisterUtil {
     @Autowired
     Repositories repositories;
     @Autowired
-    Json json;
+    RegisterJson registerJson;
 
 
     RegisterDTO createRegisterDTO(Register register) {
@@ -34,7 +34,7 @@ public class RegisterUtil {
 
     void updateDTOToEntity(Register register, UpdateRegisterDTO body) {
 
-        json.validate(body);
+        registerJson.validate(body);
 
         Patient patient = setPatient(register, body);
         Doctor doctor = body.getDoctorId() != null ? repositories.doctorRepository.findById(body.getDoctorId()).orElse(null) : null;

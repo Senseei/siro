@@ -20,7 +20,7 @@ import com.internacao.siro.entities.Register;
 import com.internacao.siro.repositories.DocumentationRepository;
 import com.internacao.siro.repositories.OccurrenceRepository;
 import com.internacao.siro.repositories.RegisterRepository;
-import com.internacao.siro.util.Json;
+import com.internacao.siro.validators.json.DocumentationJson;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -40,7 +40,7 @@ public class DocumentationService {
     @Autowired
     OccurrenceRepository occurrenceRepository;
     @Autowired
-    Json json;
+    DocumentationJson documentationJson ;
 
 
     @Transactional(readOnly = true)
@@ -90,7 +90,7 @@ public class DocumentationService {
         if (documentation == null)
             return ResponseEntity.notFound().build();
             
-        json.validate(body);
+        documentationJson.validate(body);
 
         Register register = entityManager.getReference(Register.class, documentation.getRegister().getId());
         Employee employee = entityManager.getReference(Employee.class, body.getEmployeeId());
@@ -119,7 +119,7 @@ public class DocumentationService {
     }
 
     ResponseEntity<DocumentationDTO> create(NewDocumentationDTO body, Register register) {
-        json.validate(body);
+        documentationJson.validate(body);
 
         Doctor doctor = entityManager.getReference(Doctor.class, body.getDoctorId());
         

@@ -13,12 +13,15 @@ import com.internacao.siro.dto.person.PersonDTO;
 import com.internacao.siro.dto.person.UpdatePersonDTO;
 import com.internacao.siro.entities.Person;
 import com.internacao.siro.repositories.PersonRepository;
+import com.internacao.siro.validators.json.PersonJson;
 
 @Service
 public class PersonService {
     
     @Autowired
     PersonRepository personRepository;
+    @Autowired
+    PersonJson personJson;
 
     @Transactional(readOnly = true)
     public List<PersonDTO> findAll() {
@@ -40,6 +43,8 @@ public class PersonService {
         if (body.getCpf() != null && personRepository.existsByCpf(body.getCpf()))
             throw new DuplicateKeyException("There is already a person with the given CPF");
 
+        personJson.validate(body);
+
         Person newPerson = new Person(body);
         personRepository.save(newPerson);
         return ResponseEntity.ok(PersonDTO.of(newPerson));
@@ -48,9 +53,10 @@ public class PersonService {
     @Transactional
     public ResponseEntity<PersonDTO> update(Long id, UpdatePersonDTO body) {
         Person person = personRepository.findById(id).orElse(null);
-        
         if (person == null)
             return ResponseEntity.notFound().build();
+        
+        personJson.validate(body);
 
         person.update(body);
         personRepository.save(person);

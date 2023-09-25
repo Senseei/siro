@@ -17,7 +17,7 @@ import com.internacao.siro.entities.Patient;
 import com.internacao.siro.entities.Register;
 import com.internacao.siro.repositories.PatientRepository;
 import com.internacao.siro.repositories.RegisterRepository;
-import com.internacao.siro.util.Json;
+import com.internacao.siro.validators.json.RegisterJson;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -31,12 +31,12 @@ public class RegisterService {
     @Autowired
     RegisterUtil registerUtil;
     @Autowired
-    Json json;
-    @Autowired
     RegisterRepository registerRepository;
     @Autowired
     PatientRepository patientRepository;
 
+    @Autowired
+    RegisterJson registerJson;
 
     @Transactional(readOnly = true)
     public List<RegisterDTO> findAll() {
@@ -75,7 +75,7 @@ public class RegisterService {
     @Transactional
     public ResponseEntity<RegisterDTO> create(NewRegisterDTO body) {
 
-        json.validate(body);
+        registerJson.validate(body);
 
         if (registerRepository.existsByPatientId(body.getPatientId()))
             throw new DuplicateKeyException("A register with the given patient already exists");

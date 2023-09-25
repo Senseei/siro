@@ -16,7 +16,7 @@ import com.internacao.siro.entities.contactAttempt.ContactAttempt;
 import com.internacao.siro.entities.contactAttempt.SuccessContactAttempt;
 import com.internacao.siro.entities.contactAttempt.UnsuccessContactAttempt;
 import com.internacao.siro.repositories.ContactAttemptRepository;
-import com.internacao.siro.util.Json;
+import com.internacao.siro.validators.json.ContactAttemptJson;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -32,7 +32,7 @@ public class ContactAttemptService {
     @Autowired
     ContactAttemptRepository contactAttemptRepository;
     @Autowired
-    Json json;
+    ContactAttemptJson contactAttemptJson;
     
     @Transactional(readOnly = true)
     public List<ContactAttemptDTO> findAll() {
@@ -64,7 +64,7 @@ public class ContactAttemptService {
     public ResponseEntity<ContactAttemptDTO> create(NewSuccessContactAttemptDTO body, Long registerId) {
         Register register = contactAttemptUtil.checkIfRegisterExists(registerId);
 
-        json.validate(body);
+        contactAttemptJson.validate(body);
 
         Employee employee = entityManager.getReference(Employee.class, body.getEmployeeId());
 
@@ -78,7 +78,7 @@ public class ContactAttemptService {
     public ResponseEntity<ContactAttemptDTO> create(NewUnsuccessContactAttemptDTO body, Long registerId) {
         Register register = contactAttemptUtil.checkIfRegisterExists(registerId);
 
-        json.validate(body);
+        contactAttemptJson.validate(body);
 
         Employee employee = entityManager.getReference(Employee.class, body.getEmployeeId());
 

@@ -13,7 +13,7 @@ import com.internacao.siro.entities.Employee;
 import com.internacao.siro.entities.Occurrence;
 import com.internacao.siro.entities.Register;
 import com.internacao.siro.repositories.OccurrenceRepository;
-import com.internacao.siro.util.Json;
+import com.internacao.siro.validators.json.OccurrenceJson;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -29,7 +29,7 @@ public class OccurrenceService {
     @Autowired
     OccurrenceUtil occurrenceUtil;
     @Autowired
-    Json json;
+    OccurrenceJson occurrenceJson;
     
     @Transactional(readOnly = true)
     public List<OccurrenceDTO> findAll() {
@@ -71,7 +71,7 @@ public class OccurrenceService {
     }
 
     ResponseEntity<OccurrenceDTO> create(NewOccurrenceDTO body, Register register) {
-        json.validate(body);
+        occurrenceJson.validate(body);
 
         Employee employee = entityManager.getReference(Employee.class, body.getEmployeeId());
 
