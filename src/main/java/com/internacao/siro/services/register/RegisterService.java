@@ -3,7 +3,7 @@ package com.internacao.siro.services.register;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,7 +78,7 @@ public class RegisterService {
         json.validate(body);
 
         if (registerRepository.existsByPatientId(body.getPatientId()))
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new DuplicateKeyException("A register with the given patient already exists");
 
         Patient patient = entityManager.getReference(Patient.class, body.getPatientId());
         Doctor doctor = entityManager.getReference(Doctor.class, body.getDoctorId());

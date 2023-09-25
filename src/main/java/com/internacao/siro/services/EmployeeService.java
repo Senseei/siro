@@ -3,7 +3,7 @@ package com.internacao.siro.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +45,7 @@ public class EmployeeService {
     @Transactional
     public ResponseEntity<EmployeeDTO> create(NewEmployeeDTO body) {
         if (employeeRepository.existsByRe(body.getRe()))
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new DuplicateKeyException("There is already an employee with this RE");
 
         Employee newEmployee = new Employee(body);
         employeeRepository.save(newEmployee);

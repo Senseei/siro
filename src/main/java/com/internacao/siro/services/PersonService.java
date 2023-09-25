@@ -3,7 +3,7 @@ package com.internacao.siro.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,10 +37,8 @@ public class PersonService {
 
     @Transactional
     public ResponseEntity<PersonDTO> create(NewPersonDTO body) {
-        if (body.getCpf() != null) {
-            if (personRepository.existsByCpf(body.getCpf()))
-                return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+        if (body.getCpf() != null && personRepository.existsByCpf(body.getCpf()))
+            throw new DuplicateKeyException("There is already a person with the given CPF");
 
         Person newPerson = new Person(body);
         personRepository.save(newPerson);

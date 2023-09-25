@@ -3,7 +3,7 @@ package com.internacao.siro.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +45,7 @@ public class DoctorService {
     @Transactional
     public ResponseEntity<DoctorDTO> create(NewDoctorDTO body) {
         if (doctorRepository.existsByCrm(body.getCrm()))
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new DuplicateKeyException("There is already a doctor with this CRM");
 
         Doctor newDoctor = new Doctor(body);
         doctorRepository.save(newDoctor);
