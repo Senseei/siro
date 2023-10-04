@@ -17,7 +17,7 @@ import com.internacao.siro.dto.person.NewPersonDTO;
 import com.internacao.siro.dto.person.PersonDTO;
 import com.internacao.siro.dto.person.UpdatePersonDTO;
 import com.internacao.siro.entities.Person;
-import com.internacao.siro.exception.InvalidJsonFormatException;
+import com.internacao.siro.exceptions.InvalidJsonFormatException;
 import com.internacao.siro.repositories.PersonRepository;
 import com.internacao.siro.services.PersonService;
 
@@ -63,31 +63,58 @@ public class PersonServiceTest {
 
     @Test
     public void createTest() {
-        NewPersonDTO body = new NewPersonDTO("CreatingNewPersonTest", LocalDate.now(), "123");
+        NewPersonDTO body = new NewPersonDTO("CreatingNewPersonTest", LocalDate.now(), "1");
+        assertThrows(IllegalArgumentException.class, () -> personService.create(body));
+        body.setCpf("11111111111");
+
         PersonDTO personDTO = personService.create(body).getBody();
 
         assertNotNull(personDTO);
-        assertEquals("CreatingNewPersonTest", personDTO.getName());
-        assertEquals(LocalDate.now(), personDTO.getBirthday());
-        assertThrows(DuplicateKeyException.class, () -> personService.create(new NewPersonDTO("DuplicateTest", LocalDate.now(), "123")));
-        assertEquals("123", personDTO.getCpf());
+        assertEquals(body.getName(), personDTO.getName());
+        assertEquals(body.getBirthday(), personDTO.getBirthday());
+        assertThrows(DuplicateKeyException.class, () -> personService.create(new NewPersonDTO("DuplicateTest", LocalDate.now(), "11111111111")));
+        assertEquals(body.getCpf(), personDTO.getCpf());
         
-        assertThrows(InvalidJsonFormatException.class, () -> personService.create(new NewPersonDTO(null, LocalDate.now(), "000")));
-        assertThrows(InvalidJsonFormatException.class, () -> personService.create(new NewPersonDTO("TestingInvalidInputs", null, "000")));
-        assertThrows(InvalidJsonFormatException.class, () -> personService.create(new NewPersonDTO("TestingInvalidInputs", LocalDate.now(), null)));
+
+        NewPersonDTO nullFieldsBody = new NewPersonDTO("TestingInvalidInputs", LocalDate.now(), "12345678911");
+        nullFieldsBody.setName(null);
+        assertThrows(InvalidJsonFormatException.class, () -> personService.create(nullFieldsBody));
+        nullFieldsBody.setName("TestingInvalidInputs");
+        nullFieldsBody.setBirthday(null);
+        assertThrows(InvalidJsonFormatException.class, () -> personService.create(nullFieldsBody));
+        nullFieldsBody.setBirthday(LocalDate.now());
+        nullFieldsBody.setCpf(null);
+        assertThrows(InvalidJsonFormatException.class, () -> personService.create(nullFieldsBody));
+
+
+        NewPersonDTO emptyFieldsBody = new NewPersonDTO("TestingInvalidInputs", LocalDate.now(), "12345678912");
+        emptyFieldsBody.setName("");
+        assertThrows(IllegalArgumentException.class, () -> personService.create(emptyFieldsBody));
+        emptyFieldsBody.setName("    ");
+        assertThrows(IllegalArgumentException.class, () -> personService.create(emptyFieldsBody));
+        emptyFieldsBody.setName("TestingEmptyInputs");
+        emptyFieldsBody.setCpf("");
+        assertThrows(IllegalArgumentException.class, () -> personService.create(emptyFieldsBody));
+        emptyFieldsBody.setCpf("           ");
+        assertThrows(IllegalArgumentException.class, () -> personService.create(emptyFieldsBody));
     }
 
     @Test
     public void updateTest() {
-        UpdatePersonDTO body = new UpdatePersonDTO("UpdatingTestPerson", LocalDate.of(2000, 01, 01), "000");
+        UpdatePersonDTO body = new UpdatePersonDTO("UpdatingTestPerson", LocalDate.of(2000, 01, 01), "1");
+        assertThrows(IllegalArgumentException.class, () -> personService.update(testPerson.getId(), body));
+        body.setCpf("11111111111");
         PersonDTO personDTO = personService.update(testPerson.getId(), body).getBody();
 
         assertNotNull(personDTO);
-        assertEquals("UpdatingTestPerson", personDTO.getName());
-        assertEquals(LocalDate.of(2000, 01, 01), personDTO.getBirthday());
-        assertEquals("000", personDTO.getCpf());
+        assertEquals(body.getName(), personDTO.getName());
+        assertEquals(body.getBirthday(), personDTO.getBirthday());
+        assertEquals(body.getCpf(), personDTO.getCpf());
 
-        assertThrows(InvalidJsonFormatException.class, () -> personService.update(testPerson.getId(), new UpdatePersonDTO("", null, null)));
-        assertThrows(InvalidJsonFormatException.class, () -> personService.update(testPerson.getId(), new UpdatePersonDTO(null, null, "")));
+        body.setName("");
+        assertThrows(InvalidJsonFormatException.class, () -> personService.update(testPerson.getId(), body));
+        body.setName("TestingEmptyValues");
+        body.setCpf("");
+        assertThrows(InvalidJsonFormatException.class, () -> personService.update(testPerson.getId(), body));
     }
 }

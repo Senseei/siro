@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.internacao.siro.dto.documentation.CancelDocumentationDTO;
 import com.internacao.siro.dto.documentation.NewDocumentationDTO;
-import com.internacao.siro.exception.InvalidJsonFormatException;
+import com.internacao.siro.exceptions.InvalidJsonFormatException;
 import com.internacao.siro.repositories.DoctorRepository;
 import com.internacao.siro.repositories.EmployeeRepository;
 

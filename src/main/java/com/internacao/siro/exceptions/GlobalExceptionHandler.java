@@ -1,4 +1,4 @@
-package com.internacao.siro.exception;
+package com.internacao.siro.exceptions;
 
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;

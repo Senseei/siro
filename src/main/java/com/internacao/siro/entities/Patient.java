@@ -26,22 +26,22 @@ public class Patient extends Person {
 
 	public Patient(String name, Long mr) {
         super(name);
-        this.mr = mr;
+        setMr(mr);
     }
 
     public Patient(String name, LocalDate birthday, Long mr) {
         super(name, birthday);
-        this.mr = mr;
+        setMr(mr);
     }
 
 	public Patient(String name, LocalDate birthday, String cpf, Long mr) {
         super(name, birthday, cpf);
-        this.mr = mr;
+        setMr(mr);
     }
 
     public Patient(NewPatientDTO body) {
         super(body);
-        mr = body.getMr();
+        setMr(body.getMr());
     }
 
     public Long getMr() {
@@ -49,6 +49,8 @@ public class Patient extends Person {
     }
 
     public void setMr(Long mr) {
+        if (mr < 0)
+            throw new IllegalArgumentException("Patient's medical record must be a positive integer number");
         this.mr = mr;
     }
 

@@ -9,6 +9,7 @@ import com.internacao.siro.dto.patient.PatientDTO;
 import com.internacao.siro.dto.person.NewPersonDTO;
 import com.internacao.siro.dto.person.PersonDTO;
 import com.internacao.siro.dto.person.UpdatePersonDTO;
+import com.internacao.siro.exceptions.InvalidCPFFormatException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
@@ -21,7 +22,7 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="tb_people")
+@Table(name = "tb_people")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "person_type")
 public class Person {
@@ -34,32 +35,35 @@ public class Person {
     @Column(unique = true)
     private String cpf;
 
-    public Person() {}
+    public Person() {
+    }
 
     public Person(String name) {
-        this.name = name;
+        setName(name);
+        ;
     }
 
     public Person(String name, LocalDate birthday) {
-        this.name = name;
+        setName(name);
+        ;
         this.birthday = birthday;
     }
 
     public Person(String name, LocalDate birthday, String cpf) {
-        if (cpf != null && cpf.length() != 11)
-            throw new IllegalArgumentException("CPF must have exactly 11 characters");
-        this.name = name;
+        setName(name);
+        ;
         this.birthday = birthday;
-        this.cpf = cpf;
+        setCpf(cpf);
     }
 
     public Person(NewPersonDTO body) {
-        name = body.getName();
+        setName(body.getName());
+        ;
         birthday = body.getBirthday();
-        cpf = body.getCpf();
+        setCpf(body.getCpf());
     }
 
-    public static PersonDTO toDTO (Person person) {
+    public static PersonDTO toDTO(Person person) {
         if (person instanceof Doctor)
             return DoctorDTO.of((Doctor) person);
         if (person instanceof Employee)
@@ -78,7 +82,9 @@ public class Person {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (name.trim().equals(""))
+            throw new IllegalArgumentException("Name cannot be empty");
+        this.name = name.trim();
     }
 
     public LocalDate getBirthday() {
@@ -94,6 +100,8 @@ public class Person {
     }
 
     public void setCpf(String cpf) {
+        if (cpf != null && cpf.trim().length() != 11)
+            throw new InvalidCPFFormatException("CPF must have exactly 11 characters");
         this.cpf = cpf;
     }
 
@@ -107,19 +115,19 @@ public class Person {
     }
 
     @Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Person other = (Person) obj;
-		return Objects.equals(id, other.id);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Person other = (Person) obj;
+        return Objects.equals(id, other.id);
+    }
 }

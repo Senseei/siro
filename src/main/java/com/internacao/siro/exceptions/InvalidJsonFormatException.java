@@ -1,4 +1,4 @@
-package com.internacao.siro.exception;
+package com.internacao.siro.exceptions;
 
 public class InvalidJsonFormatException extends RuntimeException {
     public InvalidJsonFormatException(String message) {

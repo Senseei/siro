@@ -3,7 +3,7 @@ package com.internacao.siro.validators.json;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
-import com.internacao.siro.exception.InvalidJsonFormatException;
+import com.internacao.siro.exceptions.InvalidJsonFormatException;
 
 import jakarta.persistence.EntityNotFoundException;
 

@@ -16,16 +16,19 @@ import com.internacao.siro.entities.Patient;
 import com.internacao.siro.entities.Relative;
 import com.internacao.siro.repositories.PatientRepository;
 import com.internacao.siro.repositories.RelativeRepository;
+import com.internacao.siro.validators.PatientJson;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class PatientService {
-    
+
     @Autowired
     PatientRepository patientRepository;
     @Autowired
     RelativeRepository relativeRepository;
+    @Autowired
+    PatientJson patientJson;
 
     @Transactional(readOnly = true)
     public List<PatientDTO> findAll() {
@@ -38,7 +41,7 @@ public class PatientService {
         Patient result = patientRepository.findById(id).orElse(null);
         if (result == null)
             return ResponseEntity.notFound().build();
-            
+
         return ResponseEntity.ok(PatientDTO.of(result));
     }
 
@@ -47,7 +50,7 @@ public class PatientService {
         Patient result = patientRepository.findByMr(mr);
         if (result == null)
             return ResponseEntity.notFound().build();
-            
+
         return ResponseEntity.ok(PatientDTO.of(result));
     }
 
@@ -66,6 +69,8 @@ public class PatientService {
         if (patientRepository.existsByMr(body.getMr()))
             throw new DuplicateKeyException("There is already a patient with the given medical record");
 
+        patientJson.validate(body);
+
         Patient newPatient = new Patient(body);
         patientRepository.save(newPatient);
         return ResponseEntity.ok(PatientDTO.of(newPatient));
@@ -76,6 +81,8 @@ public class PatientService {
         Patient patient = patientRepository.findById(id).orElse(null);
         if (patient == null)
             return ResponseEntity.notFound().build();
+
+        patientJson.validate(body);
 
         patient.update(body);
         patientRepository.save(patient);
