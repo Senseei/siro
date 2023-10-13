@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import com.internacao.siro.dto.patient.NewPatientDTO;
 import com.internacao.siro.dto.patient.UpdatePatientDTO;
+import com.internacao.siro.exceptions.NegativeMedicalRecordException;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
@@ -22,9 +23,10 @@ public class Patient extends Person {
     @OneToMany(mappedBy = "id.patient", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Relative> relatives = new ArrayList<>();
 
-    public Patient() {}
+    public Patient() {
+    }
 
-	public Patient(String name, Long mr) {
+    public Patient(String name, Long mr) {
         super(name);
         setMr(mr);
     }
@@ -34,7 +36,7 @@ public class Patient extends Person {
         setMr(mr);
     }
 
-	public Patient(String name, LocalDate birthday, String cpf, Long mr) {
+    public Patient(String name, LocalDate birthday, String cpf, Long mr) {
         super(name, birthday, cpf);
         setMr(mr);
     }
@@ -50,7 +52,7 @@ public class Patient extends Person {
 
     public void setMr(Long mr) {
         if (mr < 0)
-            throw new IllegalArgumentException("Patient's medical record must be a positive integer number");
+            throw new NegativeMedicalRecordException("Patient's medical record must be a positive integer number");
         this.mr = mr;
     }
 
@@ -59,21 +61,21 @@ public class Patient extends Person {
         if (body.getMr() != null)
             mr = body.getMr();
     }
-    
-    @Override
-	public int hashCode() {
-		return Objects.hash(mr);
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Patient other = (Patient) obj;
-		return Objects.equals(mr, other.mr);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(mr);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Patient other = (Patient) obj;
+        return Objects.equals(mr, other.mr);
+    }
 }

@@ -1,4 +1,4 @@
-package com.internacao.siro.validators;
+package com.internacao.siro.validators.json;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,6 @@ import com.internacao.siro.dto.patient.UpdatePatientDTO;
 import com.internacao.siro.exceptions.InvalidJsonFormatException;
 import com.internacao.siro.exceptions.NegativeMedicalRecordException;
 import com.internacao.siro.repositories.PatientRepository;
-import com.internacao.siro.validators.json.PersonJson;
 
 @Component
 public class PatientJson extends PersonJson {

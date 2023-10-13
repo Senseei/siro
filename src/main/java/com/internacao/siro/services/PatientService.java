@@ -16,7 +16,7 @@ import com.internacao.siro.entities.Patient;
 import com.internacao.siro.entities.Relative;
 import com.internacao.siro.repositories.PatientRepository;
 import com.internacao.siro.repositories.RelativeRepository;
-import com.internacao.siro.validators.PatientJson;
+import com.internacao.siro.validators.json.PatientJson;
 
 import jakarta.persistence.EntityNotFoundException;
 
