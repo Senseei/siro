@@ -9,6 +9,7 @@ import com.internacao.siro.dto.patient.PatientDTO;
 import com.internacao.siro.dto.person.NewPersonDTO;
 import com.internacao.siro.dto.person.PersonDTO;
 import com.internacao.siro.dto.person.UpdatePersonDTO;
+import com.internacao.siro.exceptions.IllegalArgumentAtConstructorException;
 import com.internacao.siro.exceptions.InvalidCPFFormatException;
 
 import jakarta.persistence.Column;
@@ -83,7 +84,7 @@ public class Person {
 
     public void setName(String name) {
         if (name.trim().equals(""))
-            throw new IllegalArgumentException("Name cannot be empty");
+            throw new IllegalArgumentAtConstructorException("Name cannot be empty");
         this.name = name.trim();
     }
 

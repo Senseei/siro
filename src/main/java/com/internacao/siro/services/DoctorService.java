@@ -13,12 +13,15 @@ import com.internacao.siro.dto.doctor.NewDoctorDTO;
 import com.internacao.siro.dto.doctor.UpdateDoctorDTO;
 import com.internacao.siro.entities.Doctor;
 import com.internacao.siro.repositories.DoctorRepository;
+import com.internacao.siro.validators.json.DoctorJson;
 
 @Service
 public class DoctorService {
-    
+
     @Autowired
     DoctorRepository doctorRepository;
+    @Autowired
+    DoctorJson doctorJson;
 
     @Transactional(readOnly = true)
     public List<DoctorDTO> findAll() {
@@ -47,6 +50,8 @@ public class DoctorService {
         if (doctorRepository.existsByCrm(body.getCrm()))
             throw new DuplicateKeyException("There is already a doctor with this CRM");
 
+        doctorJson.validate(body);
+
         Doctor newDoctor = new Doctor(body);
         doctorRepository.save(newDoctor);
         return ResponseEntity.ok(DoctorDTO.of(newDoctor));
@@ -57,7 +62,9 @@ public class DoctorService {
         Doctor doctor = doctorRepository.findById(id).orElse(null);
         if (doctor == null)
             return ResponseEntity.notFound().build();
-            
+
+        doctorJson.validate(body);
+
         doctor.update(body);
         doctorRepository.save(doctor);
         return ResponseEntity.ok(DoctorDTO.of(doctor));

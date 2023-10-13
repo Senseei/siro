@@ -9,7 +9,7 @@ import jakarta.persistence.EntityNotFoundException;
 
 @Component
 public class Json {
-    
+
     public void validateEntityField(Long entityId, JpaRepository<?, Long> repository, String entityName) {
         if (entityId == null)
             throw new InvalidJsonFormatException(entityName + " Id cannot be null");
@@ -25,5 +25,10 @@ public class Json {
     public void validateField(Object field, String fieldName) {
         if (field == null)
             throw new InvalidJsonFormatException(fieldName + " cannot be null");
+    }
+
+    public void fieldIsEmpty(String field, String fieldName) {
+        if (field != null && field.trim().equals(""))
+            throw new InvalidJsonFormatException(fieldName + " cannot be empty");
     }
 }

@@ -17,7 +17,7 @@ import com.internacao.siro.validators.json.PersonJson;
 
 @Service
 public class PersonService {
-    
+
     @Autowired
     PersonRepository personRepository;
     @Autowired
@@ -55,7 +55,7 @@ public class PersonService {
         Person person = personRepository.findById(id).orElse(null);
         if (person == null)
             return ResponseEntity.notFound().build();
-        
+
         personJson.validate(body);
 
         person.update(body);

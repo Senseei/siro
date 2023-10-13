@@ -66,7 +66,7 @@ public class PatientServiceTest {
         PatientDTO retrievedPatient = patientService.findById(testPatient.getId()).getBody();
 
         assertNotNull(retrievedPatient);
-        assertPatientEquals(testPatient, retrievedPatient);
+        assertPatientEquals(PatientDTO.of(testPatient), retrievedPatient);
     }
 
     @Test
@@ -74,19 +74,19 @@ public class PatientServiceTest {
         PatientDTO retrievedPatient = patientService.findByMr(testPatient.getMr()).getBody();
 
         assertNotNull(retrievedPatient);
-        assertPatientEquals(testPatient, retrievedPatient);
+        assertPatientEquals(PatientDTO.of(testPatient), retrievedPatient);
     }
 
     @Test
     public void createTest() {
-        NewPatientDTO body = new NewPatientDTO("CreatingNewPersonTest", LocalDate.now(), "11111111100", 1001l);
+        NewPatientDTO body = new NewPatientDTO("CreatingNewPatientTest", LocalDate.now(), "11111111100", 1001l);
         PatientDTO patientDTO = patientService.create(body).getBody();
 
         assertNotNull(patientDTO);
         assertEquals(body.getName(), patientDTO.getName());
         assertEquals(body.getBirthday(), patientDTO.getBirthday());
         assertThrows(DuplicateKeyException.class,
-                () -> patientService.create(new NewPatientDTO("DuplicateTest", LocalDate.now(), "000", 1001l)));
+                () -> patientService.create(new NewPatientDTO("DuplicateTest", LocalDate.now(), "00000000000", 1001l)));
         assertEquals(body.getCpf(), patientDTO.getCpf());
         assertEquals(body.getMr(), patientDTO.getMr());
 
@@ -117,7 +117,7 @@ public class PatientServiceTest {
 
     @Test
     public void updateTest() {
-        UpdatePatientDTO body = new UpdatePatientDTO("UpdatingtestPatient", LocalDate.now(), "11111111100", 1l);
+        UpdatePatientDTO body = new UpdatePatientDTO("UpdatingTestPatient", LocalDate.now(), "11111111100", 1l);
         PatientDTO patientDTO = patientService.update(testPatient.getId(), body).getBody();
 
         assertNotNull(patientDTO);
@@ -158,7 +158,7 @@ public class PatientServiceTest {
         relativeRepository.delete(relativeEntity);
     }
 
-    private void assertPatientEquals(Patient patient1, PatientDTO patient2) {
+    private void assertPatientEquals(PatientDTO patient1, PatientDTO patient2) {
         assertEquals(patient1.getName(), patient2.getName());
         assertEquals(patient1.getBirthday(), patient2.getBirthday());
         assertEquals(patient1.getCpf(), patient2.getCpf());
