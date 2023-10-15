@@ -23,14 +23,14 @@ import com.internacao.siro.services.ClinicService;
 @RestController
 @RequestMapping("/clinics")
 public class ClinicController {
-    
+
     @Autowired
     ClinicService clinicService;
 
     @GetMapping
     public List<ClinicDTO> findAll(@RequestParam(required = false) String name) {
         if (name != null) {
-            ClinicDTO clinic = clinicService.findByName(name).getBody();
+            ClinicDTO clinic = clinicService.findByName(name);
             if (clinic == null)
                 return new ArrayList<>();
             return Collections.singletonList(clinic);
@@ -40,16 +40,16 @@ public class ClinicController {
 
     @PostMapping
     public ResponseEntity<ClinicDTO> create(@RequestBody NewClinicDTO body) {
-        return clinicService.create(body);
+        return ResponseEntity.ok(clinicService.create(body));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClinicDTO> findById(@PathVariable Long id) {
-        return clinicService.findById(id);
+        return ResponseEntity.ok(clinicService.findById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ClinicDTO> update(@RequestBody UpdateClinicDTO body, @PathVariable Long id) {
-        return clinicService.update(body, id);
+        return ResponseEntity.ok(clinicService.update(body, id));
     }
 }

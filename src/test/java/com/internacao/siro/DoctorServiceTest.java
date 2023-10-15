@@ -57,7 +57,7 @@ public class DoctorServiceTest {
 
     @Test
     public void findByIdTest() {
-        DoctorDTO retrievedDoctor = doctorService.findById(testDoctor.getId()).getBody();
+        DoctorDTO retrievedDoctor = doctorService.findById(testDoctor.getId());
 
         assertNotNull(retrievedDoctor);
         assertDoctorEquals(DoctorDTO.of(testDoctor), retrievedDoctor);
@@ -65,7 +65,7 @@ public class DoctorServiceTest {
 
     @Test
     public void findByCrmTest() {
-        DoctorDTO retrievedDoctor = doctorService.findByCrm(testDoctor.getCrm()).getBody();
+        DoctorDTO retrievedDoctor = doctorService.findByCrm(testDoctor.getCrm());
 
         assertNotNull(retrievedDoctor);
         assertDoctorEquals(DoctorDTO.of(testDoctor), retrievedDoctor);
@@ -74,7 +74,7 @@ public class DoctorServiceTest {
     @Test
     public void createTest() {
         NewDoctorDTO body = new NewDoctorDTO("CreatingNewDoctorTest", LocalDate.now(), "11111111100", 1001l);
-        DoctorDTO doctorDTO = doctorService.create(body).getBody();
+        DoctorDTO doctorDTO = doctorService.create(body);
 
         assertNotNull(doctorDTO);
         assertEquals(body.getName(), doctorDTO.getName());
@@ -112,7 +112,7 @@ public class DoctorServiceTest {
     @Test
     public void updateTest() {
         UpdateDoctorDTO body = new UpdateDoctorDTO("UpdatingTestDoctor", LocalDate.now(), "11111111100", 1l);
-        DoctorDTO doctorDTO = doctorService.update(testDoctor.getId(), body).getBody();
+        DoctorDTO doctorDTO = doctorService.update(testDoctor.getId(), body);
 
         assertNotNull(doctorDTO);
         assertEquals(body.getName(), doctorDTO.getName());

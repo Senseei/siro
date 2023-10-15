@@ -3,7 +3,6 @@ package com.internacao.siro.services.contacctAttempt;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +18,12 @@ import com.internacao.siro.repositories.ContactAttemptRepository;
 import com.internacao.siro.validators.json.ContactAttemptJson;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 
 @Service
 public class ContactAttemptService {
-    
+
     @PersistenceContext
     EntityManager entityManager;
 
@@ -33,7 +33,7 @@ public class ContactAttemptService {
     ContactAttemptRepository contactAttemptRepository;
     @Autowired
     ContactAttemptJson contactAttemptJson;
-    
+
     @Transactional(readOnly = true)
     public List<ContactAttemptDTO> findAll() {
         List<ContactAttempt> result = contactAttemptRepository.findAll();
@@ -41,11 +41,11 @@ public class ContactAttemptService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ContactAttemptDTO> findById(Long id) {
+    public ContactAttemptDTO findById(Long id) {
         ContactAttempt attempt = contactAttemptRepository.findById(id).orElse(null);
         if (attempt == null)
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(ContactAttempt.toDTO(attempt));
+            throw new EntityNotFoundException();
+        return ContactAttempt.toDTO(attempt);
     }
 
     @Transactional(readOnly = true)
@@ -61,31 +61,33 @@ public class ContactAttemptService {
     }
 
     @Transactional
-    public ResponseEntity<ContactAttemptDTO> create(NewSuccessContactAttemptDTO body, Long registerId) {
+    public ContactAttemptDTO create(NewSuccessContactAttemptDTO body, Long registerId) {
         Register register = contactAttemptUtil.checkIfRegisterExists(registerId);
 
         contactAttemptJson.validate(body);
 
         Employee employee = entityManager.getReference(Employee.class, body.getEmployeeId());
 
-        SuccessContactAttempt attempt = new SuccessContactAttempt(register, employee, body.getPhoneNumber(), body.getAttemptTime(),
-            body.getPersonWhoAnswered(), body.getRelationship());
+        SuccessContactAttempt attempt = new SuccessContactAttempt(register, employee, body.getPhoneNumber(),
+                body.getAttemptTime(),
+                body.getPersonWhoAnswered(), body.getRelationship());
         contactAttemptRepository.save(attempt);
-        return ResponseEntity.ok(ContactAttempt.toDTO(attempt));
+        return ContactAttempt.toDTO(attempt);
     }
 
     @Transactional
-    public ResponseEntity<ContactAttemptDTO> create(NewUnsuccessContactAttemptDTO body, Long registerId) {
+    public ContactAttemptDTO create(NewUnsuccessContactAttemptDTO body, Long registerId) {
         Register register = contactAttemptUtil.checkIfRegisterExists(registerId);
 
         contactAttemptJson.validate(body);
 
         Employee employee = entityManager.getReference(Employee.class, body.getEmployeeId());
 
-        UnsuccessContactAttempt attempt = new UnsuccessContactAttempt(register, employee, body.getPhoneNumber(), body.getAttemptTime(),
-            body.getReasonForNotCalling());
+        UnsuccessContactAttempt attempt = new UnsuccessContactAttempt(register, employee, body.getPhoneNumber(),
+                body.getAttemptTime(),
+                body.getReasonForNotCalling());
         contactAttemptRepository.save(attempt);
-        return ResponseEntity.ok(ContactAttempt.toDTO(attempt));
+        return ContactAttempt.toDTO(attempt);
 
     }
 }

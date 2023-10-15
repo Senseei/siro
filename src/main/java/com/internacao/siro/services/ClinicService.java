@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +13,8 @@ import com.internacao.siro.dto.clinic.UpdateClinicDTO;
 import com.internacao.siro.entities.Clinic;
 import com.internacao.siro.repositories.ClinicRepository;
 import com.internacao.siro.validators.json.ClinicJson;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ClinicService {
@@ -30,23 +31,23 @@ public class ClinicService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ClinicDTO> findById(Long id) {
+    public ClinicDTO findById(Long id) {
         Clinic clinic = clinicRepository.findById(id).orElse(null);
         if (clinic == null)
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(ClinicDTO.of(clinic));
+            throw new EntityNotFoundException();
+        return ClinicDTO.of(clinic);
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ClinicDTO> findByName(String name) {
+    public ClinicDTO findByName(String name) {
         Clinic clinic = clinicRepository.findByName(name);
         if (clinic == null)
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(ClinicDTO.of(clinic));
+            throw new EntityNotFoundException();
+        return ClinicDTO.of(clinic);
     }
 
     @Transactional
-    public ResponseEntity<ClinicDTO> create(NewClinicDTO body) {
+    public ClinicDTO create(NewClinicDTO body) {
         if (clinicRepository.existsByName(body.getName()))
             throw new DuplicateKeyException("There already exists a clinic with this name");
 
@@ -55,19 +56,19 @@ public class ClinicService {
         Clinic clinic = new Clinic(body);
         clinicRepository.save(clinic);
 
-        return ResponseEntity.ok(ClinicDTO.of(clinic));
+        return ClinicDTO.of(clinic);
     }
 
     @Transactional
-    public ResponseEntity<ClinicDTO> update(UpdateClinicDTO body, Long id) {
+    public ClinicDTO update(UpdateClinicDTO body, Long id) {
         Clinic clinic = clinicRepository.findById(id).orElse(null);
         if (clinic == null)
-            return ResponseEntity.notFound().build();
+            throw new EntityNotFoundException();
 
         clinicJson.validate(body);
 
         clinic.update(body);
         clinicRepository.save(clinic);
-        return ResponseEntity.ok(ClinicDTO.of(clinic));
+        return ClinicDTO.of(clinic);
     }
 }

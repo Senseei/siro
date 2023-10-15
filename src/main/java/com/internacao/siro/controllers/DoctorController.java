@@ -23,14 +23,14 @@ import com.internacao.siro.services.DoctorService;
 @RestController
 @RequestMapping(value = "/doctors")
 public class DoctorController {
-    
+
     @Autowired
     DoctorService doctorService;
 
     @GetMapping
     public List<DoctorDTO> findAll(@RequestParam(required = false) Long crm) {
         if (crm != null) {
-            DoctorDTO dto = doctorService.findByCrm(crm).getBody();
+            DoctorDTO dto = doctorService.findByCrm(crm);
             if (dto == null)
                 return new ArrayList<DoctorDTO>();
             return Collections.singletonList(dto);
@@ -40,16 +40,16 @@ public class DoctorController {
 
     @PostMapping
     public ResponseEntity<DoctorDTO> create(@RequestBody NewDoctorDTO dto) {
-        return doctorService.create(dto);
+        return ResponseEntity.ok(doctorService.create(dto));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DoctorDTO> findByPersonId(@PathVariable Long id) {
-        return doctorService.findById(id);
+        return ResponseEntity.ok(doctorService.findById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<DoctorDTO> update(@PathVariable Long id, @RequestBody UpdateDoctorDTO body) {
-        return doctorService.update(id, body);
+        return ResponseEntity.ok(doctorService.update(id, body));
     }
 }

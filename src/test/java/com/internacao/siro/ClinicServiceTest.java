@@ -55,7 +55,7 @@ public class ClinicServiceTest {
 
     @Test
     public void findById() {
-        ClinicDTO result = clinicService.findById(testClinic.getId()).getBody();
+        ClinicDTO result = clinicService.findById(testClinic.getId());
 
         assertNotNull(result);
         assertEquals(testClinic.getName(), result.getName());
@@ -63,7 +63,7 @@ public class ClinicServiceTest {
 
     @Test
     public void findByName() {
-        ClinicDTO result = clinicService.findByName("Test Clinic").getBody();
+        ClinicDTO result = clinicService.findByName("Test Clinic");
 
         assertNotNull(result);
         assertEquals(result.getName(), testClinic.getName());
@@ -72,7 +72,7 @@ public class ClinicServiceTest {
     @Test
     public void createTest() {
         NewClinicDTO body = new NewClinicDTO("New Clinic");
-        ClinicDTO dto = clinicService.create(body).getBody();
+        ClinicDTO dto = clinicService.create(body);
 
         assertNotNull(dto);
         assertEquals(body.getName(), dto.getName());
@@ -90,7 +90,7 @@ public class ClinicServiceTest {
     @Test
     public void updateTest() {
         UpdateClinicDTO body = new UpdateClinicDTO("Updating Clinic");
-        ClinicDTO dto = clinicService.update(body, testClinic.getId()).getBody();
+        ClinicDTO dto = clinicService.update(body, testClinic.getId());
 
         assertNotNull(dto);
         assertEquals(dto.getName(), body.getName());

@@ -24,7 +24,7 @@ public class DocumentationController {
 
     @Autowired
     DocumentationService documentationService;
-    
+
     @GetMapping
     public List<DocumentationDTO> findAll(@RequestParam(required = false) Long mr) {
         if (mr != null)
@@ -34,16 +34,17 @@ public class DocumentationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DocumentationDTO> findById(@PathVariable Long id) {
-        return documentationService.findById(id);
+        return ResponseEntity.ok(documentationService.findById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<DocumentationDTO> update(@RequestBody UpdateDocumentationDTO body, @PathVariable Long id) {
-        return documentationService.update(body, id);
+        return ResponseEntity.ok(documentationService.update(body, id));
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<String> cancel(@RequestParam(required = true) String action, @RequestBody CancelDocumentationDTO body, @PathVariable Long id) {
+    public ResponseEntity<String> cancel(@RequestParam(required = true) String action,
+            @RequestBody CancelDocumentationDTO body, @PathVariable Long id) {
         if ("cancel".equals(action))
             return documentationService.cancel(body, id);
         return ResponseEntity.badRequest().body("Invalid action");

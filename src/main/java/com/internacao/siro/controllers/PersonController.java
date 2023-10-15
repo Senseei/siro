@@ -20,7 +20,7 @@ import com.internacao.siro.services.PersonService;
 @RestController
 @RequestMapping(value = "/people")
 public class PersonController {
-    
+
     @Autowired
     PersonService personService;
 
@@ -31,16 +31,16 @@ public class PersonController {
 
     @PostMapping
     public ResponseEntity<PersonDTO> create(@RequestBody NewPersonDTO body) {
-        return personService.create(body);
+        return ResponseEntity.ok(personService.create(body));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PersonDTO> findById(@PathVariable Long id) {
-        return personService.findById(id);
+        return ResponseEntity.ok(personService.findById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PersonDTO> update(@PathVariable Long id, @RequestBody UpdatePersonDTO body) {
-        return personService.update(id, body);
+        return ResponseEntity.ok(personService.update(id, body));
     }
 }

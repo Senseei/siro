@@ -57,7 +57,7 @@ public class EmployeeServiceTest {
 
     @Test
     public void findByIdTest() {
-        EmployeeDTO retrievedEmployee = employeeService.findById(testEmployee.getId()).getBody();
+        EmployeeDTO retrievedEmployee = employeeService.findById(testEmployee.getId());
 
         assertNotNull(retrievedEmployee);
         assertEmployeeEquals(EmployeeDTO.of(testEmployee), retrievedEmployee);
@@ -65,7 +65,7 @@ public class EmployeeServiceTest {
 
     @Test
     public void findByReTest() {
-        EmployeeDTO retrievedEmployee = employeeService.findByRe(testEmployee.getRe()).getBody();
+        EmployeeDTO retrievedEmployee = employeeService.findByRe(testEmployee.getRe());
 
         assertNotNull(retrievedEmployee);
         assertEmployeeEquals(EmployeeDTO.of(testEmployee), retrievedEmployee);
@@ -74,7 +74,7 @@ public class EmployeeServiceTest {
     @Test
     public void createTest() {
         NewEmployeeDTO body = new NewEmployeeDTO("CreatingNewEmployeeTest", LocalDate.now(), "11111111100", 1001l);
-        EmployeeDTO employeeDTO = employeeService.create(body).getBody();
+        EmployeeDTO employeeDTO = employeeService.create(body);
 
         assertNotNull(employeeDTO);
         assertEquals(body.getName(), employeeDTO.getName());
@@ -113,7 +113,7 @@ public class EmployeeServiceTest {
     @Test
     public void updateTest() {
         UpdateEmployeeDTO body = new UpdateEmployeeDTO("UpdatingtestEmployee", LocalDate.now(), "11111111100", 1l);
-        EmployeeDTO EmployeeDTO = employeeService.update(testEmployee.getId(), body).getBody();
+        EmployeeDTO EmployeeDTO = employeeService.update(testEmployee.getId(), body);
 
         assertNotNull(EmployeeDTO);
         assertEquals(body.getName(), EmployeeDTO.getName());

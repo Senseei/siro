@@ -63,7 +63,7 @@ public class PatientServiceTest {
 
     @Test
     public void findByIdTest() {
-        PatientDTO retrievedPatient = patientService.findById(testPatient.getId()).getBody();
+        PatientDTO retrievedPatient = patientService.findById(testPatient.getId());
 
         assertNotNull(retrievedPatient);
         assertPatientEquals(PatientDTO.of(testPatient), retrievedPatient);
@@ -71,7 +71,7 @@ public class PatientServiceTest {
 
     @Test
     public void findByMrTest() {
-        PatientDTO retrievedPatient = patientService.findByMr(testPatient.getMr()).getBody();
+        PatientDTO retrievedPatient = patientService.findByMr(testPatient.getMr());
 
         assertNotNull(retrievedPatient);
         assertPatientEquals(PatientDTO.of(testPatient), retrievedPatient);
@@ -80,7 +80,7 @@ public class PatientServiceTest {
     @Test
     public void createTest() {
         NewPatientDTO body = new NewPatientDTO("CreatingNewPatientTest", LocalDate.now(), "11111111100", 1001l);
-        PatientDTO patientDTO = patientService.create(body).getBody();
+        PatientDTO patientDTO = patientService.create(body);
 
         assertNotNull(patientDTO);
         assertEquals(body.getName(), patientDTO.getName());
@@ -118,7 +118,7 @@ public class PatientServiceTest {
     @Test
     public void updateTest() {
         UpdatePatientDTO body = new UpdatePatientDTO("UpdatingTestPatient", LocalDate.now(), "11111111100", 1l);
-        PatientDTO patientDTO = patientService.update(testPatient.getId(), body).getBody();
+        PatientDTO patientDTO = patientService.update(testPatient.getId(), body);
 
         assertNotNull(patientDTO);
         assertEquals(body.getName(), patientDTO.getName());

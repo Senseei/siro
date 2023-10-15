@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,21 +36,21 @@ public class PatientService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<PatientDTO> findById(Long id) {
+    public PatientDTO findById(Long id) {
         Patient result = patientRepository.findById(id).orElse(null);
         if (result == null)
-            return ResponseEntity.notFound().build();
+            throw new EntityNotFoundException();
 
-        return ResponseEntity.ok(PatientDTO.of(result));
+        return PatientDTO.of(result);
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<PatientDTO> findByMr(Long mr) {
+    public PatientDTO findByMr(Long mr) {
         Patient result = patientRepository.findByMr(mr);
         if (result == null)
-            return ResponseEntity.notFound().build();
+            throw new EntityNotFoundException();
 
-        return ResponseEntity.ok(PatientDTO.of(result));
+        return PatientDTO.of(result);
     }
 
     @Transactional(readOnly = true)
@@ -65,7 +64,7 @@ public class PatientService {
     }
 
     @Transactional
-    public ResponseEntity<PatientDTO> create(NewPatientDTO body) {
+    public PatientDTO create(NewPatientDTO body) {
         if (patientRepository.existsByMr(body.getMr()))
             throw new DuplicateKeyException("There is already a patient with the given medical record");
 
@@ -73,19 +72,19 @@ public class PatientService {
 
         Patient newPatient = new Patient(body);
         patientRepository.save(newPatient);
-        return ResponseEntity.ok(PatientDTO.of(newPatient));
+        return PatientDTO.of(newPatient);
     }
 
     @Transactional
-    public ResponseEntity<PatientDTO> update(Long id, UpdatePatientDTO body) {
+    public PatientDTO update(Long id, UpdatePatientDTO body) {
         Patient patient = patientRepository.findById(id).orElse(null);
         if (patient == null)
-            return ResponseEntity.notFound().build();
+            throw new EntityNotFoundException();
 
         patientJson.validate(body);
 
         patient.update(body);
         patientRepository.save(patient);
-        return ResponseEntity.ok(PatientDTO.of(patient));
+        return PatientDTO.of(patient);
     }
 }

@@ -24,14 +24,14 @@ import com.internacao.siro.services.PatientService;
 @RestController
 @RequestMapping("/patients")
 public class PatientController {
-    
+
     @Autowired
     PatientService patientService;
 
     @GetMapping
     public List<PatientDTO> findAll(@RequestParam(required = false) Long mr) {
         if (mr != null) {
-            PatientDTO dto = patientService.findByMr(mr).getBody();
+            PatientDTO dto = patientService.findByMr(mr);
             if (dto == null)
                 return new ArrayList<>();
             return Collections.singletonList(dto);
@@ -41,17 +41,17 @@ public class PatientController {
 
     @PostMapping
     public ResponseEntity<PatientDTO> create(@RequestBody NewPatientDTO body) {
-        return patientService.create(body);
+        return ResponseEntity.ok(patientService.create(body));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PatientDTO> findByPersonId(@PathVariable Long id) {
-        return patientService.findById(id);
+        return ResponseEntity.ok(patientService.findById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PatientDTO> update(@PathVariable Long id, @RequestBody UpdatePatientDTO body) {
-        return patientService.update(id, body);
+        return ResponseEntity.ok(patientService.update(id, body));
     }
 
     @GetMapping("/{id}/relatives")

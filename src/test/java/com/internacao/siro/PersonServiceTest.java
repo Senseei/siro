@@ -54,7 +54,7 @@ public class PersonServiceTest {
 
     @Test
     public void findByIdTest() {
-        PersonDTO retrievedPerson = personService.findById(testPerson.getId()).getBody();
+        PersonDTO retrievedPerson = personService.findById(testPerson.getId());
 
         assertNotNull(retrievedPerson);
         assertEquals("TestPerson", retrievedPerson.getName());
@@ -67,7 +67,7 @@ public class PersonServiceTest {
         assertThrows(InvalidCPFFormatException.class, () -> personService.create(body));
         body.setCpf("11111111111");
 
-        PersonDTO personDTO = personService.create(body).getBody();
+        PersonDTO personDTO = personService.create(body);
 
         assertNotNull(personDTO);
         assertEquals(body.getName(), personDTO.getName());
@@ -103,7 +103,7 @@ public class PersonServiceTest {
         UpdatePersonDTO body = new UpdatePersonDTO("UpdatingTestPerson", LocalDate.of(2000, 01, 01), "1");
         assertThrows(InvalidCPFFormatException.class, () -> personService.update(testPerson.getId(), body));
         body.setCpf("11111111111");
-        PersonDTO personDTO = personService.update(testPerson.getId(), body).getBody();
+        PersonDTO personDTO = personService.update(testPerson.getId(), body);
 
         assertNotNull(personDTO);
         assertEquals(body.getName(), personDTO.getName());

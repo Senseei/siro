@@ -23,14 +23,14 @@ import com.internacao.siro.services.EmployeeService;
 @RestController
 @RequestMapping(value = "/employees")
 public class EmployeeController {
-    
+
     @Autowired
     EmployeeService employeeService;
 
     @GetMapping
     public List<EmployeeDTO> findAll(@RequestParam(required = false) Long re) {
         if (re != null) {
-            EmployeeDTO dto = employeeService.findByRe(re).getBody();
+            EmployeeDTO dto = employeeService.findByRe(re);
             if (dto == null)
                 return new ArrayList<EmployeeDTO>();
             return Collections.singletonList(dto);
@@ -40,16 +40,16 @@ public class EmployeeController {
 
     @PostMapping
     public ResponseEntity<EmployeeDTO> createNewEmployee(@RequestBody NewEmployeeDTO dto) {
-        return employeeService.create(dto);
+        return ResponseEntity.ok(employeeService.create(dto));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeDTO> findByPersonId(@PathVariable Long id) {
-        return employeeService.findById(id);
+        return ResponseEntity.ok(employeeService.findById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeDTO> update(@PathVariable Long id, @RequestBody UpdateEmployeeDTO body) {
-        return employeeService.update(id, body);
+        return ResponseEntity.ok(employeeService.update(id, body));
     }
 }

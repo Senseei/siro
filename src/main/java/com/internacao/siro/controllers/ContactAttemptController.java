@@ -16,7 +16,7 @@ import com.internacao.siro.services.contacctAttempt.ContactAttemptService;
 @RestController
 @RequestMapping("/contactattempts")
 public class ContactAttemptController {
-    
+
     @Autowired
     ContactAttemptService contactAttemptService;
 
@@ -29,6 +29,6 @@ public class ContactAttemptController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ContactAttemptDTO> findById(@PathVariable Long id) {
-        return contactAttemptService.findById(id);
+        return ResponseEntity.ok(contactAttemptService.findById(id));
     }
 }

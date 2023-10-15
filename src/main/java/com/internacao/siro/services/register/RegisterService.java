@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +19,7 @@ import com.internacao.siro.repositories.RegisterRepository;
 import com.internacao.siro.validators.json.RegisterJson;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 
 @Service
@@ -46,34 +46,34 @@ public class RegisterService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<RegisterDTO> findById(Long id) {
+    public RegisterDTO findById(Long id) {
         Register register = registerRepository.findById(id).orElse(null);
         if (register == null)
-            return ResponseEntity.notFound().build();
+            throw new EntityNotFoundException();
 
-        return ResponseEntity.ok(registerUtil.createRegisterDTO(register));
+        return registerUtil.createRegisterDTO(register);
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<RegisterDTO> findByPatientId(Long patientId) {
+    public RegisterDTO findByPatientId(Long patientId) {
         Register register = registerUtil.checkIfRegisterExistsByPatientId(patientId);
         if (register == null)
-            return ResponseEntity.notFound().build();
+            throw new EntityNotFoundException();
 
-        return ResponseEntity.ok(registerUtil.createRegisterDTO(register));
+        return registerUtil.createRegisterDTO(register);
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<RegisterDTO> findByPatientMr(Long mr) {
+    public RegisterDTO findByPatientMr(Long mr) {
         Register register = registerUtil.checkIfRegisterExistsByMr(mr);
         if (register == null)
-            return ResponseEntity.notFound().build();
+            throw new EntityNotFoundException();
 
-        return ResponseEntity.ok(registerUtil.createRegisterDTO(register));
+        return registerUtil.createRegisterDTO(register);
     }
 
     @Transactional
-    public ResponseEntity<RegisterDTO> create(NewRegisterDTO body) {
+    public RegisterDTO create(NewRegisterDTO body) {
 
         registerJson.validate(body);
 
@@ -86,18 +86,18 @@ public class RegisterService {
 
         Register newRegister = new Register(patient, body.getDateOfDeath(), doctor, clinic);
         registerRepository.save(newRegister);
-        return ResponseEntity.ok(registerUtil.createRegisterDTO(newRegister));
+        return registerUtil.createRegisterDTO(newRegister);
     }
 
     @Transactional
-    public ResponseEntity<RegisterDTO> update(Long id, UpdateRegisterDTO body) {
-        
+    public RegisterDTO update(Long id, UpdateRegisterDTO body) {
+
         Register register = registerRepository.findById(id).orElse(null);
         if (register == null)
-            return ResponseEntity.notFound().build();
-        
+            throw new EntityNotFoundException();
+
         registerUtil.updateDTOToEntity(register, body);
         registerRepository.save(register);
-        return ResponseEntity.ok(registerUtil.createRegisterDTO(register));
+        return registerUtil.createRegisterDTO(register);
     }
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,21 +44,20 @@ public class RegisterController {
     @Autowired
     OccurrenceService occurrenceService;
 
-
     @GetMapping
     public List<RegisterDTO> findAll(@RequestParam(required = false) Long patientId,
-        @RequestParam(required = false) Long mr) {
-        Optional<ResponseEntity<RegisterDTO>> dto = Optional.empty();
+            @RequestParam(required = false) Long mr) {
+        Optional<RegisterDTO> dto = Optional.empty();
 
         if (patientId != null) {
             dto = Optional.of(registerService.findByPatientId(patientId));
         } else if (mr != null) {
             dto = Optional.of(registerService.findByPatientMr(mr));
         }
-    
+
         return dto.map(x -> {
-            if (x.getStatusCode() == HttpStatus.OK)
-                return Collections.singletonList(x.getBody());
+            if (x != null)
+                return Collections.singletonList(x);
             else
                 return new ArrayList<RegisterDTO>();
         }).orElseGet(() -> registerService.findAll());
@@ -67,17 +65,17 @@ public class RegisterController {
 
     @PostMapping
     public ResponseEntity<RegisterDTO> create(@RequestBody NewRegisterDTO body) {
-        return registerService.create(body);
+        return ResponseEntity.ok(registerService.create(body));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RegisterDTO> findById(@PathVariable Long id) {
-        return registerService.findById(id);
+        return ResponseEntity.ok(registerService.findById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<RegisterDTO> update(@PathVariable Long id, @RequestBody UpdateRegisterDTO body) {
-        return registerService.update(id, body);
+        return ResponseEntity.ok(registerService.update(id, body));
     }
 
     @GetMapping("/{id}/documentation")
@@ -86,8 +84,9 @@ public class RegisterController {
     }
 
     @PostMapping("/{id}/documentation")
-    public ResponseEntity<DocumentationDTO> addDocumentation(@RequestBody NewDocumentationDTO body, @PathVariable Long id) {
-        return documentationService.appendToRegisterById(body, id);
+    public ResponseEntity<DocumentationDTO> addDocumentation(@RequestBody NewDocumentationDTO body,
+            @PathVariable Long id) {
+        return ResponseEntity.ok(documentationService.appendToRegisterById(body, id));
     }
 
     @GetMapping("/{id}/contactattempts")
@@ -96,13 +95,15 @@ public class RegisterController {
     }
 
     @PostMapping("/{id}/contactattempts/success")
-    public ResponseEntity<ContactAttemptDTO> addSuccessContactAttempt(@RequestBody NewSuccessContactAttemptDTO body, @PathVariable Long id) {
-        return contactAttemptService.create(body, id);
+    public ResponseEntity<ContactAttemptDTO> addSuccessContactAttempt(@RequestBody NewSuccessContactAttemptDTO body,
+            @PathVariable Long id) {
+        return ResponseEntity.ok(contactAttemptService.create(body, id));
     }
 
     @PostMapping("/{id}/contactattempts/unsuccess")
-    public ResponseEntity<ContactAttemptDTO> addUnsuccessContactAttempt(@RequestBody NewUnsuccessContactAttemptDTO body, @PathVariable Long id) {
-        return contactAttemptService.create(body, id);
+    public ResponseEntity<ContactAttemptDTO> addUnsuccessContactAttempt(@RequestBody NewUnsuccessContactAttemptDTO body,
+            @PathVariable Long id) {
+        return ResponseEntity.ok(contactAttemptService.create(body, id));
     }
 
     @GetMapping("/{id}/occurrences")
@@ -112,6 +113,6 @@ public class RegisterController {
 
     @PostMapping("/{id}/occurrences")
     public ResponseEntity<OccurrenceDTO> addOccurrence(@RequestBody NewOccurrenceDTO body, @PathVariable Long id) {
-        return occurrenceService.addToRegisterById(body, id);
+        return ResponseEntity.ok(occurrenceService.addToRegisterById(body, id));
     }
 }

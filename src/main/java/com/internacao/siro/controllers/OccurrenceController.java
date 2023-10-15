@@ -16,7 +16,7 @@ import com.internacao.siro.services.occurrence.OccurrenceService;
 @RestController
 @RequestMapping("/occurrences")
 public class OccurrenceController {
-    
+
     @Autowired
     OccurrenceService occurrenceService;
 
@@ -29,6 +29,6 @@ public class OccurrenceController {
 
     @GetMapping("/{id}")
     public ResponseEntity<OccurrenceDTO> findById(@PathVariable Long id) {
-        return occurrenceService.findById(id);
+        return ResponseEntity.ok(occurrenceService.findById(id));
     }
 }
