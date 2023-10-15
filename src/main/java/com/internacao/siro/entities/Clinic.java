@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.internacao.siro.dto.clinic.ClinicDTO;
 import com.internacao.siro.dto.clinic.NewClinicDTO;
 import com.internacao.siro.dto.clinic.UpdateClinicDTO;
+import com.internacao.siro.exceptions.IllegalArgumentAtConstructorException;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +22,8 @@ public class Clinic {
     private Long id;
     private String name;
 
-    public Clinic() {}
+    public Clinic() {
+    }
 
     public Clinic(String name) {
         setName(name);
@@ -50,6 +52,8 @@ public class Clinic {
     }
 
     public void setName(String name) {
+        if (name.trim().equals(""))
+            throw new IllegalArgumentAtConstructorException("Clinic name cannot be null");
         this.name = name;
     }
 
@@ -57,7 +61,7 @@ public class Clinic {
     public int hashCode() {
         return Objects.hash(id);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

@@ -64,7 +64,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    public void findByCrmTest() {
+    public void findByReTest() {
         EmployeeDTO retrievedEmployee = employeeService.findByRe(testEmployee.getRe()).getBody();
 
         assertNotNull(retrievedEmployee);

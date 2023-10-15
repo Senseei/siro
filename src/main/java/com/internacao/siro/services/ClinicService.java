@@ -3,7 +3,7 @@ package com.internacao.siro.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,12 +13,15 @@ import com.internacao.siro.dto.clinic.NewClinicDTO;
 import com.internacao.siro.dto.clinic.UpdateClinicDTO;
 import com.internacao.siro.entities.Clinic;
 import com.internacao.siro.repositories.ClinicRepository;
+import com.internacao.siro.validators.json.ClinicJson;
 
 @Service
 public class ClinicService {
-    
+
     @Autowired
     ClinicRepository clinicRepository;
+    @Autowired
+    ClinicJson clinicJson;
 
     @Transactional(readOnly = true)
     public List<ClinicDTO> findAll() {
@@ -44,10 +47,10 @@ public class ClinicService {
 
     @Transactional
     public ResponseEntity<ClinicDTO> create(NewClinicDTO body) {
-        if (body.getName() == null)
-            throw new IllegalArgumentException("Body and its name cannot be null");
         if (clinicRepository.existsByName(body.getName()))
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new DuplicateKeyException("There already exists a clinic with this name");
+
+        clinicJson.validate(body);
 
         Clinic clinic = new Clinic(body);
         clinicRepository.save(clinic);
@@ -60,6 +63,8 @@ public class ClinicService {
         Clinic clinic = clinicRepository.findById(id).orElse(null);
         if (clinic == null)
             return ResponseEntity.notFound().build();
+
+        clinicJson.validate(body);
 
         clinic.update(body);
         clinicRepository.save(clinic);
