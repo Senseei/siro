@@ -106,7 +106,7 @@ To use the Hospital System API, you need to make HTTP requests to the provided e
 
 Here are examples of how to make requests to the API:
 
-### Create a new patient
+### Create a new entity
 ```http
 POST /patients
 {
@@ -114,20 +114,21 @@ POST /patients
   "birthdate": "1990-01-01",
   "rh": 12345
 }
-```http
+
 POST /doctors
 {
   "name": "Lucas Moroe",
   "birthdate": "1990-01-01",
   "crm": 12345
 }
-```http
+
 POST /employees
 {
   "name": "Gabriel Pedro",
   "birthdate": "1990-01-01",
   "re": 12345
 }
+```
 
 We can do the same to update some entity, using the PUT method and the entity's ID, passing the parameters you want to update.
 ```http
