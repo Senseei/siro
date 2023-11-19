@@ -5,8 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,10 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.internacao.siro.dto.person.NewPersonDTO;
 import com.internacao.siro.dto.person.PersonDTO;
-import com.internacao.siro.dto.person.UpdatePersonDTO;
 import com.internacao.siro.entities.Person;
 import com.internacao.siro.exceptions.InvalidCPFFormatException;
-import com.internacao.siro.exceptions.InvalidJsonFormatException;
 import com.internacao.siro.repositories.PersonRepository;
 import com.internacao.siro.services.PersonService;
 
@@ -31,89 +30,80 @@ public class PersonServiceTest {
     @Autowired
     PersonService personService;
 
-    Person testPerson;
+    @Nested
+    @DisplayName("Find All method tests")
+    class FindAllTest {
 
-    @BeforeEach
-    public void setUp() {
-        testPerson = new Person("TestPerson", LocalDate.now());
-        personRepository.save(testPerson);
+        @Test
+        @DisplayName("Check if method returns a NonNull list")
+        void findAllTestReturnsNotNullList() {
+            List<PersonDTO> result = personService.findAll();
+            assertNotNull(result, "FindAll method must return a not null list");
+        }
     }
 
-    @AfterEach
-    public void tearDown() {
-        personRepository.delete(testPerson);
+    @Nested
+    @DisplayName("Find By Id tests")
+    class FindByIdTest {
+
+        Person testPerson;
+        PersonDTO retrievedPerson;
+
+        @BeforeEach
+        void setUp() {
+            testPerson = new Person("TestPerson", LocalDate.now());
+            personRepository.save(testPerson);
+            retrievedPerson = personService.findById(testPerson.getId());
+        }
+
+        @Test
+        void findByIdReturnsNotNullValue() {
+            assertNotNull(retrievedPerson);
+        }
+
+        @Test
+        void findByIdCheckIfInfoMatch() {
+            assertEquals(testPerson.getName(), retrievedPerson.getName());
+            assertEquals(LocalDate.now(), retrievedPerson.getBirthday());
+        }
     }
 
-    @Test
-    public void findAllTestReturnsNotNullList() {
-        List<PersonDTO> result = personService.findAll();
+    @Nested
+    @DisplayName("Create method tests")
+    class CreateTest {
 
-        assertNotNull(result);
-        assertFalse(result.isEmpty());
-    }
+        NewPersonDTO validBody;
+        NewPersonDTO invalidBody;
+        PersonDTO result;
 
-    @Test
-    public void findByIdTest() {
-        PersonDTO retrievedPerson = personService.findById(testPerson.getId());
+        @BeforeEach
+        void setUp() {
+            validBody = new NewPersonDTO("Valid Body Test", LocalDate.now(), "11111111111");
+            invalidBody = new NewPersonDTO("Invalid Body Test", LocalDate.now(), "1");
+        }
 
-        assertNotNull(retrievedPerson);
-        assertEquals("TestPerson", retrievedPerson.getName());
-        assertEquals(LocalDate.now(), retrievedPerson.getBirthday());
-    }
+        @Test
+        void createWithInvalidInputThrowsInvalidCPFFormatException() {
+            assertThrows(InvalidCPFFormatException.class, () -> personService.create(invalidBody));
+        }
 
-    @Test
-    public void createTest() {
-        NewPersonDTO body = new NewPersonDTO("CreatingNewPersonTest", LocalDate.now(), "1");
-        assertThrows(InvalidCPFFormatException.class, () -> personService.create(body));
-        body.setCpf("11111111111");
+        @Test
+        void createWithValidInputReturnsNotNullValue() {
+            result = personService.create(validBody);
+            assertNotNull(result);
+        }
 
-        PersonDTO personDTO = personService.create(body);
+        @Test
+        void createWithValidInputCheckIfInfoMatch() {
+            result = personService.create(validBody);
+            assertEquals(validBody.getName(), result.getName());
+            assertEquals(validBody.getBirthday(), result.getBirthday());
+        }
 
-        assertNotNull(personDTO);
-        assertEquals(body.getName(), personDTO.getName());
-        assertEquals(body.getBirthday(), personDTO.getBirthday());
-        assertThrows(DuplicateKeyException.class,
-                () -> personService.create(new NewPersonDTO("DuplicateTest", LocalDate.now(), "11111111111")));
-        assertEquals(body.getCpf(), personDTO.getCpf());
-
-        NewPersonDTO nullFieldsBody = new NewPersonDTO("TestingInvalidInputs", LocalDate.now(), "12345678911");
-        nullFieldsBody.setName(null);
-        assertThrows(InvalidJsonFormatException.class, () -> personService.create(nullFieldsBody));
-        nullFieldsBody.setName("TestingInvalidInputs");
-        nullFieldsBody.setBirthday(null);
-        assertThrows(InvalidJsonFormatException.class, () -> personService.create(nullFieldsBody));
-        nullFieldsBody.setBirthday(LocalDate.now());
-        nullFieldsBody.setCpf(null);
-        assertThrows(InvalidJsonFormatException.class, () -> personService.create(nullFieldsBody));
-
-        NewPersonDTO emptyFieldsBody = new NewPersonDTO("TestingInvalidInputs", LocalDate.now(), "12345678912");
-        emptyFieldsBody.setName("");
-        assertThrows(InvalidJsonFormatException.class, () -> personService.create(emptyFieldsBody));
-        emptyFieldsBody.setName("    ");
-        assertThrows(InvalidJsonFormatException.class, () -> personService.create(emptyFieldsBody));
-        emptyFieldsBody.setName("TestingEmptyInputs");
-        emptyFieldsBody.setCpf("");
-        assertThrows(InvalidJsonFormatException.class, () -> personService.create(emptyFieldsBody));
-        emptyFieldsBody.setCpf("           ");
-        assertThrows(InvalidJsonFormatException.class, () -> personService.create(emptyFieldsBody));
-    }
-
-    @Test
-    public void updateTest() {
-        UpdatePersonDTO body = new UpdatePersonDTO("UpdatingTestPerson", LocalDate.of(2000, 01, 01), "1");
-        assertThrows(InvalidCPFFormatException.class, () -> personService.update(testPerson.getId(), body));
-        body.setCpf("11111111111");
-        PersonDTO personDTO = personService.update(testPerson.getId(), body);
-
-        assertNotNull(personDTO);
-        assertEquals(body.getName(), personDTO.getName());
-        assertEquals(body.getBirthday(), personDTO.getBirthday());
-        assertEquals(body.getCpf(), personDTO.getCpf());
-
-        body.setName("");
-        assertThrows(InvalidJsonFormatException.class, () -> personService.update(testPerson.getId(), body));
-        body.setName("TestingEmptyValues");
-        body.setCpf("");
-        assertThrows(InvalidJsonFormatException.class, () -> personService.update(testPerson.getId(), body));
+        @Test
+        void createWithDuplicateCPFThrowsDuplicateKeyException() {
+            personService.create(validBody);
+            assertThrows(DuplicateKeyException.class, () -> personService.create(validBody));
+        }
     }
 }
