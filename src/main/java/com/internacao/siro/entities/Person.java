@@ -41,25 +41,21 @@ public class Person {
 
     public Person(String name) {
         setName(name);
-        ;
     }
 
     public Person(String name, LocalDate birthday) {
         setName(name);
-        ;
         this.birthday = birthday;
     }
 
     public Person(String name, LocalDate birthday, String cpf) {
         setName(name);
-        ;
         this.birthday = birthday;
         setCpf(cpf);
     }
 
     public Person(NewPersonDTO body) {
         setName(body.getName());
-        ;
         birthday = body.getBirthday();
         setCpf(body.getCpf());
     }
